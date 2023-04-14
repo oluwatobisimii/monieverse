@@ -1,7 +1,7 @@
 import React from "react";
 import logoSM from "../../assets/logo/logo-sm.svg";
 import logoLG from "../../assets/logo/logo-lg.svg";
-import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 const OnboardNav = () => {
   return (
     <div className="p-4 flex justify-between font-inter items-center lg:px-16 lg:py-8">

@@ -21,9 +21,9 @@ const CustomInput = ({
 }) => {
   const inputRef = React.useRef(null);
 
-  const handleClick = () => {
-    if (inputRef && inputRef.current) inputRef.current.focus();
-  };
+  // const handleClick = () => {
+  //   if (inputRef && inputRef.current) inputRef.current.focus();
+  // };
 
   return (
     <>
