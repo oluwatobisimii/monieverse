@@ -1,13 +1,68 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+// import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Register from './Pages/AuthPages/Register';
+import Login from './Pages/AuthPages/Login';
+import Dashboard from './Pages/Dashboard';
+import ProtectedRoutes from './components/ProtectedRoutes';
+import ForgotPassword from './Pages/AuthPages/ForgotPassword';
+import VerifyAccount from './Pages/AuthPages/VerifyAccount';
+
+import MoveMoney from './Pages/MoveMoney';
+
+const router = createBrowserRouter([
+  {
+    path: "/register",
+    element: <Register />,
+    children: [
+
+    ]
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />
+  },
+  {
+    path: '/verify-account',
+    element: <VerifyAccount />
+  },
+  {
+    path: "/",
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />
+      },
+      {
+        path: "/move-money",
+        element: <MoveMoney />
+      },
+
+    ]
+  },
+
+
+]);
+
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
+    {/* <App /> */}
   </React.StrictMode>
 );
 
