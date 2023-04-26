@@ -48,7 +48,7 @@ export default function SavedRecipient({
       {dropDown && (
         <div className="shadow-lg shadow-[#1018280F] cardShadow rounded-2xl pt-4 pb-2 flex flex-col gap-3">
           <div
-            className="mx-2 px-2 py-1 bg-gray-50 flex justify-between items-center rounded cursor-pointer"
+            className="mx-2 px-2 py-1 hover:bg-gray-50 flex justify-between items-center rounded cursor-pointer"
             onClick={() => {
               setAddRecipient(!addRecipient);
             }}

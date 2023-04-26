@@ -1,6 +1,7 @@
 import React from "react";
 import TransactionTable from "./TransactionTable";
 
+
 const Transactions = () => {
   return (
     <section className="bg-gray-50 w-full overflow-hidden">

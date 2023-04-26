@@ -6,9 +6,11 @@ import Japan from "../../assets/countries/Country = Japan.svg";
 import UK from "../../assets/countries/Country = UK.svg";
 import USA from "../../assets/countries/Country = USA.svg";
 
+import {useNavigate} from 'react-router-dom';
 
 
 const BalanceCard = ({ currency, balance = 0 }) => {
+  const navigate = useNavigate();
     //   Currency Formatting
     let moneyInput = Number(balance) * 100;
     let wholeNumber = Math.floor(moneyInput / 100);
@@ -60,7 +62,9 @@ const BalanceCard = ({ currency, balance = 0 }) => {
     }
   
     return (
-      <div className="rounded-3xl w-[282px] bg-[#F9F9FB] p-6">
+      <div className="rounded-3xl w-[282px] bg-gray-25 p-6 hover:bg-gray-50 cursor-pointer" onClick={()=>{
+        navigate('/available-balance',{state:{currencyName,currencysymbol}});
+          }} >
         <div className="flex items-center gap-2">
           <img src={currencyImg} alt="" className="h-8"/>
           <p className="text-md font-medium text-gray-500">{currencyName}</p>

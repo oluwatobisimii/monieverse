@@ -42,7 +42,7 @@ const AmountRate = () => {
       <div className="lg:bg-gray-50 w-full min-h-screen">
         <div className="h-1 bg-primary-200 w-full">
           <div
-            className={`h-full ${loaderWidth} duration-200 bg-primary-400 transition-all`}
+            className={`h-full ${loaderWidth} duration-1000 bg-primary-400 transition-all`}
           />
         </div>
         {/* Mobile Stepper */}
@@ -428,7 +428,7 @@ const AmountRate = () => {
                 <div className="h-6" />
                 <div className="rounded-2xl px-4 py-3 bg-primary-100 flex gap-2 items-start">
                   <img src={infoPrimary} alt="" />
-                  <p className="text-primary-500">
+                  <p className="text-sm text-primary-500">
                     Ensure to verify the identity of the person you’re sending
                     to avoid fraudulent transactions. Also, get fully refunded
                     within 30 minutes of payment when you cancel, unless the

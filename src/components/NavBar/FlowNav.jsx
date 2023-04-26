@@ -2,11 +2,14 @@ import React from "react";
 import logoSM from "../../assets/logo/logo-sm.svg";
 import logoLG from "../../assets/logo/logo-lg.svg";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 const FlowNav = () => {
   return (
     <div className="p-4 flex justify-between font-inter items-center lg:px-16 lg:py-8">
+       <Link to="/">
       <img src={logoLG} alt="" className="hidden lg:block" />
       <img src={logoSM} alt="" className="lg:hidden block" />
+      </Link>
 
       <div className="lg:flex gap-2 hidden">
         <div>

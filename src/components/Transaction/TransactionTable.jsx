@@ -1,8 +1,9 @@
 import React from "react";
-
+import { format } from "date-fns";
 import Account from "./Account";
 import PaymentStatus from "./PaymentStatus";
 import PaymentMethod from "./PaymentMethod";
+import { transactionsData } from "../data/TransactionData";
 
 const TableHeader = () => {
   return (
@@ -43,23 +44,28 @@ const TransactionTable = () => {
     <div className="font-inter">
       <div className="hidden lg:block">
         <TableHeader />
-        <div className="w-full flex font-inter items-center h-20 border-b border-gray-100">
+        {transactionsData.map((data,index)=>{
+
+          const date = new Date(data.date)
+return ( <div className="hover:bg-gray-25 cursor pointer w-full flex font-inter items-center h-20 border-b border-gray-100" key={index}>
           <div className="  px-6 py-4 w-[16%]">
-            <p className="text-gray-500  text-sm">Mar 16, 2023</p>
+            <p className="text-gray-500  text-sm">{format(Date.parse(date), "MMM dd, yyyy")}</p>
           </div>
           <div className="  px-6 py-3 w-[28%]">
-            <Account type="personal" initials="SK" name="Sola Adetokin" />
+            <Account type={data.accounType} initials={data.initials} name={data.accountName} />
           </div>
-          <div className=" px-6 py-3 w-[18%]">
-            <p className="text-gray-500  text-sm  text-right">23,489.90 NGN</p>
+          <div className=" pr-6 py-3 w-[18%]">
+            <p className="text-gray-500  text-sm  text-right">{data.amount} {data.currency}</p>
           </div>
           <div className="px-6 py-3 w-[20%] pl-12">
-            <PaymentMethod type="swap" />
+            <PaymentMethod type={data.paymentMethod} />
           </div>
           <div className="px-6 py-3 w-[18%]">
-            <PaymentStatus status="progress" />
+            <PaymentStatus status={data.paymentStatus} />
           </div>
-        </div>
+        </div>)
+
+        })}
       </div>
       {/* Mobile transaction Table */}
       <div className="flex flex-col gap-y-4">

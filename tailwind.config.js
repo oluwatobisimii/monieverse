@@ -73,6 +73,7 @@ module.exports = {
       'd-md': ['36px', { lineHeight: '44px', letterSpacing: '-2%' }],
       'd-sm': ['30px', { lineHeight: '38px', letterSpacing: '-2%' }],
       'd-xs': ['24px', { lineHeight: '32px', letterSpacing: '-2%' }],
+      'd-xxs': ['20px', { lineHeight: '28px', letterSpacing: '0.01em' }],
       'lg': ['18px', { lineHeight: '28px' }],
       'md': ['16px', { lineHeight: '24px' }],
       'sm': ['14px', { lineHeight: '20px' }],

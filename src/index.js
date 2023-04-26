@@ -15,6 +15,13 @@ import ForgotPassword from './Pages/AuthPages/ForgotPassword';
 import VerifyAccount from './Pages/AuthPages/VerifyAccount';
 
 import MoveMoney from './Pages/MoveMoney';
+import AvailableBalance from './Pages/AvailableBalance';
+import KYCScreen from './Pages/KYCScreen';
+import RecipientsScreen from './Pages/RecipientsScreen';
+import UserSettingsScreen from './Pages/UserSettingsScreen';
+import PersonalInformation from './components/UserSettings/PersonalInformation';
+import NotificationSecurity from './components/UserSettings/NotificationSecurity';
+import Limits from './components/UserSettings/Limits';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +54,36 @@ const router = createBrowserRouter([
       {
         path: "/move-money",
         element: <MoveMoney />
+      },
+      {
+        path: "/available-balance",
+        element: <AvailableBalance />
+      },
+      {
+        path: "/kyc",
+        element: <KYCScreen />
+      },
+      {
+        path: "/recipients",
+        element: <RecipientsScreen />
+      },
+      {
+        path: "/settings",
+        element: <UserSettingsScreen />,
+        children: [
+          {
+            path: "/settings/",
+            element: <PersonalInformation />
+          },
+          {
+            path: "/settings/notification",
+            element: <NotificationSecurity />
+          },
+          {
+            path: "/settings/limits",
+            element: <Limits />
+          },
+        ]
       },
 
     ]

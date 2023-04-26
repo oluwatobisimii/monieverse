@@ -18,6 +18,7 @@ const CustomInput = ({
   label,
   labelIcon,
   wrapperStyle,
+  invalid,
 }) => {
   const inputRef = React.useRef(null);
 
@@ -46,8 +47,10 @@ const CustomInput = ({
           placeholder={placeholder}
           value={value}
           disabled={disabled}
+          invalid={invalid}
+          required={required}
           readOnly={readOnly}
-          className={`border border-gray-100  px-4 py-3 rounded-lg focus:outline-none focus:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600 focus:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter ${inputWidth}`}
+          className={`border border-gray-100  px-4 py-3 rounded-lg focus:outline-none focus:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600 focus:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter ${inputWidth} invalid:border-error-400 invalid:animate-pulse`}
         />
         <div className="h-1" />
         {errors && (

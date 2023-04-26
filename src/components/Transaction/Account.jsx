@@ -1,7 +1,7 @@
 import React from 'react'
 import icon from "../../assets/icon.svg";
 
-const Account = ({ type, name, initials }) => {
+const Account = ({ type, name, initials, transactionDate }) => {
     let initialBackground;
     let initialColor;
     switch (type) {
@@ -41,7 +41,7 @@ const Account = ({ type, name, initials }) => {
             {type === "swap" ? "Swap to NGN" : name}
           </p>
           <div className="h-0.5" />
-          <p className="text-sm text-gray-500">Feb 27, 2023</p>
+          <p className="lg:hidden text-sm text-gray-500">{transactionDate}</p>
         </div>
       </div>
     );

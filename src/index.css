@@ -46,9 +46,29 @@ input[type="number"] {
     0px 2px 12px -6px rgba(16, 24, 40, 0.04);
 }
 
+.recipientCard {
+  box-shadow: 0px 3px 18px -4px rgba(16, 24, 40, 0.1), 0px 3px 10px -2px rgba(16, 24, 40, 0.04);
+}
+
 .avatarShadow {
-  box-shadow: 0px 2px 4px -2px #1018280d;
-  box-shadow: 0px 4px 12px -4px #1018281a;
+  box-shadow: 0px 2px 4px -2px #1018280d, 0px 4px 12px -4px #1018281a;
+}
+
+.appOverlay {
+  background: rgba(140, 148, 166, 0.4);
+  backdrop-filter: blur(1.5px);
+}
+
+select {
+  -o-appearance: none;
+  -ms-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.loaderBg{
+  background-image: url('./assets/icons/loaderBg.svg')
 }
 
 @tailwind base;
