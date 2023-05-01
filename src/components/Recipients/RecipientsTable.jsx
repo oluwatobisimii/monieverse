@@ -36,7 +36,7 @@ const TableHeader = () => {
 const RecipientsTable = () => {
   const [userDetailCard, setUserDetailCard] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  const tableWidth = userDetailCard ? "w-[62%]" : "w-full";
+  const tableWidth = "w-full";
   return (
     <div className="font-inter">
       <div className="flex gap-4">
@@ -84,19 +84,19 @@ const RecipientsTable = () => {
         {userDetailCard && <img src={arrowRight} alt="" className="" />}
 
         {userDetailCard && (
-        <div className="flex-1 hidden lg:block"> 
-          <RecipientCard
-            receipt={receipt}
-            setUserDetailCard={setUserDetailCard}
-            userDetailCard={userDetailCard}
-            initials={transactionsData[currentUser]?.initials || ""}
-            accountName={transactionsData[currentUser]?.accountName || ""}
-            Bank={Bank}
-            editIcon={editIcon}
-            calendar={calendar}
-            sendIcon={sendIcon}
-          />
-        </div>
+          <div className="flex-1 hidden lg:block">
+            <RecipientCard
+              receipt={receipt}
+              setUserDetailCard={setUserDetailCard}
+              userDetailCard={userDetailCard}
+              initials={transactionsData[currentUser]?.initials || ""}
+              accountName={transactionsData[currentUser]?.accountName || ""}
+              Bank={Bank}
+              editIcon={editIcon}
+              calendar={calendar}
+              sendIcon={sendIcon}
+            />
+          </div>
         )}
       </div>
       {/* Mobile transaction Table */}
@@ -140,7 +140,7 @@ function RecipientCard({
   sendIcon,
 }) {
   return (
-    <div className="transition-all duration-200 recipientCard rounded-3xl flex-1">
+    <div className="recipientCard rounded-3xl w-[437px]">
       <div className="p-6">
         <div className="flex justify-between items-center">
           <div className="flex gap-1">

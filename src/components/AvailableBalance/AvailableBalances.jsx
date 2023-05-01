@@ -70,9 +70,12 @@ const AvailableBalances = () => {
   return (
     <>
       {/* Overlays */}
-      {receiveMoneyOption && <ReceiveMoneyOption isOpen = {receiveMoneyOption}
-      onClose={toggleOverlay}
-      />}
+      {receiveMoneyOption && (
+        <ReceiveMoneyOption
+          isOpen={receiveMoneyOption}
+          onClose={toggleOverlay}
+        />
+      )}
 
       <section className="bg-gray-50 font-inter">
         <div className="container mx-auto px-4 py-6 lg:py-10">
@@ -172,9 +175,34 @@ const AvailableBalances = () => {
                     </div>
                   </div>
                 )}
+                {/* Select Currency Desktop */}
+                <div className="bg-gray-50 p-[2px] rounded-lg md:flex gap-2 hidden">
+                <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 bg-gray-0">
+                    <div className="h-5 w-5 rounded-full">
+                      <img src={Nigeria} alt="" />
+                    </div>
+                    <p className="text-md font-medium text-gray-600">NGN</p>
+                  </div>
+                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
+                    <div className="h-5 w-5 rounded-full">
+                      <img src={USA} alt="" />
+                    </div>
+                    <p className="text-md font-medium text-gray-600">USD</p>
+                  </div>
+                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
+                    <div className="h-5 w-5 rounded-full">
+                      <img src={UK} alt="" />
+                    </div>
+                    <p className="text-md font-medium text-gray-600">GBP</p>
+                  </div>
+                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
+                    <div className="h-5 w-5 rounded-full">
+                      <img src={Euro} alt="" />
+                    </div>
+                    <p className="text-md font-medium text-gray-600">EUR</p>
+                  </div>
+                </div>
               </div>
-              {/* Select Currency Desktop */}
-              <div></div>
               {/* Add Balance */}
               <div className="relative z-0">
                 <button

@@ -15,6 +15,7 @@ import {
 import CustomInput from "../../components/Inputs/CustomInput";
 
 import OnboardNav from "../../components/NavBar/OnboardNav";
+import StepperDivider from "../../components/UtilityComponents/StepperDivider";
 
 const ForgotPassword = () => {
   // const initialvalues = { amount: "", email: "", password: "" };
@@ -64,7 +65,7 @@ const ForgotPassword = () => {
               </div>
               <p className={`text-sm font-medium  ${step === 0?'text-gray-600':'text-gray-400'}`}> Email</p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+            <StepperDivider/>
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">
                 {step === 1 ? (
@@ -77,7 +78,7 @@ const ForgotPassword = () => {
               </div>
               <p className={`text-sm font-medium  ${step === 1?'text-gray-600':'text-gray-400'}`}>Verification</p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+            <StepperDivider/>
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">
                 {step === 2 ? (

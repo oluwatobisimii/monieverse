@@ -12,6 +12,7 @@ import CustomInput from "../Inputs/CustomInput";
 import passport from "../../assets/icons/kyc/AddressBook.svg";
 import driversLicence from "../../assets/icons/kyc/IdentificationCard.svg";
 import NationalID from "../../assets/icons/kyc/IdentificationBadge.svg";
+import StepperDivider from "../UtilityComponents/StepperDivider";
 
 const KYCFrame = () => {
   // const initialvalues = { amount: "", email: "", password: "" };
@@ -71,7 +72,7 @@ const KYCFrame = () => {
                 Your Details
               </p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+            <StepperDivider/>
 
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">

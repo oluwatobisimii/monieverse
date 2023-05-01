@@ -17,6 +17,7 @@ import SignPost from "../../assets/icons/Signpost.svg";
 import SavedRecipient from "./SavedRecipient";
 import CustomInput from "../Inputs/CustomInput";
 import { Link, useNavigate } from "react-router-dom";
+import StepperDivider from "../UtilityComponents/StepperDivider";
 
 const AmountRate = () => {
   // const initialvalues = { amount: "", email: "", password: "" };
@@ -74,7 +75,7 @@ const AmountRate = () => {
                 Amount & Rate
               </p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+           <StepperDivider/>
 
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">
@@ -94,7 +95,7 @@ const AmountRate = () => {
                 Recipient
               </p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+            <StepperDivider/>
 
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">

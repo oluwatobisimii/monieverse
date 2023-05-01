@@ -14,6 +14,7 @@ import {
   EyeIcon,
 } from "@heroicons/react/24/outline";
 import CustomInput from "../../components/Inputs/CustomInput";
+import StepperDivider from "../../components/UtilityComponents/StepperDivider";
 
 const VerifyAccount = () => {
   // const initialvalues = { amount: "", email: "", password: "" };
@@ -69,7 +70,7 @@ const VerifyAccount = () => {
                 Verification
               </p>
             </div>
-            <div className="h-10 ml-4 w-[1px] bg-gray-0"></div>
+            <StepperDivider/>
             <div className="flex gap-6 items-center">
               <div className="w-8 h-8 rounded-full bg-gray-0 center ">
                 {step === 1 ? (
@@ -203,7 +204,7 @@ const VerifyAccount = () => {
                             />
                           </svg>
                           <p className="text-gray-400 font-medium text-md ">
-                            Personal
+                            Agent
                           </p>
                         </div>
                       </div>

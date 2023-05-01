@@ -62,7 +62,7 @@ const BalanceCard = ({ currency, balance = 0 }) => {
     }
   
     return (
-      <div className="rounded-3xl w-[282px] bg-gray-25 p-6 hover:bg-gray-50 cursor-pointer" onClick={()=>{
+      <div className="rounded-3xl w-[300px] bg-gray-25 p-6 hover:bg-gray-50 cursor-pointer" onClick={()=>{
         navigate('/available-balance',{state:{currencyName,currencysymbol}});
           }} >
         <div className="flex items-center gap-2">
