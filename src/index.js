@@ -24,6 +24,7 @@ import NotificationSecurity from './components/UserSettings/NotificationSecurity
 import Limits from './components/UserSettings/Limits';
 import PaymentCard from './Pages/PaymentCard';
 import TransactionsScreen from './Pages/TransactionsScreen';
+import ConvertScreen from './Pages/ConvertScreen';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/move-money",
         element: <MoveMoney />
+      },
+      {
+        path: "/convert",
+        element: <ConvertScreen />
       },
       {
         path: "/available-balance",

@@ -5,14 +5,14 @@ import ArrowDownUp from "../../assets/icons/ArrowsDownUp.svg";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { AllCurrencies } from "../data/AllCurrencies";
 
-const CurrencyList = ({
+export const CurrencyList = ({
   position = "top-full right-0",
   setSelected,
   setDropDown,
 }) => {
   return (
     <div
-      className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl  w-[348px]`}
+      className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl  w-[348px] z-30`}
     >
       <p className="text-sm text-gray-400 p-4 pb-1">All currencies</p>
       {AllCurrencies.map((currency, index) => {
