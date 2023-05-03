@@ -19,7 +19,7 @@ import CurrencyFormat from "../CurrencyFormat";
 import Transactions from "../Transaction/Transactions";
 import ReceiveMoneyOption from "../ReceiveMoney/ReceiveMoneyOption";
 import BankTransferPopup from "../ReceiveMoney/BankTransferPopup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CurrencyOption = ({
   currency,
@@ -326,12 +326,12 @@ const AvailableBalances = () => {
                         Receive
                       </p>
                     </button>
-                    <button className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1">
+                    <Link to='/convert' className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1">
                       <img src={convertIcon} alt="" />
                       <p className="text-md font-medium text-gray-600 font">
                         Convert
                       </p>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
