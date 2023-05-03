@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Overlay from "../UtilityComponents/Overlay";
-import {
-  CheckIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import cardDefault from "../../assets/icons/ cardDefault.svg";
 import cardSelected from "../../assets/icons/cardSelected.svg";
+import { useNavigate } from "react-router-dom";
 
-const ReceiveMoneyOption = ({isOpen, onClose}) => {
+const ReceiveMoneyOption = ({ isOpen, onClose, setBankTransfer }) => {
+  const navigate = useNavigate();
   const [optionType, setOptionType] = useState("");
   return (
     <Overlay isOpen={isOpen} onClose={onClose}>
@@ -126,6 +125,14 @@ const ReceiveMoneyOption = ({isOpen, onClose}) => {
             <button
               className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
               disabled={!optionType}
+              onClick={() => {
+                if (optionType === "card") {
+                  navigate("/payment-card");
+                } else {
+                  setBankTransfer(true);
+                  onClose();
+                }
+              }}
             >
               {" "}
               Continue

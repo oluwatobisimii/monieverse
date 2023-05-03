@@ -1,9 +1,22 @@
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, {useState} from "react";
 import RecipientsTable from "./RecipientsTable";
+import AddRecipientPop from "./AddRecipientPop";
 
 const SavedRecipientsList = () => {
+  const [addRecipientsPop, setAddRecipientsPop] = useState(false);
+  const toggleRecipientsPop = () => {
+    setAddRecipientsPop(!addRecipientsPop);
+  };
   return (
+    <>
+     {/* Overlays */}
+     {addRecipientsPop && (
+        <AddRecipientPop
+          isOpen={addRecipientsPop}
+          onClose={toggleRecipientsPop}
+        />
+      )}
     <section className="bg-gray-50">
       <div className="container mx-auto px-4 py-6 lg:py-10">
         <div className="flex justify-between items-center">
@@ -29,7 +42,11 @@ const SavedRecipientsList = () => {
                 className="focus:outline-none placeholder:text-md placeholder:text-gray-400 flex-1"
               />
             </div>
-            <button className="flex center px-5 py-3 bg-gray-50 hover:bg-gray-100 gap-2 rounded-lg">
+            <button className="flex center px-5 py-3 bg-gray-50 hover:bg-gray-100 gap-2 rounded-lg"
+            onClick={()=>{
+              setAddRecipientsPop(true)
+            }}
+            >
               <p className="text-md font-medium text-gray-600">
                 Add New Recipient
               </p>
@@ -44,6 +61,7 @@ const SavedRecipientsList = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

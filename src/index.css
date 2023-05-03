@@ -47,7 +47,8 @@ input[type="number"] {
 }
 
 .recipientCard {
-  box-shadow: 0px 3px 18px -4px rgba(16, 24, 40, 0.1), 0px 3px 10px -2px rgba(16, 24, 40, 0.04);
+  box-shadow: 0px 3px 18px -4px rgba(16, 24, 40, 0.1),
+    0px 3px 10px -2px rgba(16, 24, 40, 0.04);
 }
 
 .avatarShadow {
@@ -67,8 +68,12 @@ select {
   appearance: none;
 }
 
-.loaderBg{
-  background-image: url('./assets/icons/loaderBg.svg')
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: url("./assets/icons/CalendarBlank.svg");
+}
+
+.loaderBg {
+  background-image: url("./assets/icons/loaderBg.svg");
 }
 
 @tailwind base;

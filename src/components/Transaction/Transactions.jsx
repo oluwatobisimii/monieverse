@@ -1,6 +1,6 @@
 import React from "react";
 import TransactionTable from "./TransactionTable";
-
+import { Link } from "react-router-dom";
 
 const Transactions = () => {
   return (
@@ -11,7 +11,12 @@ const Transactions = () => {
             <p className="font-clashGrotesk text-[20px] lg:text-d-xs font-medium">
               Transactions
             </p>
-            <p className="text-sm font-medium text-primary-500">See all</p>
+            <Link
+              to="/transactions"
+              className="text-sm font-medium text-primary-500"
+            >
+              See all
+            </Link>
           </div>
           <div className="h-6 lg:h-10" />
           <TransactionTable />

@@ -22,6 +22,8 @@ import UserSettingsScreen from './Pages/UserSettingsScreen';
 import PersonalInformation from './components/UserSettings/PersonalInformation';
 import NotificationSecurity from './components/UserSettings/NotificationSecurity';
 import Limits from './components/UserSettings/Limits';
+import PaymentCard from './Pages/PaymentCard';
+import TransactionsScreen from './Pages/TransactionsScreen';
 
 const router = createBrowserRouter([
   {
@@ -60,12 +62,20 @@ const router = createBrowserRouter([
         element: <AvailableBalance />
       },
       {
+        path: "/transactions",
+        element: <TransactionsScreen />
+      },
+      {
         path: "/kyc",
         element: <KYCScreen />
       },
       {
         path: "/recipients",
         element: <RecipientsScreen />
+      },
+      {
+        path: "/payment-card",
+        element: <PaymentCard />
       },
       {
         path: "/settings",

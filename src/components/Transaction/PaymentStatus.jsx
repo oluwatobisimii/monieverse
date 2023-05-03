@@ -1,6 +1,7 @@
 import React from 'react'
 
 const PaymentStatus = ({ status }) => {
+  
     return (
       <>
         {status === "processing" && (

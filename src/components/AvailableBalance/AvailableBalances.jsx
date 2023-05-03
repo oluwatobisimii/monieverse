@@ -18,6 +18,8 @@ import convertIcon from "../../assets/icons/ArrowsClockwiseConvert.svg";
 import CurrencyFormat from "../CurrencyFormat";
 import Transactions from "../Transaction/Transactions";
 import ReceiveMoneyOption from "../ReceiveMoney/ReceiveMoneyOption";
+import BankTransferPopup from "../ReceiveMoney/BankTransferPopup";
+import { useNavigate } from "react-router-dom";
 
 const CurrencyOption = ({
   currency,
@@ -61,25 +63,43 @@ const AvailableBalances = () => {
   const [balance, setBalance] = useState("");
   const [balanceOptions, setBalanceOptions] = useState("");
   const [receiveMoneyOption, setReceiveMoneyOption] = useState(false);
+  const [bankTransfer, setBankTransfer] = useState(false);
   const [switchCurrency, setSwitchCurrency] = useState(false);
 
-  const toggleOverlay = () => {
+  const toggleReceiveOptionOverlay = () => {
     setReceiveMoneyOption(!receiveMoneyOption);
   };
+  const toggleBankTransferOverlay = () => {
+    setBankTransfer(!bankTransfer);
+  };
 
+  const navigate = useNavigate();
   return (
     <>
       {/* Overlays */}
       {receiveMoneyOption && (
         <ReceiveMoneyOption
           isOpen={receiveMoneyOption}
-          onClose={toggleOverlay}
+          onClose={toggleReceiveOptionOverlay}
+          setBankTransfer={setBankTransfer}
+        />
+      )}
+
+      {bankTransfer && (
+        <BankTransferPopup
+          isOpen={bankTransfer}
+          onClose={toggleBankTransferOverlay}
         />
       )}
 
       <section className="bg-gray-50 font-inter">
         <div className="container mx-auto px-4 py-6 lg:py-10">
-          <div className="flex items-center gap-4">
+          <div
+            className="flex items-center gap-4"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
             <ArrowLeftIcon className="h-4 lg:h-6 text-gray-600" />
             <p className="text-md  lg:text-d-xs font-medium lg:font-clashGrotesk">
               Available Balance
@@ -177,7 +197,7 @@ const AvailableBalances = () => {
                 )}
                 {/* Select Currency Desktop */}
                 <div className="bg-gray-50 p-[2px] rounded-lg md:flex gap-2 hidden">
-                <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 bg-gray-0">
+                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 bg-gray-0">
                     <div className="h-5 w-5 rounded-full">
                       <img src={Nigeria} alt="" />
                     </div>
