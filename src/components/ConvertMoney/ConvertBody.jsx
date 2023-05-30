@@ -21,6 +21,7 @@ import StepperDivider from "../UtilityComponents/StepperDivider";
 import CurrencyInput from "../Inputs/CurrencyInput";
 import { AllCurrencies } from "../data/AllCurrencies";
 import { CurrencyList } from "../Rates/Rate";
+import SwapFromCurrencies from "../Inputs/SwapFromCurrencies";
 
 const ConvertBody = () => {
   // const initialvalues = { amount: "", email: "", password: "" };
@@ -31,16 +32,11 @@ const ConvertBody = () => {
 
   const conversionRate = 0.0045;
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormValues({ ...formValues, [name]: value });
-  //   console.log(formValues);
-  // };
-
   const [step, setStep] = useState(0);
   let loaderWidth = step === 0 ? "w-1/2" : "w-full";
   const [from, setFrom] = useState(6);
   const [fromDropDown, setFromDropDown] = useState(false);
+  const [fromCurrency, setFromCurrency] = useState({});
 
   return (
     <>
@@ -125,16 +121,10 @@ const ConvertBody = () => {
                         <div className="h-2" />
                         <CurrencyInput num={num} setNum={setNum} />
                       </div>
-                      <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
-                        <img
-                          src={Nigeria}
-                          alt=""
-                          className="border border-gray-100 rounded-full"
-                        />
-                        <p className="text-md font-medium text-gray-500 ">
-                          NGN
-                        </p>
-                      </div>
+                      <SwapFromCurrencies
+                        fromCurrency={fromCurrency}
+                        setFromCurrency={setFromCurrency}
+                      />
                     </div>
                     <div className="p-3">
                       <p className="text-center text-sm text-gray-400">

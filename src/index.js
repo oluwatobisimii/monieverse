@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
+import store from './app/store';
 
 
 
@@ -25,6 +26,8 @@ import Limits from './components/UserSettings/Limits';
 import PaymentCard from './Pages/PaymentCard';
 import TransactionsScreen from './Pages/TransactionsScreen';
 import ConvertScreen from './Pages/ConvertScreen';
+import { Provider } from 'react-redux';
+import SuccessfulAction from './components/Complete/SuccessfulAction';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: '/verify-account',
     element: <VerifyAccount />
+  },
+  {
+    path: '/success-page',
+    element: <SuccessfulAction />
   },
   {
     path: "/",
@@ -113,8 +120,10 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    {/* <App /> */}
+    <Provider store={store}>
+      <RouterProvider router={router} />
+      {/* <App /> */}
+    </Provider>
   </React.StrictMode>
 );
 

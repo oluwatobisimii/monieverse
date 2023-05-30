@@ -50,9 +50,12 @@ const CustomInput = ({
           invalid={invalid}
           required={required}
           readOnly={readOnly}
-          className={`border border-gray-100  px-4 py-3 rounded-lg focus:outline-none focus:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600 focus:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter ${inputWidth} invalid:border-error-400 invalid:animate-pulse`}
+          className={`border   px-4 py-3 rounded-lg focus:outline-none focus:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:text-gray-400 disabled:bg-gray-25 text-gray-600 focus:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter ${inputWidth} ${
+            errors && errors[name] ? "border-error-400" : "border-gray-100"
+          }`}
         />
         <div className="h-1" />
+
         {errors && (
           <p className="text-xs font-medium text-error-400">{errors[name]}</p>
         )}

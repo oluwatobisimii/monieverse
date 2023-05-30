@@ -14,6 +14,11 @@ export const AllCurrencies = [
         currencyImg: Nigeria,
     },
     {
+        currencyName: 'United States Dollar',
+        currencyCode: 'USD',
+        currencyImg: USA,
+    },
+    {
         currencyName: 'Chinese Yuan',
         currencyCode: 'CNY',
         currencyImg: Chinese,
@@ -37,10 +42,5 @@ export const AllCurrencies = [
         currencyName: 'Japanese Yen',
         currencyCode: 'JPY',
         currencyImg: Japan,
-    },
-    {
-        currencyName: 'United States Dollar',
-        currencyCode: 'USD',
-        currencyImg: USA,
     },
 ]

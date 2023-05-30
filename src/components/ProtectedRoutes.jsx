@@ -3,10 +3,10 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedRoutes = () => {
 
-    let isAuthenticated = JSON.parse(localStorage.getItem('isLogged'))
+    let accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
     return (
-        isAuthenticated === true ? <Outlet /> : <Navigate to='/login' />
+        accessToken ? <Outlet /> : <Navigate to='/login' />
     )
 }
 

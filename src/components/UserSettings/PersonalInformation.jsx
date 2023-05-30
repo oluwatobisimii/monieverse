@@ -7,6 +7,10 @@ import fileCloud from "../../assets/icons/FileCloud.svg";
 import CustomInput from "../Inputs/CustomInput";
 
 const PersonalInformation = () => {
+
+  const userDetails = JSON.parse(localStorage.getItem('user'));
+
+
   return (
     <>
       <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-10 p-4">
@@ -29,6 +33,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"Emilia"}
               disabled={true}
+              value={userDetails?.first_name}
             />
           </div>
           <div className="flex-1">
@@ -44,6 +49,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"Soroptuchi"}
               disabled={true}
+              value={userDetails?.last_name}
             />
           </div>
         </div>
@@ -55,6 +61,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"emilia_sorop@konotal.co"}
               disabled={true}
+              value={userDetails?.email}
             />
           </div>
           <div className="flex-1">
@@ -63,6 +70,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"8183 343 3433"}
               disabled={true}
+              value={userDetails?.phone}
             />
           </div>
         </div>
@@ -74,6 +82,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"emilia_sorop@konotal.co"}
               disabled={true}
+              value={userDetails?.business_name}
             />
           </div>
           <div className="flex-1"></div>
@@ -83,7 +92,7 @@ const PersonalInformation = () => {
       <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-6 p-4">
         <div className="flex justify-between items-center">
           <p className="text-d-xs font-clashGrotesk font-medium">
-            Business Information
+          Address Information
           </p>
           <div className="flex gap-2 px-3 py-2 rounded-lg bg-gray-25">
             <img src={fileCloud} alt="" />
@@ -102,6 +111,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"Nigeria"}
               disabled={true}
+              value={userDetails?.country_code}
             />
           </div>
           <div className="flex-1">
@@ -110,6 +120,7 @@ const PersonalInformation = () => {
               labelIcon={<img src={lock} alt="" />}
               placeholder={"Lagos State"}
               disabled={true}
+              value={userDetails?.state}
             />
           </div>
         </div>
@@ -123,6 +134,7 @@ const PersonalInformation = () => {
                 "234, Boulevard Springs Palm Avenue, Beside Global World Filling Station, Lekki"
               }
               disabled={true}
+              value={userDetails?.address}
             />
           </div>
         </div>

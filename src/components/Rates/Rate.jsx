@@ -5,6 +5,7 @@ import ArrowDownUp from "../../assets/icons/ArrowsDownUp.svg";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { AllCurrencies } from "../data/AllCurrencies";
 
+
 export const CurrencyList = ({
   position = "top-full right-0",
   setSelected,
@@ -65,6 +66,8 @@ const Rate = () => {
     }
     // eslint-disable-next-line
   }, []);
+
+  
 
   return (
     <section className="bg-gray-50 w-full overflow-hidden font-inter pb-28">
