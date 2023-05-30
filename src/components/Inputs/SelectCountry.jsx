@@ -27,7 +27,7 @@ const SelectCountry = ({
 
       <label
         htmlFor={name}
-        className={`border border-gray-100  px-4 py-3 rounded-lg focus-within:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600 focus-within:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter flex w-full justify-between  ${
+        className={`border border-gray-100  px-4 py-3 rounded-lg focus-within:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600 focus-within:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter flex w-full justify-between relative  ${
           errors && errors[name] ? "border-error-400" : "border-gray-100"
         }`}
       >
@@ -39,11 +39,14 @@ const SelectCountry = ({
           onChange={onChange}
           value={value}
           required={required}
-          className="focus:outline-none w-3/4 bg-gray-0"
+          onClick={() => {
+            console.log("clicked here");
+          }}
+          className="focus:outline-none w-full bg-[transparent] relative z-10"
         >
           {options}
         </select>
-        <ChevronDownIcon className="h-5" />
+        <ChevronDownIcon className="h-5 absolute top-1/2 z-[5] -translate-y-1/2 right-3" />
       </label>
       <div className="h-1" />
 

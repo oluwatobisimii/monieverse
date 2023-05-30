@@ -14,7 +14,8 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../features/register/registerActions";
 import { resetErrors } from "../../features/register/registerSlice";
 import axios from "../../api/axios";
-import SuccessfulAction from "../../components/Complete/SuccessfulAction";
+import OtpTimer from "../../components/UtilityComponents/OtpTimer";
+import { resendOtpCode } from "./ForgotPassword/ForgotPasswordApi";
 
 const VerifyAccount = ({
   step,
@@ -42,12 +43,18 @@ const VerifyAccount = ({
   const [validationSpecialCharacter, setValidationSpecialCharacter] =
     useState(false);
 
+    // eslint-disable-next-line
   const [success, setSuccess] = useState(false);
   const [presentError, setPresentError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [resendOtpVar, setResendOtpVar] = useState(false);
 
   const navigate = useNavigate();
   let loaderWidth = step === 1 ? "w-1/2" : "w-full";
+
+  useEffect(() => {
+    setErrorMsg("");
+  }, [otp]);
 
   useEffect(() => {
     if (
@@ -70,16 +77,17 @@ const VerifyAccount = ({
     business_name,
   ]);
 
+  const [resendOTPerror, setResendOTPerror] = useState("");
+
   const verifyUserByToken = async () => {
-    console.log();
-    await axios
+    console.log("here");
+    // eslint-disable-next-line
+    const newOTp = await axios
       .post("/users/verify-by-token", {
         code: otp,
         user_id: JSON.parse(sessionStorage.getItem("userInfo")).user_id,
       })
       .then((res) => {
-        console.log(res);
-        console.log(res.data.status);
         if (res.data.status) {
           setSuccess(res.data.status);
           navigate("/success-page");
@@ -95,16 +103,17 @@ const VerifyAccount = ({
       })
       .catch((err) => {
         console.log(err);
+        setPresentError(true);
         if (err.response.status === 404) {
+          setPresentError(true);
           setErrorMsg("Invalid Token, check your email and try again");
         }
 
         if (err.response.status === 409) {
           setErrorMsg(err.response.data.error);
         }
-        // setErrorMsg(err.response.data.error);
+        setErrorMsg(err.response.data.error);
         setPresentError(true);
-        navigate("/success-page");
       });
   };
 
@@ -200,16 +209,35 @@ const VerifyAccount = ({
                 <div className="h-12" />
                 <p className="text-center text-gray-400 text-lg">
                   Didn’t receive code?{" "}
-                  <span className="font-medium text-green-400">00:30</span>
+                  {resendOtpVar ? (
+                    <button
+                      className="font-medium text-primary-400"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        resendOtpCode(email, setResendOTPerror);
+                      }}
+                    >
+                      Resend
+                    </button>
+                  ) : (
+                    <OtpTimer
+                      duration={300}
+                      onTimerComplete={() => {
+                        console.log("Timer Complete");
+                        setResendOtpVar(true);
+                      }}
+                    />
+                  )}
                 </p>
 
-                {success && (
-                  <p className="text-[#226523] rounded-lg mt-4 text-sm px-4 py-3 bg-[#c7ffc5]">
-                    {success}
+                {resendOTPerror?.token && (
+                  <p className="text-[#ff4646] rounded-lg mt-4 text-sm px-4 py-3 text-center">
+                    {resendOTPerror.token}
                   </p>
                 )}
+
                 {presentError && (
-                  <p className="text-[#ff4646] rounded-lg mt-4 text-sm px-4 py-3 ">
+                  <p className="text-[#ff4646] rounded-lg mt-4 text-sm px-4 py-3 text-center">
                     {errorMsg}
                   </p>
                 )}
@@ -473,10 +501,6 @@ const VerifyAccount = ({
               <div className="monie-gradient absolute top-0 h-[141px] w-full z-0" />
             </div>
           )}
-
-          {/* Success */}
-          {step === 3 && <SuccessfulAction  />}
-          
 
           {/* Desktop Stepper Counter */}
           <p className="text-xs font-medium text-gray-500 hidden lg:block">

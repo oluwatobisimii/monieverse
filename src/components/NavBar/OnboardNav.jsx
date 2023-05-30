@@ -2,7 +2,7 @@ import React from "react";
 import logoSM from "../../assets/logo/logo-sm.svg";
 import logoLG from "../../assets/logo/logo-lg.svg";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-const OnboardNav = () => {
+const OnboardNav = ({sendDetails}) => {
   return (
     <div className="p-4 flex justify-between font-inter items-center lg:px-16 lg:py-8">
       <img src={logoLG} alt="" className="hidden lg:block" />
@@ -11,7 +11,7 @@ const OnboardNav = () => {
       <div className="lg:flex gap-2 hidden">
         <div>
           <p className="text-md text-gray-500">
-            Send <span className="font-medium">1000 USD</span>
+            {sendDetails && `Send <span className="font-medium">1000 USD</span>`}
           </p>
         </div>
       </div>
