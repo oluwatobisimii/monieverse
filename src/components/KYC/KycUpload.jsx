@@ -31,6 +31,7 @@ const KycUpload = ({ optionType, step, setStep }) => {
       <FileUploader
         selectedFile={selectedFileFront}
         setSelectedFile={setSelectedFileFront}
+        id={'front-file'}
       />
       <div className="h-6" />
       <p className="text-md font-medium text-gray-500">
@@ -40,6 +41,7 @@ const KycUpload = ({ optionType, step, setStep }) => {
       <FileUploader
         selectedFile={selectedFileBack}
         setSelectedFile={setSelectedFileBack}
+        id={'back-file'}
       />
       <div className="h-6"></div>
       {error && (

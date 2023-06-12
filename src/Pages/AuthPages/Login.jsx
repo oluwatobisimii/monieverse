@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import logo from "../../assets/logo/logo-lg.svg";
 import { Link } from "react-router-dom";
 
@@ -10,25 +10,27 @@ import SwitchInput from "../../components/Inputs/SwitchInput";
 import { loginUser } from "../../features/loginActions";
 import PasswordInput from "../../components/Inputs/PasswordInput";
 import Spinner from "../../components/Loaders/Spinner";
+import { WarningOctagon, X } from "phosphor-react";
+import { motion } from "framer-motion";
+import CustomInput from "../../components/Inputs/CustomInput";
+import { resendOTP } from "../../api/resendOTP";
 
 const Login = () => {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
 
-  const userRef = useRef();
-  
+// eslint-disable-next-line
   const [identity, setIdentity] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorObj, setErrorObj] = useState({});
+  const [toasterError, setToasterError] = useState("");
+  const [showToaster, setShowToaster] = useState(false);
   // eslint-disable-next-line
   const [errMsg, setErrMsg] = useState("");
 
   // eslint-disable-next-line
-  
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
 
   useEffect(() => {
     setErrMsg("");
@@ -39,24 +41,43 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line
-    const result = await dispatch(loginUser({ identity, password }))
+    const result = await dispatch(
+      loginUser({
+        identity: email !== "" ? email : "",
+        password,
+      })
+    )
       .then(({ payload }) => {
-        console.log(payload);
         if (payload === "account not active") {
+          const result = resendOTP(identity);
+          console.log(result);
           navigate("/register", {
             state: { stepRoute: 2, emailRoute: identity },
           });
           return;
         }
-        navigate("/");
+
+        if (
+          payload.status === 200 &&
+          payload.data.message === "login successful"
+        ) {
+          console.log("done and navigate");
+          navigate("/");
+          window.location.reload();
+        }
       })
       .catch((err) => {
-        console.log(err.response.data);
-        console.log(err.response.data.errors);
+        console.log(err);
+        // console.log(err.response.data);
+        // console.log(err.response.data.errors);
+        if (err.message === "Network Error") {
+          setErrMsg("Check your Network and try again");
+        }
         if (!err?.response) {
           setErrMsg("No server response try again");
         } else if (err.response?.status === 400) {
           setErrMsg("Missing Username or Password");
+          console.log("error");
         } else if (err.response?.status === 401) {
           setErrMsg("Unauthorized");
         } else {
@@ -65,8 +86,77 @@ const Login = () => {
       });
   };
 
+  useEffect(() => {
+    if (errors?.error === "user not found") {
+      setShowToaster(true);
+      setToasterError("We couldn't find a user with the provided information.");
+      let newErrorObj = { email: "user not found" };
+      setErrorObj({ ...newErrorObj });
+      return;
+    }
+
+    if (errors?.error === "invalid credential") {
+      setShowToaster(true);
+      setToasterError("Invalid credentials entered, please confirm details.");
+      let newErrorObj = {
+        password: "Please double-check your password and try again",
+      };
+      setErrorObj({ ...newErrorObj });
+      return;
+    }
+
+    if (toasterError !== null && toasterError !== "") {
+      setShowToaster(true);
+    }
+
+    setToasterError(errors?.error);
+    // eslint-disable-next-line
+  }, [errors]);
+
   return (
-    <section className="flex h-screen w-full font-inter">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ ease: "easeInOut", duration: "0.25" }}
+      className="flex h-screen w-full font-inter relative"
+    >
+      {showToaster && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className=" absolute md:left-1/2 md:-translate-x-1/2
+    shadow-[0px_4px_6px_-2px_#1018280D,_0px_12px_16px_-4px_#1018281A] p-4 md:w-[546px] bg-gray-0 top-10 rounded-lg overflow-hidden flex justify-between
+    "
+        >
+          <div className="absolute w-20 h-0.5 bg-primary-300 bottom-0 left-0"></div>
+          <div className="flex items-center gap-2">
+            <WarningOctagon
+              size={20}
+              weight="duotone"
+              className="text-error-500"
+            />
+            <p className="text-gray-500 text-xs md:text-md font-medium">
+              {/* {errors === "user not found"
+                ? "We couldn't find a user with the provided information."
+                : errors === "invalid credential"
+                ? "Invalid credentials entered, please confirm details."
+                : errors} */}
+              {toasterError}
+            </p>
+          </div>
+          <div
+            className="p-2 rounded-md border border-gray-200 hover:bg-gray-25"
+            onClick={() => {
+              setShowToaster(false);
+            }}
+          >
+            <X />
+          </div>
+        </motion.div>
+      )}
+
       <div className="flex-1 ">
         <div className="h-10 lg:h-14" />
         <img src={logo} alt="" className="mx-auto" />
@@ -93,15 +183,14 @@ const Login = () => {
             </label>
 
             <div className="h-1" />
-            <input
-              ref={userRef}
+            <CustomInput
               type={"email"}
               name={"email"}
+              errors={errorObj}
               placeholder="Enter your email address"
-              className="border border-gray-100  px-4 py-3 rounded-lg focus:outline-none focus:border-primary-400 placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600
-              focus:shadow-[0px_0px_0px_3px_#DDD7FE] font-inter  w-full"
+              value={email}
               onChange={(e) => {
-                setIdentity(e.target.value);
+                setEmail(e.target.value);
               }}
             />
             <div className="h-1" />
@@ -114,6 +203,7 @@ const Login = () => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            errors={errorObj}
           />
           <div className="h-6" />
           <div className="flex items-center justify-between">
@@ -129,12 +219,11 @@ const Login = () => {
             </span>
           </div>
           <div className="h-6" />
-          {errors && (
-            <p className="text-center text-error-400 text-xs">{errors}</p>
-          )}
+
           <div className="h-16" />
           <button
-            className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl"
+            disabled={email === "" || password === ""}
+            className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
             onClick={handleSubmit}
           >
             {isLoading ? <Spinner /> : "Login"}
@@ -147,10 +236,7 @@ const Login = () => {
             <div className="h-[1px] flex-1 bg-gray-100" />
           </div>
           <div className="h-6" />
-          <button
-            className="w-full flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2"
-            // onClick={handleLogin}
-          >
+          <button className="w-full flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2">
             <img src={google} alt="" />
             <p>Continue with Google</p>
           </button>
@@ -162,7 +248,7 @@ const Login = () => {
         </p>
       </div>
       <div className="bg-gray-50 flex-1 hidden lg:block"></div>
-    </section>
+    </motion.section>
   );
 };
 

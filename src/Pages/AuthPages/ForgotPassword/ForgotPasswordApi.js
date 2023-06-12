@@ -36,19 +36,28 @@ export const verifyToken = async (email, otp, setStep, setErrors) => {
 }
 
 export const resendOtpCode = async (email, setErrors) => {
-    await axios.post('/users/resend-token', {
-        scope: 'verification',
-        email: email
-    }).then(res => {
-        if (res.status === 200) {
-            console.log(res.data)
+    try {
+        const response = await axios.post('/resend-token', {
+            scope: 'verification',
+            email: email
+        })
+
+        if (response.status === 200) {
+            console.log(response.data)
+            return response.data;
         }
-    }).catch(err => {
+    } catch (err) {
+
         let errors = {}
         errors.token = err.response.data.errors
         setErrors(errors)
         console.log(err.response.data)
-    })
+    }
+
+
+
+
+
 }
 
 

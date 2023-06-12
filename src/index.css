@@ -80,6 +80,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: none !important;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input::-ms-clear, input::-ms-reveal {
+  display: none;
+}
+
 .lds-ring {
   display: inline-block;
   position: relative;

@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { AllCurrencies as localCurrency } from "../data/AllCurrencies";
 import { getAllCurrencies } from "../../features/currenciesSlice";
 
 const SwapFromCurrencies = ({
@@ -22,6 +22,7 @@ const SwapFromCurrencies = ({
         }
       );
       setSwappableFromCurrencies(SwapFromCurrencies);
+      setFromCurrency({ ...SwapFromCurrencies[0] });
     } else if (AllCurrencies.status === "idle") {
       dispatch(getAllCurrencies());
     }
@@ -37,7 +38,9 @@ const SwapFromCurrencies = ({
         }}
       >
         <div className="flex items-center gap-2">
-          {/* <img src={AllCurrencies[from].currencyImg} alt="" /> */}
+          <div className="h-8 w-8 rounded-full border border-gray-100 flex center overflow-hidden">
+            <img src={localCurrency[fromCurrency.id - 1]?.currencyImg} alt="" />
+          </div>
           <p className="text-md font-medium text-gray-500">
             {fromCurrency.code}
           </p>
@@ -63,8 +66,13 @@ const SwapFromCurrencies = ({
                     setDropDown(false);
                   }}
                 >
-                  <div className="h-6 w-6 rounded-full border border-gray-100">
-                    {/* <img src={currency.currencyImg} alt="" /> */}
+                  <div className="h-5 w-5 rounded-full border border-gray-100 flex center overflow-hidden">
+                    <img
+                      src={
+                        localCurrency[fromCurrency.id - 1]?.currencyImg || ""
+                      }
+                      alt=""
+                    />
                   </div>
                   <div className="flex gap-1 items-center">
                     <p className="text-sm text-gray-600">{currency.code}</p>

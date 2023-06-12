@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowLeftIcon,
   CheckIcon,
@@ -19,7 +19,9 @@ import CurrencyFormat from "../CurrencyFormat";
 import Transactions from "../Transaction/Transactions";
 import ReceiveMoneyOption from "../ReceiveMoney/ReceiveMoneyOption";
 import BankTransferPopup from "../ReceiveMoney/BankTransferPopup";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AllCurrencies } from "../data/AllCurrencies";
 
 const CurrencyOption = ({
   currency,
@@ -59,12 +61,27 @@ const CurrencyOption = ({
   );
 };
 
+
 const AvailableBalances = () => {
   const [balance, setBalance] = useState("");
   const [balanceOptions, setBalanceOptions] = useState("");
   const [receiveMoneyOption, setReceiveMoneyOption] = useState(false);
   const [bankTransfer, setBankTransfer] = useState(false);
   const [switchCurrency, setSwitchCurrency] = useState(false);
+
+  const fetchWalletStatus = useSelector((state) => state.wallets.status);
+  const Wallets = useSelector((state) => state.wallets.wallets);
+
+  const { currency_id } = useParams();
+  const [currentWallet, setCurrentWallet] = useState({});
+
+  useEffect(() => {
+    if (fetchWalletStatus === "fulfilled" && Wallets.length > 0) {
+      let currentWallet = Wallets[currency_id - 1];
+      setCurrentWallet({ ...currentWallet });
+    }
+    // eslint-disable-next-line
+  }, [fetchWalletStatus]);
 
   const toggleReceiveOptionOverlay = () => {
     setReceiveMoneyOption(!receiveMoneyOption);
@@ -95,12 +112,12 @@ const AvailableBalances = () => {
       <section className="bg-gray-50 font-inter">
         <div className="container mx-auto px-4 py-6 lg:py-10">
           <div
-            className="flex items-center gap-4"
+            className="flex items-center gap-4 cursor-pointer group"
             onClick={() => {
               navigate(-1);
             }}
           >
-            <ArrowLeftIcon className="h-4 lg:h-6 text-gray-600" />
+            <ArrowLeftIcon className="h-4 lg:h-6 text-gray-600 group-hover:text-gray-400 transition-all duration-100" />
             <p className="text-md  lg:text-d-xs font-medium lg:font-clashGrotesk">
               Available Balance
             </p>
@@ -197,30 +214,31 @@ const AvailableBalances = () => {
                 )}
                 {/* Select Currency Desktop */}
                 <div className="bg-gray-50 p-[2px] rounded-lg md:flex gap-2 hidden">
-                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 bg-gray-0">
-                    <div className="h-5 w-5 rounded-full">
-                      <img src={Nigeria} alt="" />
-                    </div>
-                    <p className="text-md font-medium text-gray-600">NGN</p>
-                  </div>
-                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
-                    <div className="h-5 w-5 rounded-full">
-                      <img src={USA} alt="" />
-                    </div>
-                    <p className="text-md font-medium text-gray-600">USD</p>
-                  </div>
-                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
-                    <div className="h-5 w-5 rounded-full">
-                      <img src={UK} alt="" />
-                    </div>
-                    <p className="text-md font-medium text-gray-600">GBP</p>
-                  </div>
-                  <div className="px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0">
-                    <div className="h-5 w-5 rounded-full">
-                      <img src={Euro} alt="" />
-                    </div>
-                    <p className="text-md font-medium text-gray-600">EUR</p>
-                  </div>
+                  {Wallets.map((wallet, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        to={`/available-balance/${wallet.currency_id}`}
+                        className={`px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 ${
+                          currentWallet.currency_id === wallet.currency_id
+                            ? "bg-gray-0"
+                            : ""
+                        }`}
+                      >
+                        <div className="h-5 w-5 rounded-full">
+                          <img
+                            src={
+                              AllCurrencies[wallet.currency_id - 1].currencyImg
+                            }
+                            alt=""
+                          />
+                        </div>
+                        <p className="text-md font-medium text-gray-600">
+                          {AllCurrencies[wallet.currency_id - 1].currencyCode}
+                        </p>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
               {/* Add Balance */}
@@ -304,7 +322,10 @@ const AvailableBalances = () => {
               <div className="h-2" />
               <div className="flex flex-col lg:flex-row lg:justify-between">
                 <div className="flex justify-center lg:justify-start">
-                  <CurrencyFormat currency="USA" balance="150220.79" />
+                  <CurrencyFormat
+                    currency={currentWallet.currency}
+                    balance={currentWallet.balance}
+                  />
                 </div>
                 <div className="h-12 lg:hidden" />
                 <div className="flex flex-col lg:flex-row gap-y-3 gap-3 items-center">
@@ -326,7 +347,10 @@ const AvailableBalances = () => {
                         Receive
                       </p>
                     </button>
-                    <Link to='/convert' className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1">
+                    <Link
+                      to="/convert"
+                      className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1"
+                    >
                       <img src={convertIcon} alt="" />
                       <p className="text-md font-medium text-gray-600 font">
                         Convert

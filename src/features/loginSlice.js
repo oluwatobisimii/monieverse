@@ -4,7 +4,7 @@ import { loginUser } from './loginActions';
 const initialState = {
     user: null,
     isLoading: false,
-    errors: null,
+    errors: {},
     success: false
 };
 
@@ -19,20 +19,23 @@ const loginSlice = createSlice({
             state.isLoading = true;
             state.error = null;
         },
-        [loginUser.fulfilled]: (state, { payload }) => {
 
+        [loginUser.fulfilled]: (state, { payload }) => {
             state.user = payload;
             state.success = true
             state.isLoading = false;
             state.error = null;
             localStorage.setItem("accessToken", JSON.stringify(payload.data.data.accessToken))
             localStorage.setItem("refreshToken", JSON.stringify(payload.data.data.refreshToken))
-
         },
 
         [loginUser.rejected]: (state, { payload }) => {
+            console.log(payload)
             state.isLoading = false;
-            state.errors = payload;
+            state.errors.error = payload;
+            state.errors.date = Date.now()
+
+
         }
     }
 })

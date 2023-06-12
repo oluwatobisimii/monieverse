@@ -6,6 +6,7 @@ const initialState = {
     userInfo: {}, // for user object
     userToken: null, // for storing the JWT
     errors: null,
+    errorMessage:null,
     userInput: {},
     success: false, // for monitoring the registration process.
 
@@ -47,8 +48,9 @@ const registerSlice = createSlice({
             sessionStorage.setItem("userInfo", JSON.stringify(payload.data.data))
         },
         [registerUser.rejected]: (state, { payload }) => {
-            console.log(payload.errors)
+            console.log(payload)
             state.loading = false
+            state.errorMessage = payload.message
             state.errors = payload.errors
         },
 

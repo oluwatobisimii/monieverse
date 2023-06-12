@@ -21,7 +21,7 @@ console.log(userInput)
             return response
 
         } catch (error) {
-            // console.log(error.response.data)
+            
             // return custom error message from backend if present
             if (error?.response && error?.response.data.message) {
                 return rejectWithValue(error?.response.data)

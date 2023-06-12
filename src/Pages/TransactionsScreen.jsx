@@ -149,7 +149,7 @@ const TransactionsScreen = () => {
                     <ChevronDownIcon className="h-5 text-gray-600" />
                   </button>
                   {timeDrop && (
-                    <div className="absolute right-0 top-full px-4 py-4 bg-gray-0 space-y-2 w-[300px] cardShadow rounded-2xl">
+                    <div className="absolute right-0 top-full px-4 py-4 bg-gray-0 space-y-2 w-[300px] cardShadow rounded-2xl z-20">
                       <p className="text-xs text-gray-400 pl-2">
                         Transaction Time
                       </p>

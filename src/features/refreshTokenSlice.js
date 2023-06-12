@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../api/axios';
+import { logoutUser } from './logoutSlice';
 
 
 // Define the initial state
@@ -13,29 +14,29 @@ const initialState = {
 // Create the refresh token async thunk
 export const refreshAccessToken = createAsyncThunk(
   'refreshToken/refreshAccessToken',
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { dispatch, getState, rejectWithValue }) => {
 
     const oldRefreshToken = JSON.parse(localStorage.getItem('refreshToken'))
 
     try {
-      const response = await axios.post('/users/refresh-token', null, {
+      const response = await axios.post('/users/refresh-token', {}, {
         headers: {
           'Content-Type': 'application/json',
           'AUTHORIZATION': `Bearer ${oldRefreshToken.token}`,
         },
       });
-      console.log(response.data)
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
 
       // Save the new tokens in local storage
-      localStorage.setItem('accessToken', JSON.stringify(newAccessToken));
-      localStorage.setItem('refreshToken', JSON.stringify(newRefreshToken));
-
-      return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+      localStorage.setItem('accessToken', JSON.stringify(response.data.data.accessToken));
+      localStorage.setItem('refreshToken', JSON.stringify(response.data.data.refreshToken));
+      return response.data.data
     } catch (error) {
-      // Log out the user on error
-      // You can dispatch an action to handle the logout process
       console.error('Error refreshing access token:', error);
+      console.log(error.response)
+      if (error.response.status === 401) {
+        console.log('refreshAccess token has expired')
+        dispatch(logoutUser())
+      }
       return rejectWithValue(error.response.data);
     }
   }
@@ -61,8 +62,9 @@ const refreshTokenSlice = createSlice({
       .addCase(refreshAccessToken.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        console.log(action.payload)
+
         // Log out the user on error
+
         // You can dispatch an action to handle the logout process
       });
   },

@@ -1,6 +1,11 @@
 import React from "react";
 
-const CurrencyFormat = ({ currency, balance = 0, mainStyle="text-d-md lg:text-d-lg", unitStyle="text-d-xs lg:text-d-sm" }) => {
+const CurrencyFormat = ({
+  currency,
+  balance = 0,
+  mainStyle = "text-d-md lg:text-d-lg",
+  unitStyle = "text-d-xs lg:text-d-sm",
+}) => {
   //   Currency Formatting
   let moneyInput = Number(balance) * 100;
   let wholeNumber = Math.floor(moneyInput / 100);
@@ -10,32 +15,32 @@ const CurrencyFormat = ({ currency, balance = 0, mainStyle="text-d-md lg:text-d-
   let currencysymbol;
 
   switch (currency) {
-    case "Nigeria":
+    case "Nigeria Naira":
       currencysymbol = "₦";
-      
+
       break;
     case "Europe":
-      currencysymbol = "€"
+      currencysymbol = "€";
       break;
     case "India":
       currencysymbol = "₹";
-      
+
       break;
     case "Japan":
       currencysymbol = "¥";
-      
+
       break;
     case "China":
       currencysymbol = "¥";
-      
+
       break;
     case "UK":
       currencysymbol = "£";
-      
+
       break;
-    case "USA":
+    case "U.S. Dollar":
       currencysymbol = "$";
-      
+
       break;
     default:
     // code block
@@ -49,7 +54,9 @@ const CurrencyFormat = ({ currency, balance = 0, mainStyle="text-d-md lg:text-d-
           {currencysymbol}
           <span>{main}</span>
         </p>
-        <p className={`${unitStyle} font-medium uppercase text-gray-400 font-clashGrotesk"`}>
+        <p
+          className={`${unitStyle} font-medium uppercase text-gray-400 font-clashGrotesk"`}
+        >
           .
           {kobo.toLocaleString("en-US", {
             minimumIntegerDigits: 2,

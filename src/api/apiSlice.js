@@ -1,17 +1,17 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials, logOut } from '../features/auth/authSlice'
 
 const baseQuery = fetchBaseQuery(
     {
-        baseURL:'https://dev.monieverse.com/api/v1/',
-        credentials:'include',
-    prepareHeaders:(headers, {getState})=>{
-        const token = getState().auth.token
-        if(token){
-            headers.set('Authorization', `Bearer ${token}`)
-        }
-        return headers
-    },
+        baseURL: 'https://dev.monieverse.com/api/v1/',
+        // credentials:'include',
+        prepareHeaders: (headers, { getState }) => {
+            const token = getState().auth.token
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`)
+            }
+            return headers
+        },
     }
 )
 
@@ -19,18 +19,18 @@ const baseQuery = fetchBaseQuery(
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
 
-    if (result?.error.originalStatus === 403){
+    if (result?.error.originalStatus === 403) {
         console.log('sending refresh token')
         // send refresh token to get new access token
-        const refreshResult = await baseQuery('/refresh', api, extraOptions) 
+        const refreshResult = await baseQuery('/refresh', api, extraOptions)
         console.log(refreshResult)
-        if(refreshResult?.data){
+        if (refreshResult?.data) {
             const user = api.getState().auth.user;
             // store new token
-            api.dispatch(setCredentials({...refreshResult.data, user}))
+            api.dispatch(setCredentials({ ...refreshResult.data, user }))
             // retry originial query with new access token
             result = await baseQuery(args, api, extraOptions)
-        } else{
+        } else {
             api.dispatch(logOut())
         }
     }
@@ -39,6 +39,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
-    endpoints: builder =>({})
+    endpoints: builder => ({})
 
 })

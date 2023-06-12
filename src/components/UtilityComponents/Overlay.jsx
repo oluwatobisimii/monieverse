@@ -1,15 +1,29 @@
-import React from 'react'
+import React from "react";
+import { motion } from "framer-motion";
+const Overlay = ({ isOpen, onClose, children }) => {
+  React.useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "scroll");
+  }, [isOpen]);
 
-const Overlay = ({isOpen, onClose,  children}) => {
   return (
     <>
-    {isOpen && (
-        <div className="appOverlay h-screen w-screen fixed top-0 left-0 p-4 flex center z-20">
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.2,
+          }}
+          className="appOverlay h-screen w-screen fixed top-0 left-0 p-4 flex center z-[999]"
+        >
           {children}
-        </div>
+        </motion.div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Overlay
+export default Overlay;

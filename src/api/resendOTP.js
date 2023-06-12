@@ -1,7 +1,7 @@
 import axios from "./axios"
 
-export const resendOTP = async (email, ) => {
-    await axios.post('/users/resend-token', {
+export const resendOTP = async (email,) => {
+    await axios.post('/resend-token', {
         scope: 'verification',
         email: email
     }).then(res => {

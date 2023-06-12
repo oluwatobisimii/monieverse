@@ -5,21 +5,28 @@ import loginReducer from "../features/loginSlice"
 import authReducer from "../features/auth/authSlice"
 import { apiSlice } from "../api/apiSlice";
 import refreshTokenReducer from "../features/refreshTokenSlice";
+import walletReducer from "../features/walletSlice";
+import kycStatusReducer from "../features/kycStatusSlice";
+import logoutReducer from "../features/logoutSlice";
 import allCurrenciesReducer from "../features/currenciesSlice";
+
 
 
 const store = configureStore({
     reducer: {
         register: registerReducer,
         login: loginReducer,
+        logout: logoutReducer,
         userProfile: userProfileReducer,
         refreshToken: refreshTokenReducer,
         allCurrencies: allCurrenciesReducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
-        auth: authReducer
+        auth: authReducer,
+        wallets: walletReducer,
+        getKyc: kycStatusReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
-    devTools:true
+    devTools: true
 })
 
 

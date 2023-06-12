@@ -3,7 +3,7 @@ import fileUploaded from "../../assets/icons/FileUploaded.svg";
 import paperClip from "../../assets/icons/Paperclip.svg";
 import deleteFile from "../../assets/icons/Trash-red.svg";
 
-const FileUploader = ({ selectedFile, setSelectedFile }) => {
+const FileUploader = ({ selectedFile, setSelectedFile, id }) => {
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
@@ -73,10 +73,11 @@ const FileUploader = ({ selectedFile, setSelectedFile }) => {
           </button>
         </div>
       ) : (
-        <label htmlFor="file-input" className="w-full p-4 md:p-8 ">
+        <label htmlFor={id} className="w-full p-4 md:p-8 ">
           <input
             type="file"
-            id="file-input"
+            accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
+            id={id}
             onChange={handleFileInputChange}
             hidden
           />

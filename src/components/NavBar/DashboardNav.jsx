@@ -4,6 +4,7 @@ import logoLG from "../../assets/logo/logo-lg.svg";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
+
 const DashboardNav = () => {
   const { pathname } = useLocation();
   const location = pathname.split("/");
@@ -11,7 +12,7 @@ const DashboardNav = () => {
   const recipients = location[1] === "recipients" ? true : false;
 
   return (
-    <div className="p-4 flex justify-between font-inter lg:px-16 items-center lg:py-8">
+    <div className="p-4 flex justify-between font-inter lg:px-16 items-center lg:py-8 border-b border-gray-100 sticky top-0 z-50 bg-gray-0">
       <Link to="/">
         <img src={logoLG} alt="" className="hidden lg:block" />
         <img src={logoSM} alt="" className="lg:hidden block" />
@@ -56,7 +57,7 @@ const DashboardNav = () => {
           Move Money
         </Link>
         <div className="flex gap-4 items-center">
-          <div className="p-2 bg-gray-50 rounded-full cursor-pointer">
+          <div className="p-2 bg-gray-50 hover:bg-gray-100 rounded-full cursor-pointer">
             <BellIcon className="h-6 w-6 text-primary-500" />
           </div>
           <div className="w-[1px] h-6 bg-gray-100" />

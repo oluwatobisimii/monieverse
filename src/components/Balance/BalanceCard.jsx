@@ -5,72 +5,103 @@ import China from "../../assets/countries/Country = China.svg";
 import Japan from "../../assets/countries/Country = Japan.svg";
 import UK from "../../assets/countries/Country = UK.svg";
 import USA from "../../assets/countries/Country = USA.svg";
+import { motion } from "framer-motion";
 
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
-const BalanceCard = ({ currency, balance = 0 }) => {
+const BalanceCard = ({
+  currency,
+  balance = 0,
+  framerKey,
+  kycStatus,
+  toggleKycOverlay,
+  currency_id,
+}) => {
   const navigate = useNavigate();
-    //   Currency Formatting
-    let moneyInput = Number(balance) * 100;
-    let wholeNumber = Math.floor(moneyInput / 100);
-    let main = Intl.NumberFormat().format(wholeNumber);
-    let kobo = moneyInput - wholeNumber * 100;
-  
-    let currencyImg;
-    let currencysymbol;
-    let currencyName;
-  
-    switch (currency) {
-      case "Nigeria":
-        currencyImg = Nigeria;
-        currencysymbol = "₦";
-        currencyName = "Nigerian Naira";
-        break;
-      case "Europe":
-        currencyImg = Europe;
-        currencysymbol = "€";
-        currencyName = "Euro";
-        break;
-      case "India":
-        currencyImg = India;
-        currencysymbol = "₹";
-        currencyName = "Indian Rupee";
-        break;
-      case "Japan":
-        currencyImg = Japan;
-        currencysymbol = "¥";
-        currencyName = "Japanese Yen";
-        break;
-      case "China":
-        currencyImg = China;
-        currencysymbol = "¥";
-        currencyName = "Chinese Yuan";
-        break;
-      case "UK":
-        currencyImg = UK;
-        currencysymbol = "£";
-        currencyName = "Great Britain Pounds";
-        break;
-      case "USA":
-        currencyImg = USA;
-        currencysymbol = "$";
-        currencyName = "United States Dollar";
-        break;
-      default:
-      // code block
-    }
-  
-    return (
-      <div className="rounded-3xl w-[300px] bg-gray-25 p-6 hover:bg-gray-50 cursor-pointer" onClick={()=>{
-        navigate('/available-balance',{state:{currencyName,currencysymbol}});
-          }} >
+  //   Currency Formatting
+  let moneyInput = Number(balance) * 100;
+  let wholeNumber = Math.floor(moneyInput / 100);
+  let main = Intl.NumberFormat().format(wholeNumber);
+  let kobo = moneyInput - wholeNumber * 100;
+
+  let currencyImg;
+  let currencysymbol;
+  let currencyName;
+
+  switch (currency) {
+    case "Nigeria Naira":
+      currencyImg = Nigeria;
+      currencysymbol = "₦";
+      currencyName = "Nigerian Naira";
+      break;
+    case "Europe":
+      currencyImg = Europe;
+      currencysymbol = "€";
+      currencyName = "Euro";
+      break;
+    case "India":
+      currencyImg = India;
+      currencysymbol = "₹";
+      currencyName = "Indian Rupee";
+      break;
+    case "Japan":
+      currencyImg = Japan;
+      currencysymbol = "¥";
+      currencyName = "Japanese Yen";
+      break;
+    case "China":
+      currencyImg = China;
+      currencysymbol = "¥";
+      currencyName = "Chinese Yuan";
+      break;
+    case "UK":
+      currencyImg = UK;
+      currencysymbol = "£";
+      currencyName = "Great Britain Pounds";
+      break;
+    case "U.S. Dollar":
+      currencyImg = USA;
+      currencysymbol = "$";
+      currencyName = "United States Dollar";
+      break;
+    default:
+    // code block
+  }
+
+  return (
+    <>
+      <motion.div
+        // initial={{ opacity: 0, y: -10 }}
+        // animate={{ opacity: 1, y: 0 }}
+        // // transition={{
+        // //   duration: 0.25,
+        // // }}
+        key={framerKey}
+        whileHover={{
+          backgroundColor: "#F5F6F8",
+          cursor: "pointer",
+          transition: { duration: 0.1 },
+        }}
+        className="rounded-3xl w-[300px] bg-gray-25 p-6 "
+        onClick={() => {
+          if (kycStatus) {
+            navigate(`/available-balance/${currency_id}`, {
+              state: { currencyName, currencysymbol },
+            });
+          }
+
+          if (!kycStatus) {
+            toggleKycOverlay()
+          }
+        }}
+      >
         <div className="flex items-center gap-2">
-          <img src={currencyImg} alt="" className="h-8"/>
+          <img src={currencyImg} alt="" className="h-8" />
           <p className="text-md font-medium text-gray-500">{currencyName}</p>
         </div>
         <div className="h-[30px]" />
-  
+
         {/* Number(wholeNumber[1])  */}
         <div>
           <p className="text-caption font-semibold uppercase text-gray-400">
@@ -93,8 +124,9 @@ const BalanceCard = ({ currency, balance = 0 }) => {
             </p>
           </div>
         </div>
-      </div>
-    );
-  };
+      </motion.div>
+    </>
+  );
+};
 
-export default BalanceCard
+export default BalanceCard;
