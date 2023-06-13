@@ -3,13 +3,13 @@ import Overlay from "../UtilityComponents/Overlay";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { Check, IdentificationBadge, Info } from "phosphor-react";
+// import { baseApiCall } from "../../api/MakeApiCallswithHeader";
 
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
 const KycRequired = ({ isOpen, onClose }) => {
   const [kycLevel, setKycLevel] = useState("");
-  
 
   const kycData = useSelector((state) => state.getKyc.kyc);
   const getKycReduxStatus = useSelector((state) => state.getKyc.status);
@@ -38,6 +38,7 @@ const KycRequired = ({ isOpen, onClose }) => {
       }
     }
   };
+
 
   useEffect(() => {
     getKycStatusRedux();

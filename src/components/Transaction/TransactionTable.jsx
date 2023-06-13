@@ -1,6 +1,8 @@
 import React from "react";
 // eslint-disable-next-line
 import { format } from "date-fns";
+
+// eslint-disable-next-line
 import Account from "./Account";
 // eslint-disable-next-line
 import PaymentStatus from "./PaymentStatus";
@@ -8,7 +10,7 @@ import PaymentStatus from "./PaymentStatus";
 import PaymentMethod from "./PaymentMethod";
 // eslint-disable-next-line
 import { transactionsData } from "../data/TransactionData";
-import emptyState from '../../assets/icons/transactionEmpty.svg'
+import emptyState from "../../assets/icons/transactionEmpty.svg";
 
 const TableHeader = () => {
   return (
@@ -42,22 +44,24 @@ const TableHeader = () => {
   );
 };
 
-
-const EmptyState =()=>{
-  return(
+const EmptyState = () => {
+  return (
     <div className="flex h-[350px] p-20 w-full center flex-col gap-4">
       <img src={emptyState} alt="" />
-      <p className="text-d-xxs text-gray-400 font-clashGrotesk"> Your transactions will show here </p>
+      <p className="text-d-xxs text-gray-400 font-clashGrotesk text-center">
+        {" "}
+        Your transactions will show here{" "}
+      </p>
     </div>
-  )
-}
+  );
+};
 
 const TransactionTable = () => {
   return (
     <div className="font-inter">
       <div className="hidden lg:block">
         <TableHeader />
-<EmptyState/>
+        <EmptyState />
 
         {/* {transactionsData.map((data,index)=>{
 
@@ -83,8 +87,9 @@ return ( <div className="hover:bg-gray-25 cursor pointer w-full flex font-inter 
         })} */}
       </div>
       {/* Mobile transaction Table */}
-      <div className="flex flex-col gap-y-4">
-        <div className="lg:hidden">
+      <div className="flex flex-col gap-y-4 lg:hidden">
+        <EmptyState />
+        {/* <div className="lg:hidden">
           <div className="flex justify-between">
             <Account type="personal" initials="SK" name="Sola Adetokin" />
             <p className="text-gray-500  text-sm  text-right">
@@ -103,7 +108,7 @@ return ( <div className="hover:bg-gray-25 cursor pointer w-full flex font-inter 
           </div>
           <div className="h-4" />
           <div className="ml-[52px] w-[calc(100%-52px)] h-[1px] bg-gray-100" />
-        </div>
+        </div> */}
       </div>
     </div>
   );

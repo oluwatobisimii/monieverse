@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+// eslint-disable-next-line
 import { format } from "date-fns";
-
 import { transactionsData } from "../data/TransactionData";
+// eslint-disable-next-line
 import Account from "../Transaction/Account";
+// eslint-disable-next-line
 import PaperPlane from "../../assets/icons/PaperPlaneTiltSend.svg";
 import sendIcon from "../../assets/icons/PaperPlaneTilt.svg";
 import arrowRight from "../../assets/icons/CaretRight.svg";
@@ -12,6 +14,7 @@ import editIcon from "../../assets/icons/PencilSimpleLine.svg";
 import calendar from "../../assets/icons/CalendarCheck.svg";
 import { EnvelopeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import emptyState from "../../assets/icons/transactionEmpty.svg";
 
 const TableHeader = () => {
   return (
@@ -33,8 +36,21 @@ const TableHeader = () => {
   );
 };
 
+const EmptyState = () => {
+  return (
+    <div className="flex h-[350px] p-20 w-full center flex-col gap-4">
+      <img src={emptyState} alt="" />
+      <p className="text-d-xxs text-gray-400 font-clashGrotesk text-center">
+        {" "}
+        Your transactions will show here{" "}
+      </p>
+    </div>
+  );
+};
+
 const RecipientsTable = () => {
   const [userDetailCard, setUserDetailCard] = useState(false);
+  // eslint-disable-next-line
   const [currentUser, setCurrentUser] = useState("");
   const tableWidth = "w-full";
   return (
@@ -44,7 +60,7 @@ const RecipientsTable = () => {
           className={`hidden lg:block duration-1000 transition-all ${tableWidth}`}
         >
           <TableHeader />
-          {transactionsData.map((data, index) => {
+          {/* {transactionsData.map((data, index) => {
             const date = new Date(data.date);
             return (
               <div
@@ -79,7 +95,8 @@ const RecipientsTable = () => {
                 </div>
               </div>
             );
-          })}
+          })} */}
+          <EmptyState />
         </div>
         {userDetailCard && <img src={arrowRight} alt="" className="" />}
 
@@ -100,8 +117,9 @@ const RecipientsTable = () => {
         )}
       </div>
       {/* Mobile transaction Table */}
-      <div className="flex flex-col gap-y-4">
-        <div className="lg:hidden ">
+      <div className="flex flex-col gap-y-4 lg:hidden">
+        <EmptyState />
+        {/* <div className="lg:hidden ">
           <div className="flex justify-between">
             <Account type="personal" initials="SK" name="Sola Adetokin" />
             <p className="text-gray-500  text-sm  text-right">
@@ -120,7 +138,7 @@ const RecipientsTable = () => {
           </div>
           <div className="h-4" />
           <div className="ml-[52px] w-[calc(100%-52px)] h-[1px] bg-gray-100" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
