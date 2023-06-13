@@ -6,7 +6,7 @@ const initialState = {
     userInfo: {}, // for user object
     userToken: null, // for storing the JWT
     errors: null,
-    errorMessage:null,
+    errorMessage: null,
     userInput: {},
     success: false, // for monitoring the registration process.
 
@@ -28,9 +28,12 @@ const registerSlice = createSlice({
             sessionStorage.setItem("userInput", JSON.stringify(state.userInput))
         },
 
-        resetErrors: (state, { payload }) =>{
-            state.errors ={...state.errors}
-            state.errors[payload]=''
+        resetErrors: (state, { payload }) => {
+            state.errors = { ...state.errors }
+            state.errors[payload] = ''
+        },
+        updateError: (state, { payload }) => {
+            state.errors = { ...state.errors, ...payload }
         }
     },
     extraReducers: {
@@ -58,6 +61,6 @@ const registerSlice = createSlice({
 
 })
 
-export const { updateUserInput, resetErrors } = registerSlice.actions
+export const { updateUserInput, resetErrors, updateError } = registerSlice.actions
 
 export default registerSlice.reducer

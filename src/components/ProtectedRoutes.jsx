@@ -1,7 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { refreshAccessToken } from "../features/refreshTokenSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { fetchWallets } from "../features/walletSlice";
+import { getAllCurrencies } from "../features/currenciesSlice";
+import { getKyc } from "../features/kycStatusSlice";
+import { getUserProfile } from "../features/profile/userProfileAction";
 
 const ProtectedRoutes = () => {
   const dispatch = useDispatch();
@@ -24,9 +28,55 @@ const ProtectedRoutes = () => {
     // eslint-disable-next-line
   }, []);
 
+  const userProfileStatus = useSelector((state) => state.userProfile.status);
+  const currenciesStatus = useSelector((state) => state.allCurrencies.status);
+  const getKycStatus = useSelector((state) => state.getKyc.status);
+  const fetchWalletStatus = useSelector((state) => state.wallets.status);
+
+  // Fetch UserProfile
+  useEffect(() => {
+    if (userProfileStatus === "idle") {
+      dispatch(getUserProfile());
+    }
+  }, [userProfileStatus, dispatch]);
+
+  // Fetch AllCurrencies
+  useEffect(() => {
+    if (currenciesStatus === "idle") {
+      dispatch(getAllCurrencies());
+    }
+  }, [currenciesStatus, dispatch]);
+
+  // Get KYC
+  useEffect(() => {
+    if (getKycStatus === "idle") {
+      dispatch(getKyc());
+    }
+  }, [getKycStatus, dispatch]);
+
+  // Fetch Wallets
+  useEffect(() => {
+    if (fetchWalletStatus === "idle") {
+      dispatch(fetchWallets());
+    }
+  }, [dispatch, fetchWalletStatus]);
+
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    if (
+      userProfileStatus === "fulfilled" &&
+      fetchWalletStatus === "fulfilled" &&
+      getKycStatus === "fulfilled" &&
+      currenciesStatus === "fulfilled"
+    ) {
+      setRender(true);
+    }
+  }, [userProfileStatus, currenciesStatus, getKycStatus, fetchWalletStatus]);
+
   let accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-  return accessToken ? <Outlet /> : <Navigate to="/login" />;
+  return accessToken ? render ? <Outlet /> : null : <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;

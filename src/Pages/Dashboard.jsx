@@ -1,68 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DashboardNav from "../components/NavBar/DashboardNav";
 import Balances from "../components/Balance/Balances";
 import Transactions from "../components/Transaction/Transactions";
 import Rate from "../components/Rates/Rate";
 import MobileNav from "../components/NavBar/MobileNav";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserProfile } from "../features/profile/userProfileAction";
-import { getAllCurrencies } from "../features/currenciesSlice";
-import KycStatus from "../components/KYC/KycStatus";
 import { motion } from "framer-motion";
-import { getKyc } from "../features/kycStatusSlice";
-import { fetchWallets } from "../features/walletSlice";
+import KycStatus from "../components/KYC/KycStatus";
+// import { useSelector, useDispatch } from "react-redux";
+// import { getUserProfile } from "../features/profile/userProfileAction";
+// import { getAllCurrencies } from "../features/currenciesSlice";
+// import { getKyc } from "../features/kycStatusSlice";
+// import { fetchWallets } from "../features/walletSlice";
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
-  const userProfileStatus = useSelector((state) => state.userProfile.status);
-  const currenciesStatus = useSelector((state) => state.allCurrencies.status);
-  const getKycStatus = useSelector((state) => state.getKyc.status);
-  const fetchWalletStatus = useSelector((state) => state.wallets.status);
+  // const dispatch = useDispatch();
+  // const userProfileStatus = useSelector((state) => state.userProfile.status);
+  // const currenciesStatus = useSelector((state) => state.allCurrencies.status);
+  // const getKycStatus = useSelector((state) => state.getKyc.status);
+  // const fetchWalletStatus = useSelector((state) => state.wallets.status);
 
-  // Fetch UserProfile
-  useEffect(() => {
-    if (userProfileStatus === "idle") {
-      dispatch(getUserProfile());
-    }
-  }, [userProfileStatus, dispatch]);
+  // // Fetch UserProfile
+  // useEffect(() => {
+  //   if (userProfileStatus === "idle") {
+  //     dispatch(getUserProfile());
+  //   }
+  // }, [userProfileStatus, dispatch]);
 
-  // Fetch AllCurrencies
-  useEffect(() => {
-    if (currenciesStatus === "idle") {
-      dispatch(getAllCurrencies());
-    }
-  }, [currenciesStatus, dispatch]);
+  // // Fetch AllCurrencies
+  // useEffect(() => {
+  //   if (currenciesStatus === "idle") {
+  //     dispatch(getAllCurrencies());
+  //   }
+  // }, [currenciesStatus, dispatch]);
 
-  // Get KYC
-  useEffect(() => {
-    if (getKycStatus === "idle") {
-      dispatch(getKyc());
-    }
-  }, [getKycStatus, dispatch]);
+  // // Get KYC
+  // useEffect(() => {
+  //   if (getKycStatus === "idle") {
+  //     dispatch(getKyc());
+  //   }
+  // }, [getKycStatus, dispatch]);
 
-  // Fetch Wallets
-  useEffect(() => {
-    if (fetchWalletStatus === "idle") {
-      dispatch(fetchWallets());
-    }
-  }, [dispatch, fetchWalletStatus]);
+  // // Fetch Wallets
+  // useEffect(() => {
+  //   if (fetchWalletStatus === "idle") {
+  //     dispatch(fetchWallets());
+  //   }
+  // }, [dispatch, fetchWalletStatus]);
 
-  const [render, setRender] = useState(false);
+  // const [render, setRender] = useState(false);
 
-  useEffect(() => {
-    if (
-      userProfileStatus === "fulfilled" &&
-      fetchWalletStatus === "fulfilled" &&
-      getKycStatus === "fulfilled" &&
-      currenciesStatus === "fulfilled"
-    ) {
-      setRender(true);
-    }
-  }, [userProfileStatus, currenciesStatus, getKycStatus, fetchWalletStatus]);
+  // useEffect(() => {
+  //   if (
+  //     userProfileStatus === "fulfilled" &&
+  //     fetchWalletStatus === "fulfilled" &&
+  //     getKycStatus === "fulfilled" &&
+  //     currenciesStatus === "fulfilled"
+  //   ) {
+  //     setRender(true);
+  //   }
+  // }, [userProfileStatus, currenciesStatus, getKycStatus, fetchWalletStatus]);
 
   return (
     <>
-      {render ? (
+      {
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -75,7 +75,7 @@ const Dashboard = () => {
           <Transactions />
           <Rate />
         </motion.section>
-      ) : null}
+      }
     </>
   );
 };

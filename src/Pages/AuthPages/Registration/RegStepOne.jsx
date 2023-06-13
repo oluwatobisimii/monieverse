@@ -7,10 +7,11 @@ import { registerUser } from "../../../features/register/registerActions";
 import { motion } from "framer-motion";
 import { Briefcase, User } from "phosphor-react";
 import CustomInput from "../../../components/Inputs/CustomInput";
+import { updateError } from "../../../features/register/registerSlice";
 
 export default function RegStepOne({
   setStep,
-  
+
   errors,
   email,
   dispatch,
@@ -27,9 +28,9 @@ export default function RegStepOne({
   const [validationUpperCase, setValidationUpperCase] = useState(false);
   const [validationSpecialCharacter, setValidationSpecialCharacter] =
     useState(false);
-    const [accountType, setAccountType] = useState("");
-    const [fillDetails, setFillDetails] = useState("");
-    const [business_name, setBusinessName] = useState("");
+  const [accountType, setAccountType] = useState("");
+  const [fillDetails, setFillDetails] = useState("");
+  const [business_name, setBusinessName] = useState("");
   useEffect(() => {
     if (
       email === "" ||
@@ -50,6 +51,12 @@ export default function RegStepOne({
     accountType,
     business_name,
   ]);
+
+  const validateEmail = (email) => {
+    // Email validation pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   return (
     <StepperWrapper>
@@ -248,6 +255,9 @@ export default function RegStepOne({
             onChange={(e) => {
               dispatch(resetErrors("email"));
               setEmail(e.target.value);
+              if (!validateEmail(e.target.value)) {
+                dispatch(updateError({ email: "Invalid email" }));
+              }
             }}
             errors={errors}
           />
@@ -266,8 +276,8 @@ export default function RegStepOne({
 
           <div className="h-14" />
           <div className="flex gap-x-6">
-            <button
-              className="w-[196px] flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2 disabled:cursor-not-allowed"
+            <div
+              className="w-[196px] flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border hover:bg-gray-25 transition-all duration-200 border-gray-100 items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
               onClick={() => {
                 setStep(1);
                 setFillDetails(false);
@@ -277,7 +287,7 @@ export default function RegStepOne({
             >
               <ChevronLeftIcon className="h-6 w-6" />
               <p>Go back</p>
-            </button>
+            </div>
             <button
               className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:cursor-wait disabled:bg-primary-300"
               disabled={!button2State}

@@ -7,7 +7,10 @@ import "react-international-phone/style.css";
 // import axios from "../../api/axios";
 import VerifyAccount from "./VerifyAccount";
 import { useDispatch, useSelector } from "react-redux";
-import { resetErrors } from "../../../features/register/registerSlice";
+import {
+  resetErrors,
+  updateError,
+} from "../../../features/register/registerSlice";
 import CustomPhoneInput from "../../../components/Inputs/CustomPhoneInput";
 import { defaultCountries, parseCountry } from "react-international-phone";
 import { motion } from "framer-motion";
@@ -35,7 +38,13 @@ const Register = () => {
   );
   const [step, setStep] = useState(0);
   const [email, setEmail] = useState("");
- 
+
+  const validateNigerianPhoneNumber = (phoneNumber) => {
+    // Nigerian phone number pattern: ^\+?234[789]\d{9}$
+    const nigerianPhoneNumberRegex = /^\+?234[789]\d{9}$/;
+
+    return nigerianPhoneNumberRegex.test(phoneNumber);
+  };
 
   // State from Redux
   const { loading, errors, errorMessage } = useSelector(
@@ -157,6 +166,13 @@ const Register = () => {
                   onChange={(e) => {
                     dispatch(resetErrors("phone"));
                     setPhone(e.target.value.toString());
+                    if (
+                      !validateNigerianPhoneNumber(
+                        `+234${Number(e.target.value)}`
+                      )
+                    ) {
+                      dispatch(updateError({ phone: "Invalid phone number" }));
+                    }
                   }}
                   selectedCountry={selectedCountry}
                   setSelectedCountry={setSelectedCountry}
@@ -192,7 +208,7 @@ const Register = () => {
               </div>
               <div className="h-6" />
               <button
-                disabled={!(first_name && last_name && phone && acceptTerms)}
+                disabled={!(first_name && last_name && phone && acceptTerms && errors?.phone === "")}
                 className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300"
                 onClick={(e) => {
                   e.preventDefault();
