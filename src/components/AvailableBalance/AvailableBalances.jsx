@@ -61,7 +61,6 @@ const CurrencyOption = ({
   );
 };
 
-
 const AvailableBalances = () => {
   const [balance, setBalance] = useState("");
   const [balanceOptions, setBalanceOptions] = useState("");
@@ -71,6 +70,13 @@ const AvailableBalances = () => {
 
   const fetchWalletStatus = useSelector((state) => state.wallets.status);
   const Wallets = useSelector((state) => state.wallets.wallets);
+  const Currencies = useSelector((state) => state.allCurrencies.allCurrencies);
+  const WalletCurrencies = Currencies.filter(
+    (wallet) => wallet.can_have_wallet
+  );
+  const AddWallet = WalletCurrencies.filter((wallet, index) => {
+    return Wallets[index].currency_id !== wallet.id;
+  });
 
   const { currency_id } = useParams();
   const [currentWallet, setCurrentWallet] = useState({});
@@ -86,6 +92,7 @@ const AvailableBalances = () => {
   const toggleReceiveOptionOverlay = () => {
     setReceiveMoneyOption(!receiveMoneyOption);
   };
+  
   const toggleBankTransferOverlay = () => {
     setBankTransfer(!bankTransfer);
   };
@@ -106,6 +113,7 @@ const AvailableBalances = () => {
         <BankTransferPopup
           isOpen={bankTransfer}
           onClose={toggleBankTransferOverlay}
+          currentWallet={currentWallet}
         />
       )}
 
@@ -114,7 +122,7 @@ const AvailableBalances = () => {
           <div
             className="flex items-center gap-4 cursor-pointer group"
             onClick={() => {
-              navigate(-1);
+              navigate("/");
             }}
           >
             <ArrowLeftIcon className="h-4 lg:h-6 text-gray-600 group-hover:text-gray-400 transition-all duration-100" />
@@ -135,16 +143,21 @@ const AvailableBalances = () => {
                 >
                   <div className="flex gap-1">
                     <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-                      <img src={USA} alt="" />
+                      <img
+                        src={AllCurrencies[currency_id - 1].currencyImg}
+                        alt=""
+                      />
                     </div>
-                    <p className="text-gray-600 text-md font-medium">USD</p>
+                    <p className="text-gray-600 text-md font-medium">
+                      {AllCurrencies[currency_id - 1].currencyCode}
+                    </p>
                   </div>
                   <ChevronDownIcon className="text-gray-400 h-5" />
                 </div>
                 {/* Bottom Sheet Switch Currencies */}
                 {switchCurrency && (
-                  <div className="h-screen top-0 left-0 w-screen fixed z-10 appOverlay flex flex-col justify-end pb-20">
-                    <div className="bg-gray-0 rounded-t-3xl ">
+                  <div className="h-screen top-0 left-0 w-screen fixed z-[999] appOverlay flex flex-col justify-end ">
+                    <div className="bg-gray-0 rounded-t-3xl pb-20">
                       <div className="px-4 py-[22px] flex items-center justify-between border-b border-gray-100">
                         <p className="text-sm text-gray-600">
                           Switch Currencies
@@ -158,56 +171,44 @@ const AvailableBalances = () => {
                       </div>
                       <div className="h-4" />
                       <div className="px-4 mb-10 space-y-6">
-                        <div className="rounded-xl border border-gray-100 flex items-center gap-3 px-4 py-3">
-                          <div className="flex gap-1 items-center">
-                            <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-                              <img src={UK} alt="" />
-                            </div>
-                            <p className="text-gray-600 text-md font-medium">
-                              GBP
-                            </p>
-                          </div>
-                          <p className="text-md text-gray-400">
-                            - Great Britain Pounds
-                          </p>
-                        </div>
-                        <div className="rounded-xl border border-gray-100 flex items-center gap-3 px-4 py-3">
-                          <div className="flex gap-1 items-center">
-                            <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-                              <img src={Euro} alt="" />
-                            </div>
-                            <p className="text-gray-600 text-md font-medium">
-                              EUR
-                            </p>
-                          </div>
-                          <p className="text-md text-gray-400">- Euros</p>
-                        </div>
-                        <div className="rounded-xl border border-gray-100 flex items-center gap-3 px-4 py-3">
-                          <div className="flex gap-1 items-center">
-                            <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-                              <img src={Nigeria} alt="" />
-                            </div>
-                            <p className="text-gray-600 text-md font-medium">
-                              NGN
-                            </p>
-                          </div>
-                          <p className="text-md text-gray-400">
-                            - Nigerian Naira
-                          </p>
-                        </div>
-                        <div className="rounded-xl border border-gray-100 flex items-center gap-3 px-4 py-3">
-                          <div className="flex gap-1 items-center">
-                            <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-                              <img src={USA} alt="" />
-                            </div>
-                            <p className="text-gray-600 text-md font-medium">
-                              USD
-                            </p>
-                          </div>
-                          <p className="text-md text-gray-400">
-                            - United States Dollar
-                          </p>
-                        </div>
+                        {Wallets.map((wallet, index) => {
+                          return (
+                            <Link
+                              key={index}
+                              to={`/available-balance/${wallet.currency_id}`}
+                              onClick={() => {
+                                setSwitchCurrency(false);
+                              }}
+                              className="rounded-xl border border-gray-100 flex items-center gap-3 px-4 py-3"
+                            >
+                              <div className="flex gap-1 items-center">
+                                <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
+                                  {currentWallet && (
+                                    <img
+                                      src={
+                                        AllCurrencies[wallet.currency_id - 1]
+                                          .currencyImg
+                                      }
+                                      alt=""
+                                    />
+                                  )}
+                                </div>
+                                <p className="text-gray-600 text-md font-medium">
+                                  {
+                                    AllCurrencies[wallet.currency_id - 1]
+                                      .currencyCode
+                                  }
+                                </p>
+                              </div>
+                              <p className="text-md text-gray-400">
+                                {
+                                  AllCurrencies[wallet.currency_id - 1]
+                                    .currencyName
+                                }
+                              </p>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -242,74 +243,76 @@ const AvailableBalances = () => {
                 </div>
               </div>
               {/* Add Balance */}
-              <div className="relative z-0">
-                <button
-                  className="py-2 px-4 flex gap-2 items-center border border-gray-200 rounded-lg"
-                  onClick={() => {
-                    setBalanceOptions(true);
-                  }}
-                >
-                  <PlusCircleIcon className="h-5 text-gray-600" />
-                  <p className="text-md font-medium text-gray-600">
-                    Add Balance
-                  </p>
-                </button>
-                {/* Add Balance Dropdown */}
-                {balanceOptions && (
-                  <div className="absolute top-full right-0 shadow-lg bg-gray-0 rounded-2xl  w-[348px]">
-                    <div className=" space-y-3 p-3">
-                      <CurrencyOption
-                        currencyImg={UK}
-                        currency={"Great Britain Pounds"}
-                        currencyCode={"GBP"}
-                        selected={balance}
-                        setSelected={setBalance}
-                      />
-                      <CurrencyOption
-                        currencyImg={Euro}
-                        currency={"Euros"}
-                        currencyCode={"EUR"}
-                        selected={balance}
-                        setSelected={setBalance}
-                      />
-                      <CurrencyOption
-                        currencyImg={Nigeria}
-                        currency={"Nigerian Naira"}
-                        currencyCode={"NGN"}
-                        selected={balance}
-                        setSelected={setBalance}
-                      />
-                      <CurrencyOption
-                        currencyImg={USA}
-                        currency={"United States Dollar"}
-                        currencyCode={"USD"}
-                        selected={balance}
-                        setSelected={setBalance}
-                      />
+              {AddWallet.length > 0 ? (
+                <div className="relative z-0">
+                  <button
+                    className="py-2 px-4 flex gap-2 items-center border border-gray-200 rounded-lg"
+                    onClick={() => {
+                      setBalanceOptions(true);
+                    }}
+                  >
+                    <PlusCircleIcon className="h-5 text-gray-600" />
+                    <p className="text-md font-medium text-gray-600">
+                      Add Balance
+                    </p>
+                  </button>
+                  {/* Add Balance Dropdown */}
+                  {balanceOptions && (
+                    <div className="absolute top-full right-0 shadow-lg bg-gray-0 rounded-2xl  w-[348px]">
+                      <div className=" space-y-3 p-3">
+                        <CurrencyOption
+                          currencyImg={UK}
+                          currency={"Great Britain Pounds"}
+                          currencyCode={"GBP"}
+                          selected={balance}
+                          setSelected={setBalance}
+                        />
+                        <CurrencyOption
+                          currencyImg={Euro}
+                          currency={"Euros"}
+                          currencyCode={"EUR"}
+                          selected={balance}
+                          setSelected={setBalance}
+                        />
+                        <CurrencyOption
+                          currencyImg={Nigeria}
+                          currency={"Nigerian Naira"}
+                          currencyCode={"NGN"}
+                          selected={balance}
+                          setSelected={setBalance}
+                        />
+                        <CurrencyOption
+                          currencyImg={USA}
+                          currency={"United States Dollar"}
+                          currencyCode={"USD"}
+                          selected={balance}
+                          setSelected={setBalance}
+                        />
+                      </div>
+                      <div className="border-t border-gray-100 p-3 flex gap-4">
+                        <button
+                          className="rounded-lg py-2 px-5 border border-gray-200 text-gray-600 text-md font-medium flex-1"
+                          onClick={() => {
+                            setBalanceOptions(false);
+                          }}
+                        >
+                          {" "}
+                          Cancel
+                        </button>
+                        <button
+                          className="rounded-lg py-2 px-5 bg-primary-400 text-gray-0 text-md font-medium flex-1"
+                          onClick={() => {
+                            setBalanceOptions(false);
+                          }}
+                        >
+                          {" "}
+                          Continue
+                        </button>
+                      </div>
                     </div>
-                    <div className="border-t border-gray-100 p-3 flex gap-4">
-                      <button
-                        className="rounded-lg py-2 px-5 border border-gray-200 text-gray-600 text-md font-medium flex-1"
-                        onClick={() => {
-                          setBalanceOptions(false);
-                        }}
-                      >
-                        {" "}
-                        Cancel
-                      </button>
-                      <button
-                        className="rounded-lg py-2 px-5 bg-primary-400 text-gray-0 text-md font-medium flex-1"
-                        onClick={() => {
-                          setBalanceOptions(false);
-                        }}
-                      >
-                        {" "}
-                        Continue
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              ) : null}
             </div>
             <div className="h-12 lg:h-16" />
             <div className="mx-auto lg:mx-0">
@@ -329,17 +332,20 @@ const AvailableBalances = () => {
                 </div>
                 <div className="h-12 lg:hidden" />
                 <div className="flex flex-col lg:flex-row gap-y-3 gap-3 items-center">
-                  <button className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 w-full lg:w-auto">
+                  <Link
+                    to="/move-money"
+                    className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 w-full lg:w-auto"
+                  >
                     <img src={sendIcon} alt="" />
                     <p className="text-md font-medium text-gray-600 font">
                       Send
                     </p>
-                  </button>
+                  </Link>
                   <div className="flex gap-3 items-center w-full lg:w-auto">
                     <button
                       className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1"
                       onClick={() => {
-                        setReceiveMoneyOption(true);
+                        toggleBankTransferOverlay();
                       }}
                     >
                       <PlusIcon className="h-5 text-primary-500" />

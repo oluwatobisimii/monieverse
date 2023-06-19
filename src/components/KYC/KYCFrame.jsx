@@ -22,6 +22,10 @@ import {
   IdentificationCard,
 } from "phosphor-react";
 import { useSelector } from "react-redux";
+import {
+  validateAccountNumber,
+  validateBVNNumber,
+} from "../UtilityComponents/Validators";
 
 const OptionsComponent = ({
   accountType,
@@ -129,6 +133,7 @@ const KYCFrame = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   // eslint-disable-next-line
   const [kycLevel, setKycLevel] = useState("");
+  const [errors, setErrors] = useState({ bvn: "", account: "" });
 
   useEffect(() => {
     const selectedCountry = yourhandle.getCountryByShort("NG");
@@ -147,30 +152,27 @@ const KYCFrame = () => {
       console.log(kycDatas);
       console.log(getKycReduxStatus);
       setState(kycDatas.state);
-        setAddress(kycDatas.address);
-        setCity(kycDatas.city);
-        setZipcode(kycDatas.Zipcode);
-        setCountryShortName(kycDatas.country);
-        const selectedCountry = yourhandle.getCountryByShort(kycDatas.country);
-        setSelectedCountry(selectedCountry);
-        setStates(Object.keys(selectedCountry.states));
-        setBvn(kycDatas.bvn);
-        setAccountNumber(kycDatas.account_number);
-        const index = BankNamesCodes.findIndex(
-          (element) => element.name === kycDatas.bank_name
-        );
-        if (index !== -1) {
-          setBank(index);
-        }
+      setAddress(kycDatas.address);
+      setCity(kycDatas.city);
+      setZipcode(kycDatas.Zipcode);
+      setCountryShortName(kycDatas.country);
+      const selectedCountry = yourhandle.getCountryByShort(kycDatas.country);
+      setSelectedCountry(selectedCountry);
+      setStates(Object.keys(selectedCountry.states));
+      setBvn(kycDatas.bvn);
+      setAccountNumber(kycDatas.account_number);
+      const index = BankNamesCodes.findIndex(
+        (element) => element.name === kycDatas.bank_name
+      );
+      if (index !== -1) {
+        setBank(index);
+      }
     }
   };
   useEffect(() => {
     setFetchedKycData();
     // eslint-disable-next-line
   }, [getKycReduxStatus]);
-
-
-  
 
   const [step, setStep] = useState(0);
   let loaderWidth =
@@ -427,11 +429,26 @@ const KYCFrame = () => {
                     <CustomInput
                       label={"BVN"}
                       required={true}
-                      type='number'
+                      name={"bvn"}
+                      type="number"
                       placeholder="Enter your 11 digit bvn"
                       value={bvn}
+                      errors={errors}
                       onChange={(e) => {
+                        let updateErrors = {
+                          ...errors,
+                          bvn: "",
+                        };
+                        setErrors({ ...updateErrors });
                         setBvn(e.target.value.trim());
+                        if (!validateBVNNumber(e.target.value)) {
+                          
+                          updateErrors = {
+                            ...errors,
+                            bvn: "Invalid BVN",
+                          };
+                          setErrors({ ...updateErrors });
+                        }
                       }}
                     />
                   </div>
@@ -444,10 +461,25 @@ const KYCFrame = () => {
                       label={"Account Number"}
                       placeholder="10-digit account number"
                       type={"number"}
+                      name={"account"}
+                      errors={errors}
                       value={account_number}
                       required={true}
                       onChange={(e) => {
+                        let updateErrors = {
+                          ...errors,
+                          account: "",
+                        };
+                        setErrors({ ...updateErrors });
                         setAccountNumber(e.target.value);
+                        if (!validateAccountNumber(e.target.value)) {
+                          console.log("error");
+                          updateErrors = {
+                            ...errors,
+                            account: "Invalid Account Number",
+                          };
+                          setErrors({ ...updateErrors });
+                        }
                       }}
                     />
                   </div>
@@ -469,7 +501,14 @@ const KYCFrame = () => {
                     <p>Go back</p>
                   </div>
                   <button
-                    disabled={!(account_number && bvn)}
+                    disabled={
+                      !(
+                        account_number &&
+                        bvn &&
+                        errors?.account === "" &&
+                        errors?.bvn === ""
+                      )
+                    }
                     type="submit"
                     className="flex-1 h-14 disabled:bg-primary-300 bg-primary-400 hover:bg-primary-500 text-center  disabled:cursor-not-allowed text-gray-0 text-md font-medium rounded-xl"
                     // onClick={() => {

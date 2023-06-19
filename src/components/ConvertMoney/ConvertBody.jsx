@@ -1,38 +1,30 @@
 import React, { useEffect, useState } from "react";
 import swap from "../../assets/icons/Swap.svg";
 import Nigeria from "../../assets/countries/Country = Nigeria.svg";
-
 import minus from "../../assets/icons/Minus.svg";
 import equals from "../../assets/icons/Equals.svg";
 import multiply from "../../assets/icons/X.svg";
 import { motion } from "framer-motion";
-
 import time from "../../assets/icons/HourglassSimpleMedium.svg";
-import ArrowDownUp from "../../assets/icons/ArrowsDownUp.svg";
-
-import {
-  CheckIcon,
-  ChevronLeftIcon,
-} from "@heroicons/react/24/outline";
-
+import { CheckIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import receipt from "../../assets/icons/Receipt.svg";
 import arrow from "../../assets/icons/ArrowsLeftRight.svg";
 import doubleArrow from "../../assets/icons/doubleArrow.svg";
 import SignPost from "../../assets/icons/Signpost.svg";
-
 import { useNavigate } from "react-router-dom";
 import StepperDivider from "../UtilityComponents/StepperDivider";
-import CurrencyInput from "../Inputs/CurrencyInput";
 import { AllCurrencies } from "../data/AllCurrencies";
-
 import SwapFromCurrencies from "../Inputs/SwapFromCurrencies";
-import {  swapMoney } from "./ConvertApi";
+import { swapMoney } from "./ConvertApi";
 import { baseApiCall } from "../../api/MakeApiCallswithHeader";
 import SwapToCurrencies from "../Inputs/SwapToCurrencies";
 import StepperWrapper from "../Wrappers/StepperWrapper";
+import { useSelector } from "react-redux";
+import InputCurrency from "../Inputs/InputCurrency";
+import { ArrowDown } from "phosphor-react";
+import PinDialog from "../Inputs/PinDialog";
 
 const ConvertBody = () => {
-
   // eslint-disable-next-line
   const navigate = useNavigate();
   const [num, setNum] = React.useState(0);
@@ -47,6 +39,9 @@ const ConvertBody = () => {
   const [fromDropDown, setFromDropDown] = useState(false);
   const [fromCurrency, setFromCurrency] = useState({});
   const [toCurrency, setToCurrency] = useState({});
+
+  // eslint-disable-next-line
+  const Wallets = useSelector((state) => state.wallets.wallets);
 
   // Constants needed
   const [rate, setRate] = useState(0.025);
@@ -73,11 +68,21 @@ const ConvertBody = () => {
     // eslint-disable-next-line
   }, []);
 
+  const [enterPin, setEnterPin] = useState(false);
+
+  const toggleEnterPinOverlay = () => {
+    setEnterPin(!enterPin);
+  };
+
   return (
     <>
-      {/* Loader */}
-      <div className="lg:bg-gray-50 w-full min-h-screen">
-        <div className="h-1 bg-primary-200 w-full">
+      {enterPin && (
+        <PinDialog isOpen={enterPin} onClose={toggleEnterPinOverlay} />
+      )}
+
+      <div className="lg:bg-gray-50 w-full lg:overflow-hidden mt-[calc(10vh+4px+46px)] md:mt-[calc(10vh+4px+60px)] lg:mt-0 lg:h-[88vh] ">
+        {/* Loader */}
+        <div className="h-1 bg-primary-200 w-full fixed lg:top-[0] top-[10vh] z-50 lg:relative ">
           <motion.div
             initial={{ x: "-100%", opacity: 0 }}
             animate={{ x: "0%", opacity: 1 }}
@@ -86,13 +91,14 @@ const ConvertBody = () => {
           />
         </div>
         {/* Mobile Stepper */}
-        <div className="flex justify-between lg:hidden p-4 pt-3 bg-gray-50">
+        <div className="flex justify-between lg:hidden p-4 pt-3 bg-gray-50 fixed lg:top-[calc(12vh+4px)] top-[calc(10vh+4px)] z-50 w-full">
           <p className="text-xs font-medium text-gray-500 ">Amount</p>
           <p className="text-xs font-medium text-gray-500 ">
-            1<span className="text-gray-400"> / 3</span>
+            {step + 1}
+            <span className="text-gray-400"> / 2</span>
           </p>
         </div>
-        <div className="flex justify-between lg:container mx-auto lg:pt-10">
+        <div className="flex justify-between lg:container mx-auto lg:py-10 ">
           {/* Desktop Stepper */}
           <div className="hidden lg:block">
             <div className="flex gap-6 items-center">
@@ -152,11 +158,12 @@ const ConvertBody = () => {
 
               <div className="flex-1 flex flex-col">
                 <div className="overflow-hidden border border-gray-100 rounded-2xl bg-gray-25">
-                  <div className="rounded-2xl px-6 py-4 bg-gray-0 flex justify-between items-center ">
-                    <div>
-                      <p className="text-sm text-gray-400">Swap</p>
+                  <div className="rounded-2xl px-3 md:px-6 py-4 bg-gray-0 flex justify-between items-center ">
+                    <div className="flex-1 w-1/2 ">
+                      <p className="text-sm text-gray-400 ">Swap</p>
                       <div className="h-2" />
-                      <CurrencyInput num={num} setNum={setNum} />
+                      {/* <CurrencyInput num={num} setNum={setNum} /> */}
+                      <InputCurrency value={num} setValue={setNum} />
                     </div>
                     <SwapFromCurrencies
                       fromCurrency={fromCurrency}
@@ -184,20 +191,22 @@ const ConvertBody = () => {
                     </p>
                   </div>
                   <div className="gap-1.5 flex items-center ">
-                    <p className="text-sm text-gray-400">
+                    {/* <p className="text-sm text-gray-400">
                       {(fee * 100).toFixed(2)}%
                     </p>
-                    <div className="h-1.5 w-1.5 rounded-full bg-gray-200" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-gray-200" /> */}
                     <p className="text-sm text-gray-400">Our fees</p>
                   </div>
                 </div>
+                <div className="h-4" />
                 <div className="flex items-center">
                   <div className="flex-1 h-[1px] bg-gray-100" />
-                  <div className="h-12 w-12 rounded-full border border-gray-100 flex items-center justify-center">
-                    <img src={ArrowDownUp} alt="" />
+                  <div className="h-8 w-8 md:h-12 md:w-12 rounded-full border border-gray-100 flex items-center justify-center">
+                    <ArrowDown className="text-[20px] text-gray-300" />
                   </div>
                   <div className="flex-1 h-[1px] bg-gray-100" />
                 </div>
+                <div className="h-4" />
                 <div className="flex justify-between -mt-2">
                   <div className="flex gap-2 items-center">
                     <div className="w-3 h-3 rounded-full center bg-gray-50">
@@ -228,7 +237,7 @@ const ConvertBody = () => {
                 </div>
                 <div className="h-6"></div>
                 <div className=" border border-gray-100 rounded-2xl bg-gray-25">
-                  <div className="rounded-2xl px-6 py-4 bg-gray-0 flex justify-between items-center ">
+                  <div className="rounded-2xl px-3 md:px-6 py-4 bg-gray-0 flex justify-between items-center ">
                     <div>
                       <p className="text-sm text-gray-400">For</p>
                       <div className="h-2" />
@@ -278,6 +287,7 @@ const ConvertBody = () => {
                   {" "}
                   Continue
                 </button>
+                <div className="h-10 lg:hidden"></div>
               </div>
             </StepperWrapper>
           )}
@@ -372,9 +382,9 @@ const ConvertBody = () => {
               <div className="h-10"></div>
               <div className="flex gap-x-6">
                 <button
-                  className="md:w-[196px] flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2"
+                  className="md:w-[196px] px-5 flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2"
                   onClick={() => {
-                    setStep(0);
+                    setStep(step - 1);
                   }}
                 >
                   <ChevronLeftIcon className="h-6 w-6" />

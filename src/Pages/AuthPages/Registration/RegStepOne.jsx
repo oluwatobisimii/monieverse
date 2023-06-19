@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Briefcase, User } from "phosphor-react";
 import CustomInput from "../../../components/Inputs/CustomInput";
 import { updateError } from "../../../features/register/registerSlice";
+import { validateEmail } from "../../../components/UtilityComponents/Validators";
 
 export default function RegStepOne({
   setStep,
@@ -52,11 +53,7 @@ export default function RegStepOne({
     business_name,
   ]);
 
-  const validateEmail = (email) => {
-    // Email validation pattern
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  
 
   return (
     <StepperWrapper>
@@ -88,6 +85,8 @@ export default function RegStepOne({
             duration: "0.25",
           }}
         >
+          <p className="text-sm md:text-md font-medium text-gray-500">What type of account are you creating?</p>
+          <div className="h-3"/>
           <div
             className={`group hover:bg-gray-25 transition-all duration-500 cursor-pointer border border-gray-100 rounded-2xl p-4 lg:p-8 flex  justify-between ${
               accountType === "Personal" ? "bg-gray-25" : ""
@@ -133,7 +132,7 @@ export default function RegStepOne({
               </div>
             </div>
             <p className="text-gray-400 text-xs md:text-sm w-[120px] lg:w-[240px]">
-              Payments will be using your agent owned bank account
+            Choose if you will be making payment on behalf of other people
             </p>
           </div>
           <div className="h-4" />
@@ -181,7 +180,7 @@ export default function RegStepOne({
               </div>
             </div>
             <p className="text-gray-400 text-xs md:text-sm w-[120px] lg:w-[240px]">
-              Payments will be using your business’ bank account
+            Choose if you will be making payment for yourself
             </p>
           </div>
 

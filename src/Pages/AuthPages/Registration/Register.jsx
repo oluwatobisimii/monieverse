@@ -3,6 +3,12 @@ import logo from "../../../assets/logo/logo-lg.svg";
 import { Link, useLocation } from "react-router-dom";
 import google from "../../../assets/icons/GOOGLE_ICON.svg";
 import "react-international-phone/style.css";
+import USA from "../../../assets/countries/Country = UK.svg";
+import Nigeria from "../../../assets/countries/Country = Nigeria.svg";
+import China from "../../../assets/countries/Country = China.svg";
+import star from "../../../assets/onboard/Star 15.svg";
+import user from "../../../assets/onboard/user.svg";
+import globe from "../../../assets/onboard/Globe.svg";
 
 // import axios from "../../api/axios";
 import VerifyAccount from "./VerifyAccount";
@@ -14,6 +20,7 @@ import {
 import CustomPhoneInput from "../../../components/Inputs/CustomPhoneInput";
 import { defaultCountries, parseCountry } from "react-international-phone";
 import { motion } from "framer-motion";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const Register = () => {
   const location = useLocation();
@@ -69,9 +76,9 @@ const Register = () => {
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex h-screen w-full font-inter"
+          className="flex h-screen w-full font-inter lg:overflow-hidden"
         >
-          <div className="flex-1 ">
+          <div className="flex-1 overflow-y-auto mb-14 ">
             <div className="h-10 lg:h-14" />
             <img src={logo} alt="" className="mx-auto" />
             <div className="h-12 lg:h-[60px]" />
@@ -208,7 +215,15 @@ const Register = () => {
               </div>
               <div className="h-6" />
               <button
-                disabled={!(first_name && last_name && phone && acceptTerms && errors?.phone === "")}
+                disabled={
+                  !(
+                    first_name &&
+                    last_name &&
+                    phone &&
+                    acceptTerms &&
+                    errors?.phone === ""
+                  )
+                }
                 className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300"
                 onClick={(e) => {
                   e.preventDefault();
@@ -234,7 +249,82 @@ const Register = () => {
               Monieverse Microfinance Bank Limited © 2023{" "}
             </p>
           </div>
-          <div className="bg-gray-50 flex-1 hidden lg:block"></div>
+          <div className=" onboarding-gradient flex-1 hidden lg:block relative">
+            <img
+              src={globe}
+              alt=""
+              className="absolute -bottom-[36%] w-full -left-1/2 translate-x-1/2"
+            />
+            <div className="rounded-[20px] bg-gray-0 flex px-6 py-5 w-[380px] items-center justify-between mt-[94px] ml-[56px] relative">
+              <img
+                src={star}
+                alt=""
+                className="absolute -top-2 left-1/2 -translate-x-1/2  z-10"
+              />
+              <div>
+                <p className="text-sm text-gray-400">You send</p>
+                <p className="text-d-xs font-medium font-clashGrotesk text-gray-600">
+                  2,000.00
+                </p>
+              </div>
+              <div className="bg-gray-50 p-1 rounded-full flex gap-5">
+                <div className="flex items-center gap-2">
+                  <img src={USA} alt="" />
+                  <p className="text-md font-medium text-gray-500">GBP</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-[1px] bg-gray-200" />
+                  <ChevronDownIcon className="h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+            </div>
+            <div className="h-[16%]" />
+            <div className="rounded-[20px] px-6 py-5 bg-gray-0 w-[411px] ml-[150px] relative z-10 ">
+              <p className="text-sm text-gray-400">Completed Transactions</p>
+              <div className="h-4" />
+              <div className="flex justify-between relative">
+                <div className="flex gap-4 items-center">
+                  <div className="h-12 w-12 rounded-full bg-primary-200 text-lightBlue-400 relative center flex">
+                    <img src={user} alt="" />
+                    <div className="h-4 w-4 rounded-full border-2 border-gray-0 absolute right-0 bottom-0">
+                      <img src={Nigeria} alt="" className="" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-md font-inter font-mediumn text-gray-600">
+                      Mbakwe International.
+                    </p>
+                    <div className="h-00.5" />
+                    <p className="text-sm text-gray-400 ">Swift Transfer</p>
+                  </div>
+                </div>
+                <p className="text-md font-medium text-green-500">
+                  + $40,000.57
+                </p>
+              </div>
+              <div className="h-6" />
+              <div className="flex justify-between">
+                <div className="flex gap-4 items-center">
+                  <div className="h-12 w-12 rounded-full bg-lightBlue-100 text-lightBlue-400 relative center flex">
+                    <p className="text-md font-inter font-medium">JW</p>
+                    <div className="h-4 w-4 rounded-full border-2 border-gray-0 absolute right-0 bottom-0">
+                      <img src={China} alt="" className="" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-md font-inter font-mediumn text-gray-600">
+                      Jimmy Wong Co.
+                    </p>
+                    <div className="h-3" />
+                    <div className="bg-primary-100 rounded-full h-[7px] w-[90px]" />
+                  </div>
+                </div>
+                <p className="text-md font-medium text-gray-400">
+                  - $10,230.00
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.section>
       ) : (
         <VerifyAccount

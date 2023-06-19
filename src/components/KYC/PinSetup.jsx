@@ -171,7 +171,7 @@ const PinSetup = ({ optionType, step, setStep }) => {
             </button>
             <button
               disabled={pin.length < 6}
-              className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
+              className="flex-1 h-14 bg-primary-400 hover:bg-primary-500 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
               onClick={(e) => {
                 e.preventDefault();
                 setPinScreens(!pinScreens);

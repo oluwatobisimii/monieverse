@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StepperWrapper from "../Wrappers/StepperWrapper";
 import identity from "../../assets/icons/IdentificationBadge.svg";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,20 @@ const KycUpload = ({ optionType, step, setStep }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isDisabled, setIsDisabled] = useState(true);
+  useEffect(() => {
+    if (optionType === "passport" && selectedFileFront === null) {
+      setIsDisabled(true);
+      return;
+    } else if (selectedFileFront === null && selectedFileBack === null) {
+      console.log('here')
+      setIsDisabled(true);
+      return
+    } else setIsDisabled(false);
+  }, [selectedFileFront, selectedFileBack, optionType]);
+
+
+
   return (
     <StepperWrapper>
       <div className="flex items-center gap-3">
@@ -31,18 +45,22 @@ const KycUpload = ({ optionType, step, setStep }) => {
       <FileUploader
         selectedFile={selectedFileFront}
         setSelectedFile={setSelectedFileFront}
-        id={'front-file'}
+        id={"front-file"}
       />
-      <div className="h-6" />
-      <p className="text-md font-medium text-gray-500">
-        Back side of your {optionType}
-      </p>
-      <div className="h-3" />
-      <FileUploader
-        selectedFile={selectedFileBack}
-        setSelectedFile={setSelectedFileBack}
-        id={'back-file'}
-      />
+      {optionType !== "passport" ? (
+        <>
+          <div className="h-6" />
+          <p className="text-md font-medium text-gray-500">
+            Back side of your {optionType}
+          </p>
+          <div className="h-3" />
+          <FileUploader
+            selectedFile={selectedFileBack}
+            setSelectedFile={setSelectedFileBack}
+            id={"back-file"}
+          />
+        </>
+      ) : null}
       <div className="h-6"></div>
       {error && (
         <p className="text-[#ff4646] text-align center rounded-lg mt-4 text-sm px-4 py-3 ">
@@ -56,13 +74,16 @@ const KycUpload = ({ optionType, step, setStep }) => {
           className="md:w-[196px] px-5 flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2"
           onClick={() => {
             setStep(step - 1);
+            setSelectedFileBack(null);
+            setSelectedFileFront(null);
+            setIsDisabled(true)
           }}
         >
           <ChevronLeftIcon className="h-6 w-6" />
           <p>Go back</p>
         </button>
         <button
-          disabled={selectedFileFront === null || selectedFileBack === null}
+          disabled={isDisabled}
           className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
           onClick={(e) => {
             e.preventDefault();
@@ -72,7 +93,8 @@ const KycUpload = ({ optionType, step, setStep }) => {
               optionType,
               setLoading,
               setStep,
-              setError, navigate
+              setError,
+              navigate
             );
           }}
         >

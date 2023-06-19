@@ -1,7 +1,6 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/logo/logo-lg.svg";
 import { Link } from "react-router-dom";
-
 import info from "../../assets/icons/Info-tooltip.svg";
 import google from "../../assets/icons/GOOGLE_ICON.svg";
 import { useNavigate } from "react-router-dom";
@@ -10,16 +9,20 @@ import SwitchInput from "../../components/Inputs/SwitchInput";
 import { loginUser } from "../../features/loginActions";
 import PasswordInput from "../../components/Inputs/PasswordInput";
 import Spinner from "../../components/Loaders/Spinner";
-import { WarningOctagon, X } from "phosphor-react";
+import { Lock, PaperPlaneTilt, WarningOctagon, X } from "phosphor-react";
 import { motion } from "framer-motion";
 import CustomInput from "../../components/Inputs/CustomInput";
 import { resendOTP } from "../../api/resendOTP";
+import star from "../../assets/onboard/Star 15.svg";
+import user2 from "../../assets/onboard/user2.png";
+import globe from "../../assets/onboard/Globe.svg";
+import transfer from "../../assets/onboard/transfer.svg";
 
 const Login = () => {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
 
-// eslint-disable-next-line
+  // eslint-disable-next-line
   const [identity, setIdentity] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +65,7 @@ const Login = () => {
           payload.data.message === "login successful"
         ) {
           console.log("done and navigate");
-          navigate("/");
+          navigate("/", { replace: true });
           window.location.reload();
         }
       })
@@ -105,8 +108,9 @@ const Login = () => {
       return;
     }
 
-    if (toasterError !== null && toasterError !== "") {
+    if (toasterError !== null && toasterError !== "" && toasterError !== null) {
       setShowToaster(true);
+      console.log("here");
     }
 
     setToasterError(errors?.error);
@@ -118,7 +122,7 @@ const Login = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: "0.25" }}
-      className="flex h-screen w-full font-inter relative"
+      className="flex h-screen w-screen font-inter relative overflow-hidden"
     >
       {showToaster && (
         <motion.div
@@ -127,7 +131,7 @@ const Login = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className=" absolute md:left-1/2 md:-translate-x-1/2
-    shadow-[0px_4px_6px_-2px_#1018280D,_0px_12px_16px_-4px_#1018281A] p-4 md:w-[546px] bg-gray-0 top-10 rounded-lg overflow-hidden flex justify-between
+    shadow-[0px_4px_6px_-2px_#1018280D,_0px_12px_16px_-4px_#1018281A] p-4 md:w-[546px] bg-gray-0 top-10 rounded-lg overflow-hidden flex justify-between z-[40]
     "
         >
           <div className="absolute w-20 h-0.5 bg-primary-300 bottom-0 left-0"></div>
@@ -247,7 +251,72 @@ const Login = () => {
           Monieverse Microfinance Bank Limited © 2023{" "}
         </p>
       </div>
-      <div className="bg-gray-50 flex-1 hidden lg:block"></div>
+      <div className=" onboarding-gradient flex-1 hidden lg:block relative">
+        <img
+          src={globe}
+          alt=""
+          className="absolute -bottom-[36%] w-full -left-1/2 translate-x-1/2"
+        />
+        <div className="rounded-[20px] bg-gray-0 px-6 py-5 w-[380px]  mt-[94px] ml-[56px] relative">
+          <img
+            src={star}
+            alt=""
+            className="absolute -top-2 left-1/2 -translate-x-1/2  z-10"
+          />
+          <div className="flex items-center justify-between w-full">
+            <p className="text-sm font-semibold text-gray-600">ACH Transfer</p>
+            <img src={transfer} alt="" />
+          </div>
+          <div className="h-[34px]"></div>
+          <div className="flex gap-4">
+            <div className="h-[55px] w-[55px] rounded-[6px] bg-orange-200 overflow-hidden">
+              <img src={user2} alt="" className="mt-1" />
+            </div>
+            <div>
+              <p className="text-md font-medium text-gray-600">
+                Marrienette Manufacturing Co.
+              </p>
+              <div className="h-[6px]" />
+              <div className="flex items-center gap-1">
+                <div className="w-[5px] h-[5px] rounded-full bg-gray-200" />
+                <div className="w-[5px] h-[5px] rounded-full bg-gray-200" />
+                <div className="w-[5px] h-[5px] rounded-full bg-gray-200" />
+                <div className="w-[5px] h-[5px] rounded-full bg-gray-200" />
+                <p className="text-sm text-gray-400">4301</p>
+              </div>
+            </div>
+          </div>
+          <div className="h-[33px]" />
+          <div className="rounded-xl flex center gap-2 py-[14px] bg-primary-400 text-gray-0">
+            <Lock weight="fill" className="text-d-xxs" />
+            <p className="text-md font-inter font-medium">
+              Securely Send $50,000.00
+            </p>
+          </div>
+        </div>
+        <div className="h-[16%]" />
+        <div className="rounded-[20px] px-6 py-5 bg-gray-0 w-[411px] ml-[150px] relative z-10 ">
+          <div className="flex justify-between">
+            <div className="flex gap-4 items-center">
+              <div className="h-10 w-10 rounded-md bg-primary-400 text-gray-0 relative center flex">
+                <PaperPlaneTilt weight="duotone" className="text-d-xss" />
+              </div>
+              <div>
+                <p className="text-md font-inter font-mediumn text-gray-600">
+                  Johnson & Co.
+                </p>
+                <div className="h-1.5" />
+                <div className="bg-primary-100 rounded-full h-[7px] w-[90px]" />
+              </div>
+            </div>
+            <div className="flex flex-col items-end">
+              <p className="text-md font-medium text-green-500">+ $200</p>
+              <div className="h-1.5" />
+              <div className="bg-primary-100 rounded-full h-2 w-[34px]" />
+            </div>
+          </div>
+        </div>
+      </div>
     </motion.section>
   );
 };

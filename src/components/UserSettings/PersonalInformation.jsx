@@ -15,12 +15,12 @@ const PersonalInformation = () => {
     <>
       <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-10 p-4">
         <div className="flex justify-between items-center">
-          <p className="text-d-xs font-clashGrotesk font-medium">
+          <p className="text-md md:text-d-xs font-clashGrotesk font-medium">
             Business Information
           </p>
           <button className="flex gap-2 px-3 py-2 rounded-lg bg-gray-25 hover:bg-gray-50">
             <img src={save} alt="" />
-            <p className="text-sm text-gray500">Save Changes</p>
+            <p className="text-sm text-gray500">Save <span className="hidden lg:inline">Changes</span> </p>
           </button>
         </div>
         <div className="h-6"></div>
@@ -91,12 +91,12 @@ const PersonalInformation = () => {
       <div className="h-10"></div>
       <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-6 p-4">
         <div className="flex justify-between items-center">
-          <p className="text-d-xs font-clashGrotesk font-medium">
+          <p className="text-md before:md:text-d-xs font-clashGrotesk font-medium">
           Address Information
           </p>
           <div className="flex gap-2 px-3 py-2 rounded-lg bg-gray-25">
             <img src={fileCloud} alt="" />
-            <p className="text-sm text-gray500">
+            <p className="text-sm text-gray500 hidden lg:inline">
               Your information has been verified hence, cannot be edited
             </p>
           </div>

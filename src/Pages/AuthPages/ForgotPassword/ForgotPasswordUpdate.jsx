@@ -89,7 +89,6 @@ export const ForgotPasswordUpdate = ({ errors, setStep }) => {
                 setInputError,
                 navigate
               );
-
               return;
             }
           }}

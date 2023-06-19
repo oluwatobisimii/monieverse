@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCurrencies } from "../../features/currenciesSlice";
 import { AllCurrencies as localCurrency } from "../data/AllCurrencies";
 
-
 const SwapToCurrencies = ({
   position = "top-full right-0",
   toCurrency,
@@ -13,7 +12,6 @@ const SwapToCurrencies = ({
 }) => {
   const [dropDown, setDropDown] = useState(false);
   const [SwappableFromCurrencies, setSwappableFromCurrencies] = useState([]);
-
 
   const AllCurrencies = useSelector((state) => state.allCurrencies);
   const dispatch = useDispatch();
@@ -42,7 +40,10 @@ const SwapToCurrencies = ({
       >
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-full border border-gray-100 flex center overflow-hidden">
-          <img src={localCurrency[toCurrency.id-1]?.currencyImg || ''} alt="" />
+            <img
+              src={localCurrency[toCurrency.id - 1]?.currencyImg || ""}
+              alt=""
+            />
           </div>
           <p className="text-md font-medium text-gray-500">{toCurrency.code}</p>
         </div>
@@ -53,11 +54,11 @@ const SwapToCurrencies = ({
       </div>
       {dropDown && (
         <div
-          className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl  w-[348px] z-30`}
+          className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl w-[270px] md:w-[348px] z-30`}
         >
           <p className="text-sm text-gray-400 p-4 pb-1">All currencies</p>
           {SwappableFromCurrencies.map((currency, index) => {
-            console.log(currency)
+            console.log(currency);
             return (
               <div className="space-y-1" key={index}>
                 <div
@@ -69,8 +70,10 @@ const SwapToCurrencies = ({
                   }}
                 >
                   <div className="h-5 w-5 rounded-full border border-gray-100 flex center overflow-hidden">
-
-                  <img src={localCurrency[currency.id-1].currencyImg} alt="" />
+                    <img
+                      src={localCurrency[currency.id - 1].currencyImg}
+                      alt=""
+                    />
                   </div>
                   <div className="flex gap-1 items-center">
                     <p className="text-sm text-gray-600">{currency.code}</p>

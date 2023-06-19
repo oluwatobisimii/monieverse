@@ -8,12 +8,12 @@ const Limits = () => {
     <>
     <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-6 p-4">
       <div className="flex justify-between items-center">
-        <p className="text-d-xs font-clashGrotesk font-medium">
+        <p className="text-md md:text-d-xs font-clashGrotesk font-medium">
           Withdrawal Limits
         </p>
         <div className="flex gap-2 px-3 py-2 rounded-lg bg-gray-25">
           <img src={bank} alt="" />
-          <p className="text-sm text-gray500">
+          <p className="hidden md:text-sm text-gray500">
             Our transaction limits are regulated by the FDIC
           </p>
         </div>
@@ -69,12 +69,12 @@ const Limits = () => {
     <div className="h-10"></div>
     <div className="bg-gray-0 rounded-2xl lg:rounded-3xl lg:px-10 lg:py-6 p-4">
       <div className="flex justify-between items-center">
-        <p className="text-d-xs font-clashGrotesk font-medium">
+        <p className="text-md md:text-d-xs font-clashGrotesk font-medium">
         Deposit Limits
         </p>
         <div className="flex gap-2 px-3 py-2 rounded-lg bg-gray-25">
           <img src={bank} alt="" />
-          <p className="text-sm text-gray500">
+          <p className="hidden md:inline text-sm text-gray500">
             Our transaction limits are regulated by the FDIC
           </p>
         </div>

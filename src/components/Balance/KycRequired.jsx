@@ -6,13 +6,21 @@ import { Check, IdentificationBadge, Info } from "phosphor-react";
 // import { baseApiCall } from "../../api/MakeApiCallswithHeader";
 
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getKyc } from "../../features/kycStatusSlice";
 
 const KycRequired = ({ isOpen, onClose }) => {
   const [kycLevel, setKycLevel] = useState("");
 
   const kycData = useSelector((state) => state.getKyc.kyc);
   const getKycReduxStatus = useSelector((state) => state.getKyc.status);
+  
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+   dispatch(getKyc())
+   // eslint-disable-next-line
+  }, [])
 
   const getKycStatusRedux = () => {
     if (getKycReduxStatus === "fulfilled") {
@@ -44,6 +52,11 @@ const KycRequired = ({ isOpen, onClose }) => {
     getKycStatusRedux();
     // eslint-disable-next-line
   }, [getKycReduxStatus]);
+
+
+  
+
+
   const navigate = useNavigate();
   return (
     <>

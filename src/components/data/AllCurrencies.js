@@ -9,12 +9,12 @@ import USA from '../../assets/countries/Country = USA.svg'
 
 export const AllCurrencies = [
     {
-        currencyName: 'Naira',
+        currencyName: 'Nigeria Naira',
         currencyCode: 'NGN',
         currencyImg: Nigeria,
     },
     {
-        currencyName: 'United States Dollar',
+        currencyName: 'U.S. Dollar',
         currencyCode: 'USD',
         currencyImg: USA,
     },

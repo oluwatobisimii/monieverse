@@ -6,6 +6,7 @@ import { fetchWallets } from "../features/walletSlice";
 import { getAllCurrencies } from "../features/currenciesSlice";
 import { getKyc } from "../features/kycStatusSlice";
 import { getUserProfile } from "../features/profile/userProfileAction";
+import logo from "../assets/logo/logo-sm.svg";
 
 const ProtectedRoutes = () => {
   const dispatch = useDispatch();
@@ -76,7 +77,19 @@ const ProtectedRoutes = () => {
 
   let accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-  return accessToken ? render ? <Outlet /> : null : <Navigate to="/login" />;
+  return accessToken ? (
+    render ? (
+      <Outlet />
+    ) : (
+      <>
+        <div className="sheen w-screen h-screen center">
+          <img src={logo} alt="" />
+        </div>
+      </>
+    )
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default ProtectedRoutes;

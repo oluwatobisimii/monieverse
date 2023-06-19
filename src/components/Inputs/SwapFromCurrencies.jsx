@@ -52,7 +52,7 @@ const SwapFromCurrencies = ({
       </div>
       {dropDown && (
         <div
-          className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl  w-[348px] z-30`}
+          className={`absolute ${position} shadow-lg bg-gray-0 rounded-2xl w-[270px] md:w-[348px] z-30`}
         >
           <p className="text-sm text-gray-400 p-4 pb-1">All currencies</p>
           {SwappableFromCurrencies.map((currency, index) => {

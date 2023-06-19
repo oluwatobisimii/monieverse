@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { logoutUser } from "../../features/logoutSlice";
 import { AnimatePresence, motion } from "framer-motion";
+import { truncateText } from "../UtilityComponents/TruncateText";
 
 const UserInitials = ({ first, last, colorCode }) => {
   const userDetails = useSelector((state) => state.userProfile);
@@ -111,7 +112,9 @@ const ProfileMenu = () => {
     <>
       <div className="relative" ref={popupRef}>
         <div
-          className={`cursor-pointer flex gap-1 center font-inter hover:bg-gray-0 hover:shadow-lg transition-all duration-200 p-1 rounded-full px-2 ${isOpen?'bg-gray-0 shadow-lg':''}`}
+          className={`cursor-pointer flex gap-1 center font-inter hover:bg-gray-0 hover:shadow-lg transition-all duration-200 p-1 rounded-full px-2 ${
+            isOpen ? "bg-gray-0 shadow-lg" : ""
+          }`}
           onClick={toggleDropdown}
         >
           <UserInitials colorCode={colorCode} />
@@ -137,13 +140,13 @@ const ProfileMenu = () => {
                           <div className="flex gap-1 items-center">
                             <p className="text-md font-medium text-gray-600">
                               {userCredential.account_type === "Personal"
-                                ? userCredential.first_name
+                                ? truncateText(
+                                    `${userCredential.first_name} ${userCredential.last_name}`,
+                                    15
+                                  )
                                 : ""}{" "}
-                              {userCredential.account_type === "Personal"
-                                ? userCredential.last_name
-                                : ""}
                               {userCredential.account_type === "Business"
-                                ? userCredential.business_name
+                                ? truncateText(userCredential.business_name, 15)
                                 : ""}
                             </p>
                             <CheckBadgeIcon

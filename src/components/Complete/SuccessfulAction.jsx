@@ -28,8 +28,8 @@ const SuccessfulAction = () => {
     <div className="bg-gray-50 h-screen">
       <FlowNav />
       <div className="h-10"></div>
-      <div className=" md:rounded-3xl overflow-hidden relative font-inter max-w-[640px] bg-gray-0 lg:max-h-[630px] flex-1 mx-auto ">
-        <div className="flex flex-col p-4 md:px-10 md:pb-10 md:pt-[100px] md:h-[630px] relative z-10">
+      <div className=" md:rounded-3xl overflow-hidden relative font-inter max-w-[640px] bg-gray-0 h-full lg:max-h-[630px] flex-1 mx-auto ">
+        <div className="flex flex-col p-4 h-[60%] md:px-10 md:pb-10 md:pt-[100px] md:h-[630px] relative z-10">
           <div className="mx-auto">
             <lottie-player
               autoplay="true"
@@ -38,9 +38,10 @@ const SuccessfulAction = () => {
               style={{ width: "200px", height: "200px" }}
               src="https://assets9.lottiefiles.com/packages/lf20_R09JykuodG.json"
             />
+           
           </div>
           <div className="h-6"> </div>
-          <p className="text-d-md text-[#101828] text-center font-clashGrotesk font-medium">
+          <p className="text-d-sm md:text-d-md text-[#101828] text-center font-clashGrotesk font-medium">
             {title || "Account Created!"}
           </p>
           <div className="h-2"> </div>

@@ -13,12 +13,12 @@ export const getRateDetails = async (from, to, amount) => {
 }
 
 
-export const swapMoney = async (from, to, amount) => {
-    await baseApiCall('users/swap','POST' , {
+export const swapMoney = async (from, to, amount, pin) => {
+    await baseApiCall('users/swap', 'POST', {
         "base_currency": from,
         "quote_currency": to,
         "amount": amount
-    }).then((payload) => {
+    }, "", pin).then((payload) => {
         console.log(payload)
     }).catch((err) => { console.log(err) })
 }

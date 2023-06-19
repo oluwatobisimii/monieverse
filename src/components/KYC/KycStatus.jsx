@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import kycIllustration from "../../assets/icons/kyc/KycIllustration.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import { getKyc } from "../../features/kycStatusSlice";
 
 const KycStatus = () => {
   const [kycDone, setKycDone] = useState(false);
-  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userProfileStatus === "fulfilled") {
+      let kycVerified = JSON.parse(localStorage.getItem("user"))?.kyc_verified;
+      if (!kycVerified) {
+        dispatch(getKyc());
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const kycDatas = useSelector((state) => state.getKyc.kyc);
   const getKycReduxStatus = useSelector((state) => state.getKyc.status);

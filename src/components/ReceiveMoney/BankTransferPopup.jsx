@@ -5,16 +5,51 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import info from "../../assets/icons/InfoPrimary.svg";
 import infoBlack from "../../assets/icons/InfoGray.svg";
 import copy from "../../assets/icons/Copy.svg";
+import { AllCurrencies } from "../data/AllCurrencies";
+import AccountDetails from "../../assets/payment/AccountDetails.svg";
 
-
-const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
+const BankTransferPopup = ({
+  isOpen,
+  onClose,
+  setBankTransfer,
+  currentWallet,
+}) => {
+  if (AllCurrencies[currentWallet.currency_id - 1]?.currencyCode === "USD") {
+    return (
+      <>
+        <Overlay isOpen={isOpen} onClose={onClose}>
+          <div className="px-4 py-[22px] flex items-center justify-between border-b border-gray-100">
+            <p className="texxt-sm font-medium text-gray-600">
+              Your {AllCurrencies[currentWallet.currency_id - 1]?.currencyCode}{" "}
+              account details
+            </p>
+            <div className="h-10 w-10 flex center" onClick={onClose}>
+              <XMarkIcon className="h-6 text-gray-300" />
+            </div>
+          </div>
+          <div className="min-h-[420px] flex center flex-col">
+            <img src={AccountDetails} alt="" />
+            <div className="h-4" />
+            <p className="text-d-xxs font-medium text-gray-600 font-clashGrotesk">
+              No Banks Available
+            </p>
+            <div className="h-1" />
+            <p className="text-sm  text-gray-400">
+              We don’t have any banks available in this region at the moment.
+            </p>
+          </div>
+        </Overlay>
+      </>
+    );
+  }
 
   return (
     <Overlay isOpen={isOpen} onClose={onClose}>
       <div className="w-full md:max-w-[542px] bg-gray-0 rounded-3xl">
         <div className="px-4 py-[22px] flex items-center justify-between border-b border-gray-100">
           <p className="texxt-sm font-medium text-gray-600">
-            Your NGN account details
+            Your {AllCurrencies[currentWallet.currency_id - 1]?.currencyCode}{" "}
+            account details
           </p>
           <div className="h-10 w-10 flex center" onClick={onClose}>
             <XMarkIcon className="h-6 text-gray-300" />
@@ -41,7 +76,7 @@ const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
                 <p className="text-xs text-gray-400">Payment Network</p>
                 <img src={infoBlack} alt="" />
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1">
                 <p className="text-md text-gray-600">SWIFSTER</p>
                 <img src={copy} alt="" />
@@ -51,7 +86,7 @@ const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Account holder</p>
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1">
                 <p className="text-md text-gray-600">Monieverse</p>
                 <img src={copy} alt="" />
@@ -62,9 +97,11 @@ const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Bank name</p>
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1">
-                <p className="text-md text-gray-600">Monieverse Microfinance Bank Limited</p>
+                <p className="text-md text-gray-600">
+                  Monieverse Microfinance Bank Limited
+                </p>
                 <img src={copy} alt="" />
               </div>
             </div>
@@ -73,7 +110,7 @@ const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Bank code</p>
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1">
                 <p className="text-md text-gray-600">392</p>
                 <img src={copy} alt="" />
@@ -84,26 +121,27 @@ const BankTransferPopup = ({ isOpen, onClose, setBankTransfer }) => {
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Account number</p>
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1">
                 <p className="text-md text-gray-600">9022932504</p>
                 <img src={copy} alt="" />
               </div>
             </div>
-            
+
             <div>
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Address</p>
               </div>
-              <div className="h-0.5"/>
+              <div className="h-0.5" />
               <div className="flex gap-1 items-center">
-                <p className="text-md text-gray-600">234 Boulevard Rd, 489 PO, Palms Springs, TA United States 102120</p>
+                <p className="text-md text-gray-600">
+                  234 Boulevard Rd, 489 PO, Palms Springs, TA United States
+                  102120
+                </p>
                 <img src={copy} alt="" />
               </div>
             </div>
-              
           </div>
-
         </div>
       </div>
     </Overlay>

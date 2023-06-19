@@ -10,6 +10,7 @@ import Europe from "../../assets/countries/Country = Europe.svg";
 import China from "../../assets/countries/Country = China.svg";
 import { Wallet } from "phosphor-react";
 import { CreateWallets } from "./AddWalletApi";
+import { Link } from "react-router-dom";
 
 const Balances = () => {
   const [kycStatus, setKycStatus] = useState(false);
@@ -221,12 +222,6 @@ const Balances = () => {
                     kycStatus={kycStatus}
                     toggleKycOverlay={toggleKycOverlay}
                   />
-                  <BalanceCard
-                    currency={"U.S. Dollar"}
-                    framerKey={"USA"}
-                    kycStatus={kycStatus}
-                    toggleKycOverlay={toggleKycOverlay}
-                  />
                 </>
               ) : (
                 <RenderBalances />
@@ -246,7 +241,7 @@ const Balances = () => {
                   </p>
                 </div>
               ) : (
-                <div className="rounded-3xl flex-1 border border-gray-100 flex flex-col center min-w-[300px]">
+                <Link to='/kyc' className="rounded-3xl flex-1 border border-gray-100 flex flex-col center min-w-[300px]">
                   <div className="flex">
                     <div className="w-8 h-8 border-2 border-gray-0 rounded-full">
                       <img src={UK} alt="" />
@@ -269,7 +264,7 @@ const Balances = () => {
                   <p className="text-primary-500 text-md font-medium text-center">
                     Unlock more balances by completing your KYC
                   </p>
-                </div>
+                </Link>
               )}
               <div style={{ width: remainingWidth / 2 }} />
             </motion.div>
