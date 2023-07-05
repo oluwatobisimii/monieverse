@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Overlay from "../UtilityComponents/Overlay";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import {  Key } from "phosphor-react";
+import { Key } from "phosphor-react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import PasswordInput from "../Inputs/PasswordInput";
@@ -13,6 +13,7 @@ import Toaster from "../Inputs/Toaster";
 import pinChanged from "../../assets/pinChanged.svg";
 import PasswordInputwithValidation from "../Inputs/PasswordInputwithValidation";
 import { convertToSentenceCase } from "../UtilityComponents/ToggleCase";
+import Spinner from "../Loaders/Spinner";
 
 const ChangePassword = ({ isOpen, onClose, setBankTransfer }) => {
   const [password, setPassword] = useState("");
@@ -24,8 +25,8 @@ const ChangePassword = ({ isOpen, onClose, setBankTransfer }) => {
 
   const [validationLength, setValidationLength] = useState(false);
   const [validationUpperCase, setValidationUpperCase] = useState(false);
-  const [validationSpecialCharacter, setValidationSpecialCharacter] =
-    useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   let loaderWidth = step === 0 ? "w-1/2" : "w-full";
   const handleCloseError = () => {
@@ -94,76 +95,79 @@ const ChangePassword = ({ isOpen, onClose, setBankTransfer }) => {
                 setValidationLength={setValidationLength}
                 validationUpperCase={validationUpperCase}
                 setValidationUpperCase={setValidationUpperCase}
-                validationSpecialCharacter={validationSpecialCharacter}
-                setValidationSpecialCharacter={setValidationSpecialCharacter}
                 errors={errors}
               />
 
               <div className="h-6" />
 
-              <div className="p-4 md:p-6 mt-auto">
+              <div className="py-4 md:py-6 mt-auto">
                 <div className="flex gap-x-6">
-                  <button
-                    className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
-                    disabled={
-                      !(
-                        password &&
-                        confirmPassword &&
-                        validationLength &&
-                        validationSpecialCharacter &&
-                        validationUpperCase
-                      )
-                    }
-                    onClick={async () => {
-                      setToasterError("");
-                      const userInput = {
-                        current_password: confirmPassword,
-                        password: password,
-                      };
-
-                      try {
-                        const response = await ChangePasswordApi.updatePassword(
-                          userInput
-                        );
-
-                        if (response.status === "OK") {
-                          setStep(1);
-                        } else {
-                          console.log(response);
-                        }
-                      } catch (error) {
-                        if (
-                          error.response.status === 422 &&
-                          error.response.data.errors.current_password
-                        ) {
-                          setToasterError(
-                            convertToSentenceCase(
-                              error.response.data.errors.current_password
-                            )
-                          );
-                          setErrors({
-                            ...errors,
-                            current_password: "Incorrect current password",
-                          });
-                          return;
-                        }
-
-                        if (
-                          error.response.status === 422 &&
-                          error.response.data.errors.password
-                        ) {
-                          setToasterError(
-                            "New password " +
-                              error.response.data.errors.password
-                          );
-                          return;
-                        }
+                  {loading ? (
+                    <div className="flex-1 h-14 bg-primary-400 rounded-xl center">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <button
+                      className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
+                      disabled={
+                        !(
+                          password &&
+                          confirmPassword &&
+                          validationLength &&
+                          validationUpperCase
+                        )
                       }
-                    }}
-                  >
-                    {" "}
-                    Continue
-                  </button>
+                      onClick={async () => {
+                        setLoading(true);
+                        setToasterError("");
+                        const userInput = {
+                          current_password: confirmPassword,
+                          password: password,
+                        };
+
+                        try {
+                          const response =
+                            await ChangePasswordApi.updatePassword(userInput);
+                          setLoading(false);
+                          if (response.status === "OK") {
+                            setStep(1);
+                          } else {
+                            console.log(response);
+                          }
+                        } catch (error) {
+                          if (
+                            error.response.status === 422 &&
+                            error.response.data.errors.current_password
+                          ) {
+                            setToasterError(
+                              convertToSentenceCase(
+                                error.response.data.errors.current_password
+                              )
+                            );
+                            setErrors({
+                              ...errors,
+                              current_password: "Incorrect current password",
+                            });
+                            return;
+                          }
+
+                          if (
+                            error.response.status === 422 &&
+                            error.response.data.errors.password
+                          ) {
+                            setToasterError(
+                              "New password " +
+                                error.response.data.errors.password
+                            );
+                            return;
+                          }
+                        }
+                      }}
+                    >
+                      {" "}
+                      Continue
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>

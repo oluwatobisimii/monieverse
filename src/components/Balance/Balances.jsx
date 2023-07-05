@@ -11,6 +11,7 @@ import China from "../../assets/countries/Country = China.svg";
 import { Wallet } from "phosphor-react";
 import { CreateWallets } from "./AddWalletApi";
 import { Link } from "react-router-dom";
+import AddNewBalance from "./AddNewBalance";
 
 const Balances = () => {
   const [kycStatus, setKycStatus] = useState(false);
@@ -39,11 +40,13 @@ const Balances = () => {
       userProfileStatus === "fulfilled" &&
       fetchWalletStatus === "fulfilled"
     ) {
+      console.log("user and wallet fetched");
+      console.log(JSON.parse(localStorage.getItem("user"))?.kyc_verified);
       if (
         JSON.parse(localStorage.getItem("user"))?.kyc_verified &&
         Wallets.length === 0
       ) {
-        console.log("here");
+        console.log("wallet here");
         createWalletFunc();
         dispatch(fetchWallets());
         setWalletsCreated(true);
@@ -94,16 +97,17 @@ const Balances = () => {
   useEffect(() => {
     const div = container.current;
     if (div.offsetWidth <= div.scrollWidth) {
-      console.log("here");
       setActivateScrollRight(false);
     }
   }, []);
 
   const [kycOverlay, setKycOverlay] = useState(false);
+  const [addNewBalance, setAddNewBalance] = useState(false);
 
   const toggleKycOverlay = () => {
     setKycOverlay(!kycOverlay);
   };
+
 
   const [remainingWidth, setRemainingWidth] = useState(0);
 
@@ -153,6 +157,16 @@ const Balances = () => {
           isOpen={kycOverlay}
           onClose={toggleKycOverlay}
           setBankTransfer={setKycOverlay}
+        />
+      )}
+
+      {addNewBalance && (
+        <AddNewBalance
+          isOpen={addNewBalance}
+          onClose={() => {
+            setAddNewBalance(!addNewBalance);
+          }}
+          setBankTransfer={setAddNewBalance}
         />
       )}
 
@@ -228,7 +242,12 @@ const Balances = () => {
               )}
 
               {kycStatus ? (
-                <div className="rounded-3xl flex-1 border border-primary-300 hover:bg-primary-100 cursor-pointer bg-[#FCFCFF] flex gap-2 center min-w-[300px] border-dashed">
+                <div
+                  className="rounded-3xl flex-1 border border-primary-300 hover:bg-primary-100 cursor-pointer bg-[#FCFCFF] flex gap-2 center min-w-[300px] border-dashed"
+                  onClick={() => {
+                    setAddNewBalance(!addNewBalance);
+                  }}
+                >
                   <div className="py-2 px-4 rounded-full bg-primary-100">
                     <Wallet
                       weight="fill"
@@ -241,7 +260,10 @@ const Balances = () => {
                   </p>
                 </div>
               ) : (
-                <Link to='/kyc' className="rounded-3xl flex-1 border border-gray-100 flex flex-col center min-w-[300px]">
+                <Link
+                  to="/dashboard/kyc"
+                  className="rounded-3xl flex-1 border border-gray-100 flex flex-col center min-w-[300px]"
+                >
                   <div className="flex">
                     <div className="w-8 h-8 border-2 border-gray-0 rounded-full">
                       <img src={UK} alt="" />

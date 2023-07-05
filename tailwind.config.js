@@ -87,7 +87,12 @@ module.exports = {
 
     },
 
-    extend: {},
+    extend: {
+      screens: {
+        // 'xs': '300px',
+        // => @media (min-width: 992px) { ... }
+      },
+    },
   },
   plugins: [],
 }

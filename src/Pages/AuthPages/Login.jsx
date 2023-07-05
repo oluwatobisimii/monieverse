@@ -65,8 +65,8 @@ const Login = () => {
           payload.data.message === "login successful"
         ) {
           console.log("done and navigate");
-          navigate("/", { replace: true });
-          window.location.reload();
+          navigate("/dashboard", { replace: true });
+          // window.location.reload();
         }
       })
       .catch((err) => {
@@ -108,9 +108,13 @@ const Login = () => {
       return;
     }
 
-    if (toasterError !== null && toasterError !== "" && toasterError !== null) {
+    if (
+      toasterError !== null &&
+      toasterError !== "" &&
+      toasterError !== undefined
+    ) {
       setShowToaster(true);
-      console.log("here");
+      return;
     }
 
     setToasterError(errors?.error);
@@ -183,7 +187,7 @@ const Login = () => {
               className="text-gray-500 text-sm font-inter font-medium flex items-center justify-between gap-2"
             >
               <p> Email </p>
-              <p>Use phone number </p>
+              {/* <p>Use phone number </p> */}
             </label>
 
             <div className="h-1" />

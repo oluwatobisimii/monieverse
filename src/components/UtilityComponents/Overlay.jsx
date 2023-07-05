@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 const Overlay = ({ isOpen, onClose, children }) => {
@@ -9,28 +10,28 @@ const Overlay = ({ isOpen, onClose, children }) => {
   //     : (document.body.style.overflow = "scroll");
   // }, [isOpen]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (popupRef.current && !popupRef.current.contains(event.target)) {
+  //       onClose();
+  //     }
+  //   };
 
-    const handleEscapeKey = (event) => {
-      if (event.keyCode === 27) {
-        onClose();
-      }
-    };
+  //   const handleEscapeKey = (event) => {
+  //     if (event.keyCode === 27) {
+  //       onClose();
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscapeKey);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   document.addEventListener("keydown", handleEscapeKey);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-    // eslint-disable-next-line
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //     document.removeEventListener("keydown", handleEscapeKey);
+  //   };
+  //   // eslint-disable-next-line
+  // }, []);
 
   return (
     <>

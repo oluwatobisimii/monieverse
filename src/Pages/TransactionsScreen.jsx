@@ -113,7 +113,7 @@ const TransactionsScreen = () => {
                     <img src={funnel} alt="" />
                   </button>
                   {typeDrop && (
-                    <div className="absolute right-0 top-full px-6 py-4 bg-gray-0 space-y-2 w-[300px] cardShadow rounded-2xl">
+                    <div className="absolute right-0 top-full px-6 py-4 bg-gray-0 space-y-2 w-[300px] cardShadow rounded-2xl z-50">
                       <p className="text-xs text-gray-400">Transaction Type</p>
                       {types.map((type, index) => {
                         return (

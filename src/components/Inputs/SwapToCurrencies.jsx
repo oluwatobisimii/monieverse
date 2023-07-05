@@ -9,6 +9,7 @@ const SwapToCurrencies = ({
   position = "top-full right-0",
   toCurrency,
   setToCurrency,
+  setTo,
 }) => {
   const [dropDown, setDropDown] = useState(false);
   const [SwappableFromCurrencies, setSwappableFromCurrencies] = useState([]);
@@ -21,7 +22,7 @@ const SwapToCurrencies = ({
         (currency) => {
           return currency.can_swap_to;
         }
-      );
+      ).sort((a, b) => a.id - b.id);
       setSwappableFromCurrencies(SwapFromCurrencies);
       setToCurrency({ ...SwapFromCurrencies[0] });
     } else if (AllCurrencies.status === "idle") {
@@ -66,6 +67,7 @@ const SwapToCurrencies = ({
                   key={index}
                   onClick={() => {
                     setToCurrency({ ...currency });
+                    setTo(currency.id);
                     setDropDown(false);
                   }}
                 >

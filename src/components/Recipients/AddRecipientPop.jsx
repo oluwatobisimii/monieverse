@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Overlay from "../UtilityComponents/Overlay";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { AddRecipientForm } from "./AddRecipientForm";
+import { CreateRecipient } from "./RecipientApi";
+import Spinner from "../Loaders/Spinner";
 
-import { AddRecipientForm } from "../MoveMoney/AddRecipient";
+const AddRecipientPop = ({ isOpen, onClose }) => {
+  const [formData, setFormData] = useState({});
+  const [currency, setCurrency] = useState(null);
+  const [scheme, setScheme] = useState();
+  const [loading, setloading] = useState(false);
 
-const AddRecipientPop = ({ isOpen, onClose, setBankTransfer }) => {
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   return (
     <Overlay isOpen={isOpen} onClose={onClose}>
       <div className="w-full md:max-w-[542px] bg-gray-0 rounded-3xl">
@@ -16,10 +26,17 @@ const AddRecipientPop = ({ isOpen, onClose, setBankTransfer }) => {
             <XMarkIcon className="h-6 text-gray-300" />
           </div>
         </div>
-        <div className="p-4 md:p-6 max-h-[600px] overflow-y-scroll">
-          <AddRecipientForm />
-          <div className="h-10" />
-          <div className="flex gap-x-6">
+        <div className="max-h-[600px] overflow-y-scroll">
+          <AddRecipientForm
+            formData={formData}
+            setFormData={setFormData}
+            currency={currency}
+            setCurrency={setCurrency}
+            selectedOption={scheme}
+            setSelectedOption={setScheme}
+          />
+          <div className="h-8" />
+          <div className="flex gap-x-6 px-4 md:px-6 pb-6">
             <button
               className="w-[196px] flex h-14  text-center text-gray-500 text-md font-medium rounded-xl border border-gray-100 items-center justify-center gap-2"
               onClick={() => {
@@ -28,15 +45,51 @@ const AddRecipientPop = ({ isOpen, onClose, setBankTransfer }) => {
             >
               <p>Cancel</p>
             </button>
-            <button
-              className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl"
-              onClick={() => {
-                onClose();
-              }}
-            >
-              {" "}
-              Add New Recipient
-            </button>
+
+            {loading ? (
+              <div
+                className="flex-1 h-14 bg-primary-400 
+              hover:bg-primary-500 disabled:bg-primary-300
+              text-center text-gray-0 text-md font-medium rounded-xl disabled:cursor-not-allowed"
+              >
+                <Spinner />
+              </div>
+            ) : (
+              <button
+                className="flex-1 h-14 bg-primary-400 
+              hover:bg-primary-500 disabled:bg-primary-300
+              text-center text-gray-0 text-md font-medium rounded-xl disabled:cursor-not-allowed"
+                disabled={
+                  Object.values(formData).some((value) => value === "") ||
+                  Object.keys(formData).length < 9 ||
+                  formData === null
+                }
+                onClick={async () => {
+                  console.log(formData);
+                  console.log(currency.code);
+                  console.log(scheme);
+                  setloading(true);
+                  let userInput = { ...formData };
+                  delete userInput.countries;
+                  console.log(userInput);
+                  try {
+                    const response = await CreateRecipient(
+                      currency.code,
+                      scheme,
+                      userInput
+                    );
+                    console.log(response);
+                  } catch (error) {
+                    console.log(error.response);
+                  }
+                  setloading(true);
+                  onClose();
+                }}
+              >
+                {" "}
+                Add <span className="hidden lg:inline">New</span> Recipient
+              </button>
+            )}
           </div>
         </div>
       </div>

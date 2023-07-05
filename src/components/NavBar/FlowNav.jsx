@@ -17,7 +17,7 @@ const FlowNav = ({sendMoneyValue}) => {
 
   return (
     <div className="bg-gray-0 p-4 flex justify-between font-inter items-center lg:px-16 lg:py-8 lg:h-[12vh] h-[10vh]  fixed top-0 w-full z-50 lg:relative">
-      <Link to="/">
+      <Link to="/dashboard">
         <img src={logoLG} alt="" className="hidden lg:block" />
         <img src={logoSM} alt="" className="lg:hidden block" />
       </Link>

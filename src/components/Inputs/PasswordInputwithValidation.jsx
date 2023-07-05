@@ -8,8 +8,6 @@ const PasswordInputwithValidation = ({
   setValidationLength,
   validationUpperCase,
   setValidationUpperCase,
-  validationSpecialCharacter,
-  setValidationSpecialCharacter,
   errors,
 }) => {
   // Password Validation
@@ -26,10 +24,10 @@ const PasswordInputwithValidation = ({
       ? setValidationUpperCase(true)
       : setValidationUpperCase(false);
 
-    password.match(/[#?!@$%^&*-]/)
-      ? setValidationSpecialCharacter(true)
-      : setValidationSpecialCharacter(false);
-  }, [password, setValidationSpecialCharacter, setValidationUpperCase, setValidationLength]);
+    // password.match(/[#?!@$%^&*-]/)
+    //   ? setValidationSpecialCharacter(true)
+    //   : setValidationSpecialCharacter(false);
+  }, [password, setValidationUpperCase, setValidationLength]);
 
   const [passwordType, setPasswordType] = useState("password");
   const togglePassword = () => {
@@ -124,8 +122,8 @@ font-inter  flex-1 `}
             At least 8 characters
           </p>
         </div>
-        <div className="h-3" />
-        <div className="flex gap-3 items-center">
+        
+        {/* <div className="flex gap-3 items-center">
           <div
             className={`h-6 w-6 ${
               validationSpecialCharacter ? "bg-green-200" : "bg-gray-100"
@@ -142,7 +140,7 @@ font-inter  flex-1 `}
           >
             1 special character, ex. @#$%&
           </p>
-        </div>
+        </div> */}
       </div>
     </>
   );

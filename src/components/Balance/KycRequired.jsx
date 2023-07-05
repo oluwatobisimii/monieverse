@@ -14,13 +14,13 @@ const KycRequired = ({ isOpen, onClose }) => {
 
   const kycData = useSelector((state) => state.getKyc.kyc);
   const getKycReduxStatus = useSelector((state) => state.getKyc.status);
-  
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-   dispatch(getKyc())
-   // eslint-disable-next-line
-  }, [])
+    dispatch(getKyc());
+    // eslint-disable-next-line
+  }, []);
 
   const getKycStatusRedux = () => {
     if (getKycReduxStatus === "fulfilled") {
@@ -28,7 +28,7 @@ const KycRequired = ({ isOpen, onClose }) => {
       if (empty_fields?.length > 0 && !empty_fields.includes("Address")) {
         console.log(empty_fields);
         console.log(!empty_fields.includes("Address"));
-        
+
         setKycLevel("bank");
       }
       if (
@@ -47,15 +47,10 @@ const KycRequired = ({ isOpen, onClose }) => {
     }
   };
 
-
   useEffect(() => {
     getKycStatusRedux();
     // eslint-disable-next-line
   }, [getKycReduxStatus]);
-
-
-  
-
 
   const navigate = useNavigate();
   return (
@@ -183,11 +178,10 @@ const KycRequired = ({ isOpen, onClose }) => {
                   className="flex-1 h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl disabled:bg-primary-300 disabled:cursor-not-allowed"
                   onClick={() => {
                     if (kycLevel === "done") {
-                      navigate("/");
                       onClose();
                       return;
                     }
-                    navigate("/kyc");
+                    navigate("/dashboard/kyc");
                     onClose();
                   }}
                 >

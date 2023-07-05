@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   ArrowLeftIcon,
-  CheckIcon,
   ChevronDownIcon,
   PlusCircleIcon,
   PlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
-import USA from "../../assets/countries/Country = USA.svg";
-import Nigeria from "../../assets/countries/Country = Nigeria.svg";
-import Euro from "../../assets/countries/Country = Europe.svg";
-import UK from "../../assets/countries/Country = UK.svg";
+
 import ShieldCheck from "../../assets/icons/ShieldCheck.svg";
 import sendIcon from "../../assets/icons/PaperPlaneTiltSend.svg";
 import convertIcon from "../../assets/icons/ArrowsClockwiseConvert.svg";
@@ -22,47 +18,12 @@ import BankTransferPopup from "../ReceiveMoney/BankTransferPopup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AllCurrencies } from "../data/AllCurrencies";
+import { AvailableWallets } from "../Balance/AddNewBalance";
 
-const CurrencyOption = ({
-  currency,
-  currencyImg,
-  currencyCode,
-  selected,
-  setSelected,
-}) => {
-  return (
-    <div
-      className={`rounded-xl border border-gray-100 flex items-center justify-between px-4 py-3 ${
-        selected === currency && "bg-gray-25"
-      }`}
-      onClick={() => {
-        setSelected(currency);
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <div className="flex gap-1 items-center">
-          <div className="w-5 h-5 rounded-full bg-gray-100 p-[1px]">
-            <img src={currencyImg} alt="" />
-          </div>
-          <p className="text-gray-600 text-md font-medium">{currencyCode}</p>
-        </div>
-        <p className="text-md text-gray-400">- {currency}</p>
-      </div>
-      <div
-        className={`h-6 w-6 ${
-          selected === currency ? "bg-primary-400" : "bg-gray-50"
-        } rounded-full flex center`}
-      >
-        {selected === currency && (
-          <CheckIcon className="h-[18px] text-gray-0" />
-        )}
-      </div>
-    </div>
-  );
-};
+
 
 const AvailableBalances = () => {
-  const [balance, setBalance] = useState("");
+  const [selected, setSelected] = useState({});
   const [balanceOptions, setBalanceOptions] = useState("");
   const [receiveMoneyOption, setReceiveMoneyOption] = useState(false);
   const [bankTransfer, setBankTransfer] = useState(false);
@@ -74,11 +35,11 @@ const AvailableBalances = () => {
   const WalletCurrencies = Currencies.filter(
     (wallet) => wallet.can_have_wallet
   );
+  const { currency_id } = useParams();
   const AddWallet = WalletCurrencies.filter((wallet, index) => {
-    return Wallets[index].currency_id !== wallet.id;
+    return Wallets[index]?.currency_id !== wallet.id;
   });
 
-  const { currency_id } = useParams();
   const [currentWallet, setCurrentWallet] = useState({});
 
   useEffect(() => {
@@ -92,7 +53,7 @@ const AvailableBalances = () => {
   const toggleReceiveOptionOverlay = () => {
     setReceiveMoneyOption(!receiveMoneyOption);
   };
-  
+
   const toggleBankTransferOverlay = () => {
     setBankTransfer(!bankTransfer);
   };
@@ -122,7 +83,7 @@ const AvailableBalances = () => {
           <div
             className="flex items-center gap-4 cursor-pointer group"
             onClick={() => {
-              navigate("/");
+              navigate("/dashboard");
             }}
           >
             <ArrowLeftIcon className="h-4 lg:h-6 text-gray-600 group-hover:text-gray-400 transition-all duration-100" />
@@ -175,7 +136,7 @@ const AvailableBalances = () => {
                           return (
                             <Link
                               key={index}
-                              to={`/available-balance/${wallet.currency_id}`}
+                              to={`/dashboard/available-balance/${wallet.currency_id}`}
                               onClick={() => {
                                 setSwitchCurrency(false);
                               }}
@@ -219,7 +180,7 @@ const AvailableBalances = () => {
                     return (
                       <Link
                         key={index}
-                        to={`/available-balance/${wallet.currency_id}`}
+                        to={`/dashboard/available-balance/${wallet.currency_id}`}
                         className={`px-3 py-1.5 flex gap-1 items-center rounded-[6px] cursor-pointer hover:bg-gray-0 ${
                           currentWallet.currency_id === wallet.currency_id
                             ? "bg-gray-0"
@@ -248,7 +209,7 @@ const AvailableBalances = () => {
                   <button
                     className="py-2 px-4 flex gap-2 items-center border border-gray-200 rounded-lg"
                     onClick={() => {
-                      setBalanceOptions(true);
+                      setBalanceOptions(!balanceOptions);
                     }}
                   >
                     <PlusCircleIcon className="h-5 text-gray-600" />
@@ -259,36 +220,8 @@ const AvailableBalances = () => {
                   {/* Add Balance Dropdown */}
                   {balanceOptions && (
                     <div className="absolute top-full right-0 shadow-lg bg-gray-0 rounded-2xl  w-[348px]">
-                      <div className=" space-y-3 p-3">
-                        <CurrencyOption
-                          currencyImg={UK}
-                          currency={"Great Britain Pounds"}
-                          currencyCode={"GBP"}
-                          selected={balance}
-                          setSelected={setBalance}
-                        />
-                        <CurrencyOption
-                          currencyImg={Euro}
-                          currency={"Euros"}
-                          currencyCode={"EUR"}
-                          selected={balance}
-                          setSelected={setBalance}
-                        />
-                        <CurrencyOption
-                          currencyImg={Nigeria}
-                          currency={"Nigerian Naira"}
-                          currencyCode={"NGN"}
-                          selected={balance}
-                          setSelected={setBalance}
-                        />
-                        <CurrencyOption
-                          currencyImg={USA}
-                          currency={"United States Dollar"}
-                          currencyCode={"USD"}
-                          selected={balance}
-                          setSelected={setBalance}
-                        />
-                      </div>
+                      
+                      <AvailableWallets selected={selected} setSelected={setSelected} />
                       <div className="border-t border-gray-100 p-3 flex gap-4">
                         <button
                           className="rounded-lg py-2 px-5 border border-gray-200 text-gray-600 text-md font-medium flex-1"
@@ -333,7 +266,7 @@ const AvailableBalances = () => {
                 <div className="h-12 lg:hidden" />
                 <div className="flex flex-col lg:flex-row gap-y-3 gap-3 items-center">
                   <Link
-                    to="/move-money"
+                    to="/dashboard/move-money"
                     className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 w-full lg:w-auto"
                   >
                     <img src={sendIcon} alt="" />
@@ -354,7 +287,7 @@ const AvailableBalances = () => {
                       </p>
                     </button>
                     <Link
-                      to="/convert"
+                      to="/dashboard/convert"
                       className="bg-gray-50 rounded-xl px-5 py-4 center gap-2 flex-1"
                     >
                       <img src={convertIcon} alt="" />

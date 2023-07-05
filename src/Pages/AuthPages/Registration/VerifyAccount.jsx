@@ -101,7 +101,7 @@ const VerifyAccount = ({
       return;
     }
 
-    if (toasterError === null && toasterError === "" && errorMsg === "") {
+    if (toasterError === null && toasterError === undefined && toasterError === "" && errorMsg === "") {
       console.log("here");
       setShowToaster(false);
       return;
@@ -322,7 +322,7 @@ const VerifyAccount = ({
                       </button>
                     ) : (
                       <OtpTimer
-                        duration={120}
+                        duration={300}
                         onTimerComplete={() => {
                           console.log("Timer Complete");
                           setResendOtpVar(true);

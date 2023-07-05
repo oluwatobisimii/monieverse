@@ -9,6 +9,7 @@ import walletReducer from "../features/walletSlice";
 import kycStatusReducer from "../features/kycStatusSlice";
 import logoutReducer from "../features/logoutSlice";
 import allCurrenciesReducer from "../features/currenciesSlice";
+import allRecipientsReducer from '../features/recipientsSlice';
 
 
 
@@ -20,6 +21,7 @@ const store = configureStore({
         userProfile: userProfileReducer,
         refreshToken: refreshTokenReducer,
         allCurrencies: allCurrenciesReducer,
+        allRecipients: allRecipientsReducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer,
         wallets: walletReducer,

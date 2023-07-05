@@ -6,7 +6,7 @@ import userSettings from "../../assets/icons/UserGear.svg";
 import wallet from "../../assets/icons/Wallet.svg";
 import signOut from "../../assets/icons/SignOut.svg";
 import warnings from "../../assets/icons/Warning.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logoutUser } from "../../features/logoutSlice";
@@ -36,6 +36,7 @@ const UserInitials = ({ first, last, colorCode }) => {
     default:
       break;
   }
+
   return (
     <div className={`h-10 w-10 rounded-full ${avatarStyle} center`}>
       {userDetails.status === "fulfilled" &&
@@ -61,9 +62,15 @@ const ProfileMenu = () => {
     let colorCodeVal = Math.floor(Math.random() * 5) + 1;
     setcolorCode(colorCodeVal);
   }, []);
+
+  // eslint-disable-next-line
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     dispatch(logoutUser());
     toggleDropdown();
+    navigate("/login");
+
     window.location.reload();
   };
   // const navigate = useNavigate();
@@ -169,7 +176,7 @@ const ProfileMenu = () => {
                     </div>
                     <div className="p-3">
                       <Link
-                        to="/settings"
+                        to="/dashboard/settings"
                         className="hover:bg-gray-50 flex items-center gap-2 p-3 rounded-xl cursor-pointer"
                       >
                         <img src={userSettings} alt="" />
@@ -190,7 +197,7 @@ const ProfileMenu = () => {
                         <>
                           <div className="h-[1px] w-full bg-gray-100" />
                           <div className="h-4" />
-                          <Link to="/kyc" className="px-3 flex justify-between">
+                          <Link to="/dashboard/kyc" className="px-3 flex justify-between">
                             <div>
                               <div className="flex items-center gap-2">
                                 <img src={warnings} alt="" />

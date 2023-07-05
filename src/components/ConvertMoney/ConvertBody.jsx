@@ -22,13 +22,11 @@ import StepperWrapper from "../Wrappers/StepperWrapper";
 import { useSelector } from "react-redux";
 import InputCurrency from "../Inputs/InputCurrency";
 import { ArrowDown } from "phosphor-react";
-import PinDialog from "../Inputs/PinDialog";
 
 const ConvertBody = () => {
   // eslint-disable-next-line
   const navigate = useNavigate();
   const [num, setNum] = React.useState(0);
-
   const [step, setStep] = useState(0);
   let loaderWidth = step === 0 ? "w-1/2" : "w-full";
   // eslint-disable-next-line
@@ -59,27 +57,53 @@ const ConvertBody = () => {
         }
       })
       .catch((err) => {
-        console.error(err);
+        if (err.response && err.response.status === 400) {
+          if (to === from) {
+            setRate(1);
+            setFee(0)
+          } else {
+            setRate(0);
+            setFee(0)
+          }
+        }
       });
   };
 
+
+  // const getRateDetails = async () => {
+  //   await baseApiCall(
+  //     `/users/quotes?base_currency=${from}&quote_currency=${to}&amount=10000`,
+  //     "GET"
+  //   )
+  //     .then((payload) => {
+  //       if (payload.status === "OK") {
+  //         setRate(payload.data.rate.rate);
+          
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if(err.response && err.response.status === "400"){
+
+  //         if(to === from ){
+  //           setRate(1)
+            
+  //           console.error(err);
+  //         }
+  //       }
+  //     });
+  // };
+
   useEffect(() => {
+    console.log(1 + 1 + "Time: " + Date.now());
+    console.log(fromCurrency);
+    setFrom(fromCurrency.id);
+    setTo(toCurrency.id);
     getRateDetails();
     // eslint-disable-next-line
-  }, []);
-
-  const [enterPin, setEnterPin] = useState(false);
-
-  const toggleEnterPinOverlay = () => {
-    setEnterPin(!enterPin);
-  };
+  }, [fromCurrency, toCurrency]);
 
   return (
     <>
-      {enterPin && (
-        <PinDialog isOpen={enterPin} onClose={toggleEnterPinOverlay} />
-      )}
-
       <div className="lg:bg-gray-50 w-full lg:overflow-hidden mt-[calc(10vh+4px+46px)] md:mt-[calc(10vh+4px+60px)] lg:mt-0 lg:h-[88vh] ">
         {/* Loader */}
         <div className="h-1 bg-primary-200 w-full fixed lg:top-[0] top-[10vh] z-50 lg:relative ">
@@ -157,7 +181,7 @@ const ConvertBody = () => {
               {/* Amount Input */}
 
               <div className="flex-1 flex flex-col">
-                <div className="overflow-hidden border border-gray-100 rounded-2xl bg-gray-25">
+                <div className=" border border-gray-100 rounded-2xl bg-gray-25">
                   <div className="rounded-2xl px-3 md:px-6 py-4 bg-gray-0 flex justify-between items-center ">
                     <div className="flex-1 w-1/2 ">
                       <p className="text-sm text-gray-400 ">Swap</p>
@@ -168,6 +192,7 @@ const ConvertBody = () => {
                     <SwapFromCurrencies
                       fromCurrency={fromCurrency}
                       setFromCurrency={setFromCurrency}
+                      setFrom={setFrom}
                     />
                   </div>
                   <div className="p-3">
@@ -248,6 +273,7 @@ const ConvertBody = () => {
                     <SwapToCurrencies
                       toCurrency={toCurrency}
                       setToCurrency={setToCurrency}
+                      setTo={setTo}
                     />
                   </div>
                   <div className="p-3 w-full">
@@ -263,7 +289,7 @@ const ConvertBody = () => {
                   <div className="flex gap-2 items-center">
                     <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
                       <img
-                        src={AllCurrencies[0].currencyImg}
+                        src={AllCurrencies[from-1]?.currencyImg}
                         alt=""
                         className="border border-gray-100 rounded-full"
                       />
@@ -280,6 +306,7 @@ const ConvertBody = () => {
                 <div className="h-10"></div>
                 <button
                   className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl mt-auto"
+                  
                   onClick={() => {
                     setStep(1);
                   }}

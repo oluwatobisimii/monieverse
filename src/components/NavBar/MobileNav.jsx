@@ -9,7 +9,7 @@ const MobileNav = () => {
   return (
     <div className="lg:hidden fixed bottom-10 rounded-full mobileBar mx-4 w-[calc(100%-32px)] flex p-2 justify-between">
       <Link
-        to="/"
+        to="/dashboard"
         className={`px-6 py-2 ${
           !recipients ? "bg-primary-100" : ""
         } hover:cursor-pointer rounded-full`}
@@ -23,7 +23,7 @@ const MobileNav = () => {
         </p>
       </Link>
       <Link
-        to="/recipients"
+        to="/dashboard/recipients"
         className={`px-6 py-2 rounded-full hover:cursor-pointer ${
           recipients ? "bg-primary-100" : ""
         }`}
@@ -37,11 +37,11 @@ const MobileNav = () => {
         </p>
       </Link>
       <Link
-        to="/move-money"
+        to="/dashboard/move-money"
         className="bg-primary-400 py-2 px-5 text-xs text-gray-0 font-medium rounded-full flex items-center gap-2"
       >
         Move Money
-        <img src={send} alt="" />
+        <img src={send} alt="" className="xs:hidden sm:block"/>
       </Link>
     </div>
   );

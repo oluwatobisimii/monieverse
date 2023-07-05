@@ -18,20 +18,20 @@ export const AllCurrencies = [
         currencyCode: 'USD',
         currencyImg: USA,
     },
-    {
-        currencyName: 'Chinese Yuan',
-        currencyCode: 'CNY',
-        currencyImg: Chinese,
+   {
+        currencyName: 'Great Britain Pounds',
+        currencyCode: 'GBP',
+        currencyImg: UK,
     },
     {
         currencyName: 'Euros',
         currencyCode: 'EUR',
         currencyImg: Europe,
     },
-    {
-        currencyName: 'Great Britain Pounds',
-        currencyCode: 'GBP',
-        currencyImg: UK,
+     {
+        currencyName: 'Chinese Yuan',
+        currencyCode: 'CNY',
+        currencyImg: Chinese,
     },
     {
         currencyName: 'Indian Rupee',

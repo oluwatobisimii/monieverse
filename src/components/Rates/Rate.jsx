@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Nigeria from "../../assets/countries/Country = Nigeria.svg";
-import USA from "../../assets/countries/Country = USA.svg";
-import ArrowDownUp from "../../assets/icons/ArrowsDownUp.svg";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { AllCurrencies } from "../data/AllCurrencies";
-
+import { ArrowDown } from "phosphor-react";
+import { baseApiCall } from "../../api/MakeApiCallswithHeader";
+import InputCurrency from "../Inputs/InputCurrency";
+import SwapFromCurrencies from "../Inputs/SwapFromCurrencies";
+import SwapToCurrencies from "../Inputs/SwapToCurrencies";
 
 export const CurrencyList = ({
   position = "top-full right-0",
@@ -44,28 +44,42 @@ export const CurrencyList = ({
 };
 
 const Rate = () => {
-  const [from, setFrom] = useState(0);
-  const [fromValue, setFromValue] = useState(0);
-  // eslint-disable-next-line
-  const [formattedInput, setFormattedInput] = useState(0);
-  const [fromDropDown, setFromDropDown] = useState(false);
-  // eslint-disable-next-line
-  const [to, setTo] = useState(1);
-  // eslint-disable-next-line
-  const [toValue, setToValue] = useState(1);
-  // eslint-disable-next-line
-  const [toDropDown, setToDropDown] = useState(false);
+  const [from, setFrom] = useState(1);
+  const [to, setTo] = useState(2);
+  const [rate, setRate] = useState(0.025);
+  const [fromCurrency, setFromCurrency] = useState({});
+  const [toCurrency, setToCurrency] = useState({});
+  const [num, setNum] = React.useState(0);
+
+  const getRateDetails = async () => {
+    await baseApiCall(
+      `/users/quotes?base_currency=${from}&quote_currency=${to}&amount=10000`,
+      "GET"
+    )
+      .then((payload) => {
+        if (payload.status === "OK") {
+          setRate(payload.data.rate.rate);
+        }
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 400) {
+          if (to === from) {
+            setRate(1);
+          } else {
+            setRate(0);
+          }
+        }
+      });
+  };
 
   useEffect(() => {
-    if (fromValue < 100) {
-      setFormattedInput((prev) => {
-        if (prev) {
-          return prev / 100;
-        } else return fromValue / 100;
-      });
-    }
+    console.log(1 + 1 + "Time: " + Date.now());
+    console.log(fromCurrency);
+    setFrom(fromCurrency.id);
+    setTo(toCurrency.id);
+    getRateDetails();
     // eslint-disable-next-line
-  }, []);
+  }, [fromCurrency, toCurrency]);
 
   
 
@@ -85,91 +99,66 @@ const Rate = () => {
           <div className="flex flex-col gap-y-6 gap-x-10 lg:flex-row">
             {/* Exchange */}
             <div className="p-4 lg:px-10 lg:py-8 rounded-xl lg:rounded-2xl border-gray-100 border w-full  lg:w-[54%]">
-              <div className="flex w-full justify-between items-end">
-                <div className="w-[50%] ">
-                  <p className="text-sm text-gray-400">From Currency</p>
+              <div className="rounded-2xl px-3 md:px-6 py-4 bg-gray-0 flex justify-between items-center ">
+                <div className="flex-1 w-1/2 ">
+                  <p className="text-sm text-gray-400 ">From Currency</p>
                   <div className="h-2" />
-
-                  <input
-                    className="text-d-xs lg:text-d-sm text-gray-600 placeholder:text-gray-600 font-clashGrotesk font-medium outline-none flex-1"
-                    type="number"
-                    step="0.01"
-                    value={fromValue}
-                    placeholder="720.00"
-                    onChange={(e) => {
-                      const value = e.target.value;
-
-                      setFromValue(
-                        parseFloat(value).toLocaleString("en-US", {
-                          style: "decimal",
-                          maximumFractionDigits: 2,
-                          minimumFractionDigits: 2,
-                        })
-                      );
-                    }}
-                    onBlur={(e) => {}}
-                  />
+                  {/* <CurrencyInput num={num} setNum={setNum} /> */}
+                  <InputCurrency value={num} setValue={setNum} />
                 </div>
-                <div className="relative">
-                  <div
-                    className="bg-gray-50 hover:bg-gray-100 cursor-pointer p-1 rounded-full flex gap-5"
-                    onClick={() => {
-                      setFromDropDown(!fromDropDown);
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <img src={AllCurrencies[from].currencyImg} alt="" />
-                      <p className="text-md font-medium text-gray-500">
-                        {AllCurrencies[from]?.currencyCode}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="h-6 w-[1px] bg-gray-200" />
-                      <ChevronDownIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                  </div>
-                  {fromDropDown && (
-                    <CurrencyList
-                      setSelected={setFrom}
-                      setDropDown={setFromDropDown}
-                    />
-                  )}
-                </div>
+                <SwapFromCurrencies
+                  fromCurrency={fromCurrency}
+                  setFromCurrency={setFromCurrency}
+                  setFrom={setFrom}
+                />
               </div>
               <div className="h-2" />
               {/* Divider */}
               <div className="flex items-center">
                 <div className="flex-1 h-[1px] bg-gray-100" />
                 <div className="h-12 w-12 rounded-full border border-gray-100 flex items-center justify-center">
-                  <img src={ArrowDownUp} alt="" />
+                  <ArrowDown className="text-gray-400 text-[24px]" />
                 </div>
                 <div className="flex-1 h-[1px] bg-gray-100" />
               </div>
               <div className="h-2" />
-              <div className="flex justify-between items-end">
-                <div className="w-[50%]">
-                  <p className="text-sm text-gray-400">To Currency</p>
+              <div className="rounded-2xl px-3 md:px-6 py-4 bg-gray-0 flex justify-between items-center ">
+                <div>
+                  <p className="text-sm text-gray-400">For</p>
                   <div className="h-2" />
-                  <input
-                    className="text-d-xs lg:text-d-sm text-gray-600 placeholder:text-gray-600 font-clashGrotesk font-medium outline-none"
-                    placeholder="1.00"
-                  />
+                  <p className="text-d-sm font-medium font-clashGrotesk text-gray-600">
+                    {(Number(num) * rate).toFixed(2)}
+                  </p>
                 </div>
-                <div className="bg-gray-50 p-1 rounded-full flex gap-5">
-                  <div className="flex items-center gap-2">
-                    <img src={USA} alt="" />
-                    <p className="text-md font-medium text-gray-500">USD</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-[1px] bg-gray-200" />
-                    <ChevronDownIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
+                <SwapToCurrencies
+                  toCurrency={toCurrency}
+                  setToCurrency={setToCurrency}
+                  setTo={setTo}
+                />
               </div>
             </div>
 
             {/* Unit of Exchange */}
-            <div className="bg-gray-25 p-16 lg:w-[42%] rounded-xl lg:rounded-2xl">
+            <div className="bg-gray-25 p-16 lg:w-[42%] rounded-xl lg:rounded-2xl flex-col center">
+                  <div className="flex gap-2 items-center">
+                    <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
+                      <img
+                        src={AllCurrencies[from-1]?.currencyImg}
+                        alt=""
+                        className="border border-gray-100 rounded-full"
+                      />
+                      <p className="text-md font-medium text-gray-500 ">
+                        1 {fromCurrency.code}
+                      </p>
+                    </div>
+                    <p className="text-md font-medium text-gray-500">equals</p>
+                  </div>
+                  <p className="text-d-sm lg:text-d-lg text-gray-600 font-clashGrotesk font-medium text-center">
+                    {rate} {toCurrency.code}
+                  </p>
+                </div>
+
+            {/* <div className="bg-gray-25 p-16 lg:w-[42%] rounded-xl lg:rounded-2xl">
               <div className="flex gap-2 items-center justify-center">
                 <div className="flex items-center gap-2 bg-gray-0 rounded-full p-1 pr-3">
                   <img src={Nigeria} alt="" />
@@ -181,7 +170,7 @@ const Rate = () => {
               <p className="text-d-sm lg:text-d-lg text-gray-600 font-clashGrotesk font-medium text-center">
                 0.0045USD
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

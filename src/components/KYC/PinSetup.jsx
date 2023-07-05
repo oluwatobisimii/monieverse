@@ -245,7 +245,7 @@ const PinSetup = ({ optionType, step, setStep }) => {
                     ) {
                       navigate("/success-page", {
                         state: {
-                          to: "/",
+                          to: "/dashboard",
                           title: "Verification in Progress",
                           description:
                             "We’ll let you know once your documents have been verified.",

@@ -12,8 +12,8 @@ const logoutSlice = createSlice({
             // const history = useHistory();
             // Clear user session and navigate to the login page
             localStorage.clear();
+            window.location.reload();
             // eslint-disable-next-line
-            // window.location.reload();
             // history.push('/login'); // 
 
         },

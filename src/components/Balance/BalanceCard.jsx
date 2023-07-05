@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 
-
 const BalanceCard = ({
   currency,
   balance = 0,
@@ -86,13 +85,13 @@ const BalanceCard = ({
         className="rounded-3xl w-[300px] bg-gray-25 p-6 "
         onClick={() => {
           if (kycStatus) {
-            navigate(`/available-balance/${currency_id}`, {
+            navigate(`/dashboard/available-balance/${currency_id}`, {
               state: { currencyName, currencysymbol },
             });
           }
 
           if (!kycStatus) {
-            toggleKycOverlay()
+            toggleKycOverlay();
           }
         }}
       >

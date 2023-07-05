@@ -6,6 +6,12 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
 import RateWarning from "./RateWarning";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { UserGear } from "phosphor-react";
+import { truncateText } from "../UtilityComponents/TruncateText";
+import { extractInitials } from "../UtilityComponents/ExtractInitials";
+import { UserInitials } from "../Recipients/RecipientsTable";
 
 export default function SavedRecipient({
   dropDown,
@@ -16,6 +22,18 @@ export default function SavedRecipient({
   Bank,
   setStep,
 }) {
+  const [searchValue, setSearchValue] = useState("");
+
+  const allRecipients = useSelector(
+    (state) => state.allRecipients.allRecipients
+  );
+
+  const filteredRecipients = allRecipients.recipients.filter((item) => {
+    return item.data.email.includes(searchValue);
+  });
+
+  console.log(filteredRecipients);
+
   return (
     <div>
       <div className="w-full">
@@ -30,8 +48,12 @@ export default function SavedRecipient({
           <input
             type={"text"}
             name={"lastName"}
-            placeholder="Enter your email address"
-            className="  px-4 py-3 rounded-lg  focus:outline-none placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            placeholder="Type to search a saved recipient"
+            className="  px-4 py-3 rounded-lg  focus:outline-none placeholder:text-sm md:placeholder:text-md placeholder:text-grey-400 disabled:bg-gray-25 text-gray-600
                font-inter  flex-1"
           />
           {dropDown ? (
@@ -61,7 +83,7 @@ export default function SavedRecipient({
           </div>
           <div className="w-full h-[1px] bg-gray-200" />
           <div className="px-4">
-            <p>Recent</p>
+            {filteredRecipients.length > 0 &&<p className="text-sm text-gray-400">Recent</p>}
             <div className="h-1" />
             <div
               className="gap-y-1 flex flex-col"
@@ -69,44 +91,38 @@ export default function SavedRecipient({
                 setDropDown(!dropDown);
               }}
             >
-              <div className="py-2 flex items-center cursor-pointer">
-                <div className="flex gap-2 items-center">
-                  <div className="rounded-full h-6 w-6 bg-lightBlue-100 text-lightBlue-500 flex center">
-                    <p className="text-xs font-medium">KM</p>
+              <div className="py-2 cursor-pointer gap-y-1 flex flex-col">
+                {filteredRecipients.length > 0 ? (
+                  ""
+                ) : (
+                  <div className="center h-[151px] flex-col">
+                    <UserGear
+                      weight="duotone"
+                      className="text-gray-300 text-[48px]"
+                    />
+                    <div className="h-2"></div>
+                    <p className="text-md md:text-lg text-gray-500">No recipient found</p>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-medium text-gray-500">
-                      Karex Mobile
-                    </p>
-                    <p className="text-sm text-gray-400">hello@carex.com</p>
-                  </div>
-                </div>
-              </div>
-              <div className="py-2 flex items-center cursor-pointer">
-                <div className="flex gap-2 items-center">
-                  <div className="rounded-full h-6 w-6 bg-error-100 text-error-500 flex center">
-                    <p className="text-xs font-medium">K</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-medium text-gray-500">
-                      Konotal LTD
-                    </p>
-                    <p className="text-sm text-gray-400">hello@konotal.co</p>
-                  </div>
-                </div>
-              </div>
-              <div className="py-2 flex items-center cursor-pointer">
-                <div className="flex gap-2 items-center">
-                  <div className="rounded-full h-6 w-6 bg-green-100 text-green-500 flex center">
-                    <p className="text-xs font-medium">XF</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <p className="text-sm font-medium text-gray-500">
-                      Xing Fu Chan Ltd
-                    </p>
-                    <p className="text-sm text-gray-400">customer@xingfu.com</p>
-                  </div>
-                </div>
+                )}
+                {filteredRecipients.map((recipient, index) => {
+                  return (
+                    <div className="flex gap-2 items-center py-2">
+                      <UserInitials initials={extractInitials(recipient.data.account_holder_fullname)} size="6"/>
+                      {/* <div className="rounded-full h-6 w-6 bg-lightBlue-100 text-lightBlue-500 flex center">
+                        <p className="text-xs font-medium">{extractInitials(recipient.data.account_holder_fullname)}</p>
+                      </div> */}
+                      <div className="flex items-center gap-4">
+                        <p className="text-sm font-medium text-gray-500 whitespace-nowrap">
+                        {truncateText(recipient.data.account_holder_fullname, 20)
+}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          {recipient.data.email}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AllCurrencies as localCurrency } from "../data/AllCurrencies";
 import { getAllCurrencies } from "../../features/currenciesSlice";
@@ -8,6 +8,7 @@ const SwapFromCurrencies = ({
   position = "top-full right-0",
   fromCurrency,
   setFromCurrency,
+  setFrom
 }) => {
   const [dropDown, setDropDown] = useState(false);
   const [SwappableFromCurrencies, setSwappableFromCurrencies] = useState([]);
@@ -20,7 +21,8 @@ const SwapFromCurrencies = ({
         (currency) => {
           return currency.can_swap_from;
         }
-      );
+      ).sort((a, b) => a.id - b.id);;
+      console.log(SwapFromCurrencies);
       setSwappableFromCurrencies(SwapFromCurrencies);
       setFromCurrency({ ...SwapFromCurrencies[0] });
     } else if (AllCurrencies.status === "idle") {
@@ -29,8 +31,32 @@ const SwapFromCurrencies = ({
     // eslint-disable-next-line
   }, [AllCurrencies]);
 
+  const popupRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setDropDown(false);
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (event.keyCode === 27) {
+        setDropDown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={popupRef}>
       <div
         className="bg-gray-50 hover:bg-gray-100 cursor-pointer p-1 rounded-full flex gap-5"
         onClick={() => {
@@ -63,13 +89,14 @@ const SwapFromCurrencies = ({
                   key={index}
                   onClick={() => {
                     setFromCurrency({ ...currency });
+                    setFrom(currency.id)
                     setDropDown(false);
                   }}
                 >
                   <div className="h-5 w-5 rounded-full border border-gray-100 flex center overflow-hidden">
                     <img
                       src={
-                        localCurrency[fromCurrency.id - 1]?.currencyImg || ""
+                        localCurrency[currency.id - 1]?.currencyImg || ""
                       }
                       alt=""
                     />

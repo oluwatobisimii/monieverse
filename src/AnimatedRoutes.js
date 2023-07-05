@@ -24,6 +24,8 @@ import TransactionsScreen from './Pages/TransactionsScreen';
 import ConvertScreen from './Pages/ConvertScreen';
 import SuccessfulAction from './components/Complete/SuccessfulAction';
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import LandingPage from './Pages/LandingPage';
+
 
 
 function AnimatedRoutes() {
@@ -32,29 +34,30 @@ function AnimatedRoutes() {
 
   return (
     <AnimatePresence mode="wait">
+     
       <Routes location={location} key={location.pathname}>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-account" element={<VerifyAccount />} />
-        <Route path="/success-page" element={<SuccessfulAction />} />
-        <Route path="/" element={<ProtectedRoutes />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/move-money" element={<MoveMoney />} />
-          <Route path="/convert" element={<ConvertScreen />} />
-          <Route path="/available-balance/:currency_id" element={<AvailableBalance />} />
-          <Route path="/transactions" element={<TransactionsScreen />} />
-          <Route path="/kyc" element={<KYCScreen />} />
-          <Route path="/recipients" element={<RecipientsScreen />} />
-          <Route path="/payment-card" element={<PaymentCard />} />
-          <Route path="/settings" element={<UserSettingsScreen />}>
-            <Route path="/settings" element={<PersonalInformation />} />
-            <Route path="/settings/notification" element={<NotificationSecurity />} />
-            <Route path="/settings/limits" element={<Limits />} />
-          </Route>
-
+      <Route path="/" element={<LandingPage />} /> {/* Landing page */}
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/verify-account" element={<VerifyAccount />} />
+      <Route path="/success-page" element={<SuccessfulAction />} />
+      <Route path="/dashboard" element={<ProtectedRoutes />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/move-money" element={<MoveMoney />} />
+        <Route path="/dashboard/convert" element={<ConvertScreen />} />
+        <Route path="/dashboard/available-balance/:currency_id" element={<AvailableBalance />} />
+        <Route path="/dashboard/transactions" element={<TransactionsScreen />} />
+        <Route path="/dashboard/kyc" element={<KYCScreen />} />
+        <Route path="/dashboard/recipients" element={<RecipientsScreen />} />
+        <Route path="/dashboard/payment-card" element={<PaymentCard />} />
+        <Route path="/dashboard/settings" element={<UserSettingsScreen />}>
+          <Route path="/dashboard/settings/" element={<PersonalInformation />} />
+          <Route path="/dashboard/settings/notification" element={<NotificationSecurity />} />
+          <Route path="/dashboard/settings/limits" element={<Limits />} />
         </Route>
-      </Routes>
+      </Route>
+    </Routes>
     </AnimatePresence>
   )
 }

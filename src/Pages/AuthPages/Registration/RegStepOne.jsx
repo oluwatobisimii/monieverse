@@ -27,8 +27,6 @@ export default function RegStepOne({
   const [password, setPassword] = useState("");
   const [validationLength, setValidationLength] = useState(false);
   const [validationUpperCase, setValidationUpperCase] = useState(false);
-  const [validationSpecialCharacter, setValidationSpecialCharacter] =
-    useState(false);
   const [accountType, setAccountType] = useState("");
   const [fillDetails, setFillDetails] = useState("");
   const [business_name, setBusinessName] = useState("");
@@ -38,7 +36,6 @@ export default function RegStepOne({
       password === "" ||
       !validationLength ||
       !validationUpperCase ||
-      !validationSpecialCharacter ||
       (accountType === "Business" && business_name === "")
     ) {
       setButton2State(false);
@@ -48,12 +45,9 @@ export default function RegStepOne({
     password,
     validationLength,
     validationUpperCase,
-    validationSpecialCharacter,
     accountType,
     business_name,
   ]);
-
-  
 
   return (
     <StepperWrapper>
@@ -85,8 +79,10 @@ export default function RegStepOne({
             duration: "0.25",
           }}
         >
-          <p className="text-sm md:text-md font-medium text-gray-500">What type of account are you creating?</p>
-          <div className="h-3"/>
+          <p className="text-sm md:text-md font-medium text-gray-500">
+            What type of account are you creating?
+          </p>
+          <div className="h-3" />
           <div
             className={`group hover:bg-gray-25 transition-all duration-500 cursor-pointer border border-gray-100 rounded-2xl p-4 lg:p-8 flex  justify-between ${
               accountType === "Personal" ? "bg-gray-25" : ""
@@ -132,7 +128,7 @@ export default function RegStepOne({
               </div>
             </div>
             <p className="text-gray-400 text-xs md:text-sm w-[120px] lg:w-[240px]">
-            Choose if you will be making payment on behalf of other people
+              Choose if you will be making payment on behalf of other people
             </p>
           </div>
           <div className="h-4" />
@@ -180,7 +176,7 @@ export default function RegStepOne({
               </div>
             </div>
             <p className="text-gray-400 text-xs md:text-sm w-[120px] lg:w-[240px]">
-            Choose if you will be making payment for yourself
+              Choose if you will be making payment for yourself
             </p>
           </div>
 
@@ -268,8 +264,6 @@ export default function RegStepOne({
             setValidationLength={setValidationLength}
             validationUpperCase={validationUpperCase}
             setValidationUpperCase={setValidationUpperCase}
-            validationSpecialCharacter={validationSpecialCharacter}
-            setValidationSpecialCharacter={setValidationSpecialCharacter}
             errors={errors}
           />
 
@@ -303,6 +297,7 @@ export default function RegStepOne({
                 sessionStorage.setItem("userInput", JSON.stringify(userInput));
                 dispatch(registerUser(userInput)).then(({ payload }) => {
                   if (payload.status === 200) {
+                    
                     payload.data.status === "ok" && setStep(2);
                   }
                 }); // setStep(1)

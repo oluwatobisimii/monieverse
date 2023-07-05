@@ -1,7 +1,9 @@
 import axios from "./axios";
+import store from '../app/store'
+import { logoutUser } from "../features/logoutSlice";
 
-// Wrapper function for making API calls with automatic token refreshing
 export const baseApiCall = async (url, method, data, contentType = "application/json", xpin = "") => {
+    localStorage.setItem('apiCallParams', JSON.stringify({ url, method, data, contentType }));
     // Get Token from Local Storage
 
     try {
@@ -17,8 +19,26 @@ export const baseApiCall = async (url, method, data, contentType = "application/
                 // 'X-Pin': xpin
             },
         });
+
+        // Clear the API call parameters from localStorage on success
+        localStorage.removeItem('apiCallParams');
+
         return response.data;
     } catch (error) {
+        if (error.response && error.response.status === 428) {
+            console.log(error.response && error.response.status === 428)
+            
+            // Toggle the enter pin div by removing 'hidden'
+            const enterPinDiv = document.getElementById('enterPinDiv');
+            enterPinDiv.classList.remove('hidden');
+            return
+        }
+
+        if (error.response && error.response.status === 401) {
+            console.log('here')
+            store.dispatch(logoutUser())
+        }
+        localStorage.removeItem('apiCallParams');
         console.error('API call error:', error);
         throw error;
 
@@ -29,63 +49,33 @@ export const baseApiCall = async (url, method, data, contentType = "application/
 
 
 
-// Wrapper function for making API calls with automatic token refreshing
-// export const baseApiCall = async (url, method, data, contentType = "application/json") => {
-//   try {
-//     const accessToken = JSON.parse(localStorage.getItem('accessToken'));
 
-//     // Make the initial API call
-//     const response = await axios({
-//       method: method,
-//       url: url,
-//       data: data,
-//       headers: {
-//         'Authorization': `Bearer ${accessToken.token}`,
-//         'Content-Type': contentType,
-//       },
-//     });
+// const wrapApiCall = async (url, method, params) => {
+//     // Save the parameters for the API call in localStorage
+//     localStorage.setItem('apiCallParams', JSON.stringify({ url, method, params }));
 
-//     // Check for 428 Precondition Required response
-//     if (response.status === 428) {
-//       const pin = prompt('Please enter your PIN:');
-//       if (pin) {
-//         // Retry the API call with the PIN in the header
-//         const pinResponse = await axios({
-//           method: method,
-//           url: url,
-//           data: data,
-//           headers: {
-//             'Authorization': `Bearer ${accessToken.token}`,
-//             'Content-Type': contentType,
-//             'X-Pin': pin,
-//           },
+//     try {
+//         const response = await axios({
+//             url,
+//             method,
+//             data: params,
+//             headers: {
+//                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+//             },
 //         });
-
-//         // Check for 403 Forbidden response after adding the PIN
-//         if (pinResponse.status === 403) {
-//           const newPin = prompt('Incorrect PIN. Please re-enter your PIN:');
-//           if (newPin) {
-//             // Retry the API call with the new PIN
-//             return baseApiCall(url, method, data, contentType);
-//           } else {
-//             throw new Error('PIN entry canceled. Aborting API call.');
+//         return response.data;
+//     } catch (error) {
+//         if (error.response && error.response.status === 428) {
+//             // Toggle the enter pin div by removing 'hidden'
+//             const enterPinDiv = document.getElementById('enterPinDiv');
+//             enterPinDiv.classList.remove('hidden');
 //           }
-//         }
 
-//         // Return the response if the PIN was successfully added
-//         return pinResponse.data;
-//       } else {
-//         throw new Error('PIN entry canceled. Aborting API call.');
-//       }
+//         throw error;
 //     }
-
-//     // Return the response for other status codes
-//     return response.data;
-//   } catch (error) {
-//     console.error('API call error:', error);
-//     throw error;
-//   }
 // };
+
+// export default wrapApiCall;
 
 
 

@@ -83,7 +83,7 @@ const KycStatus = () => {
                       <button
                         className={`text-md font-medium text-primary-600 bg-gray-0 rounded-[8px] px-5 py-2 w-full`}
                         onClick={() => {
-                          navigate("/kyc");
+                          navigate("/dashboard/kyc");
                         }}
                       >
                         Complete KYC

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Overlay from "../UtilityComponents/Overlay";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import info from "../../assets/icons/InfoPrimary.svg";
-import infoBlack from "../../assets/icons/InfoGray.svg";
 import copy from "../../assets/icons/Copy.svg";
 import { AllCurrencies } from "../data/AllCurrencies";
 import AccountDetails from "../../assets/payment/AccountDetails.svg";
+import { baseApiCall } from "../../api/MakeApiCallswithHeader";
 
 const BankTransferPopup = ({
   isOpen,
@@ -14,6 +14,33 @@ const BankTransferPopup = ({
   setBankTransfer,
   currentWallet,
 }) => {
+  const [virtualAccounts, setVirtualAccounts] = useState(null);
+  const [virtualAccountNGN, setVirtualAccountNGN] = useState(null);
+
+  const getVirtualAccounts = async () => {
+    await baseApiCall("/users/virtual-accounts", "GET")
+      .then((payload) => {
+        if (payload.status === "OK") {
+          setVirtualAccounts(payload.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    getVirtualAccounts();
+  }, []);
+
+  useEffect(() => {
+    if (virtualAccounts !== null) {
+      const NGNAccount = virtualAccounts?.find((item) => {
+        return item.currency_code === "NGN";
+      });
+      setVirtualAccountNGN(NGNAccount);
+    }
+  }, [virtualAccounts]);
+
   if (AllCurrencies[currentWallet.currency_id - 1]?.currencyCode === "USD") {
     return (
       <>
@@ -35,7 +62,7 @@ const BankTransferPopup = ({
             </p>
             <div className="h-1" />
             <p className="text-sm  text-gray-400">
-              We don’t have any banks available in this region at the moment.
+              We don’t have any banks available at the moment.
             </p>
           </div>
         </Overlay>
@@ -71,7 +98,7 @@ const BankTransferPopup = ({
           </div>
           <div className="h-8" />
           <div className="border border-gray-100 rounded-2xl p-8 space-y-8">
-            <div className="">
+            {/* <div className="">
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Payment Network</p>
                 <img src={infoBlack} alt="" />
@@ -81,15 +108,26 @@ const BankTransferPopup = ({
                 <p className="text-md text-gray-600">SWIFSTER</p>
                 <img src={copy} alt="" />
               </div>
-            </div>
+            </div> */}
             <div>
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Account holder</p>
               </div>
               <div className="h-0.5" />
               <div className="flex gap-1">
-                <p className="text-md text-gray-600">Monieverse</p>
-                <img src={copy} alt="" />
+                <p className="text-md text-gray-600">
+                  {virtualAccountNGN?.account_name}
+                </p>
+                <div
+                  className="cursor-pointer transition-all duration-100 hover:scale-105"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      virtualAccountNGN?.account_name
+                    );
+                  }}
+                >
+                  <img src={copy} alt="" />
+                </div>
               </div>
             </div>
 
@@ -100,13 +138,20 @@ const BankTransferPopup = ({
               <div className="h-0.5" />
               <div className="flex gap-1">
                 <p className="text-md text-gray-600">
-                  Monieverse Microfinance Bank Limited
+                  {virtualAccountNGN?.bank_name}
                 </p>
-                <img src={copy} alt="" />
+                <div
+                  className="cursor-pointer transition-all duration-100 hover:scale-105"
+                  onClick={() => {
+                    navigator.clipboard.writeText(virtualAccountNGN?.bank_name);
+                  }}
+                >
+                  <img src={copy} alt="" />
+                </div>
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Bank code</p>
               </div>
@@ -115,7 +160,7 @@ const BankTransferPopup = ({
                 <p className="text-md text-gray-600">392</p>
                 <img src={copy} alt="" />
               </div>
-            </div>
+            </div> */}
 
             <div>
               <div className="flex gap-1">
@@ -123,12 +168,23 @@ const BankTransferPopup = ({
               </div>
               <div className="h-0.5" />
               <div className="flex gap-1">
-                <p className="text-md text-gray-600">9022932504</p>
-                <img src={copy} alt="" />
+                <p className="text-md text-gray-600">
+                  {virtualAccountNGN?.account_number}
+                </p>
+                <div
+                  className="cursor-pointer transition-all duration-100 hover:scale-105"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      virtualAccountNGN?.account_number
+                    );
+                  }}
+                >
+                  <img src={copy} alt="" />
+                </div>
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <div className="flex gap-1">
                 <p className="text-xs text-gray-400">Address</p>
               </div>
@@ -140,7 +196,7 @@ const BankTransferPopup = ({
                 </p>
                 <img src={copy} alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -9,18 +9,18 @@ const DashboardNav = () => {
   const { pathname } = useLocation();
   const location = pathname.split("/");
 
-  const recipients = location[1] === "recipients" ? true : false;
+  const recipients = location[2] === "recipients" ? true : false;
 
   return (
     <div className="p-4 flex justify-between font-inter lg:px-16 items-center lg:py-8 border-b border-gray-100 sticky top-0 z-50 bg-gray-0">
-      <Link to="/">
+      <Link to="/dashboard">
         <img src={logoLG} alt="" className="hidden lg:block" />
         <img src={logoSM} alt="" className="lg:hidden block" />
       </Link>
 
       <div className="lg:flex gap-2  hidden">
         <Link
-          to="/"
+          to="/dashboard"
           className={`px-6 py-2 rounded-full hover:cursor-pointer ${
             !recipients ? "bg-primary-100" : ""
           }`}
@@ -34,7 +34,7 @@ const DashboardNav = () => {
           </p>
         </Link>
         <Link
-          to="/recipients"
+          to="/dashboard/recipients"
           className={`px-6 py-2 rounded-full hover:cursor-pointer ${
             recipients ? "bg-primary-100" : ""
           }`}
@@ -51,7 +51,7 @@ const DashboardNav = () => {
 
       <div className="flex gap-10">
         <Link
-          to="/move-money"
+          to="/dashboard/move-money"
           className="bg-primary-400 py-2 px-5 text-md text-gray-0 font-medium rounded-lg hidden lg:block"
         >
           Move Money
