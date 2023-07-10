@@ -26,7 +26,7 @@ import { ArrowDown } from "phosphor-react";
 const ConvertBody = () => {
   // eslint-disable-next-line
   const navigate = useNavigate();
-  const [num, setNum] = React.useState(0);
+  const [num, setNum] = React.useState("");
   const [step, setStep] = useState(0);
   let loaderWidth = step === 0 ? "w-1/2" : "w-full";
   // eslint-disable-next-line
@@ -60,15 +60,14 @@ const ConvertBody = () => {
         if (err.response && err.response.status === 400) {
           if (to === from) {
             setRate(1);
-            setFee(0)
+            setFee(0);
           } else {
             setRate(0);
-            setFee(0)
+            setFee(0);
           }
         }
       });
   };
-
 
   // const getRateDetails = async () => {
   //   await baseApiCall(
@@ -78,7 +77,7 @@ const ConvertBody = () => {
   //     .then((payload) => {
   //       if (payload.status === "OK") {
   //         setRate(payload.data.rate.rate);
-          
+
   //       }
   //     })
   //     .catch((err) => {
@@ -86,7 +85,7 @@ const ConvertBody = () => {
 
   //         if(to === from ){
   //           setRate(1)
-            
+
   //           console.error(err);
   //         }
   //       }
@@ -289,7 +288,7 @@ const ConvertBody = () => {
                   <div className="flex gap-2 items-center">
                     <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
                       <img
-                        src={AllCurrencies[from-1]?.currencyImg}
+                        src={AllCurrencies[from - 1]?.currencyImg}
                         alt=""
                         className="border border-gray-100 rounded-full"
                       />
@@ -306,7 +305,6 @@ const ConvertBody = () => {
                 <div className="h-10"></div>
                 <button
                   className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl mt-auto"
-                  
                   onClick={() => {
                     setStep(1);
                   }}

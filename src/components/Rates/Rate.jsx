@@ -49,7 +49,7 @@ const Rate = () => {
   const [rate, setRate] = useState(0.025);
   const [fromCurrency, setFromCurrency] = useState({});
   const [toCurrency, setToCurrency] = useState({});
-  const [num, setNum] = React.useState(0);
+  const [num, setNum] = React.useState('');
 
   const getRateDetails = async () => {
     await baseApiCall(
