@@ -49,11 +49,11 @@ const Rate = () => {
   const [rate, setRate] = useState(0.025);
   const [fromCurrency, setFromCurrency] = useState({});
   const [toCurrency, setToCurrency] = useState({});
-  const [num, setNum] = React.useState('');
+  const [num, setNum] = React.useState("");
 
-  const getRateDetails = async () => {
+  const getRateDetails = async (base = 1, exchange = 2) => {
     await baseApiCall(
-      `/users/quotes?base_currency=${from}&quote_currency=${to}&amount=10000`,
+      `/users/quotes?base_currency=${base}&quote_currency=${exchange}&amount=10000`,
       "GET"
     )
       .then((payload) => {
@@ -63,7 +63,7 @@ const Rate = () => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 400) {
-          if (to === from) {
+          if (base === exchange) {
             setRate(1);
           } else {
             setRate(0);
@@ -77,11 +77,11 @@ const Rate = () => {
     console.log(fromCurrency);
     setFrom(fromCurrency.id);
     setTo(toCurrency.id);
-    getRateDetails();
+
+    getRateDetails(from, to);
+
     // eslint-disable-next-line
   }, [fromCurrency, toCurrency]);
-
-  
 
   return (
     <section className="bg-gray-50 w-full overflow-hidden font-inter pb-28">
@@ -140,23 +140,23 @@ const Rate = () => {
 
             {/* Unit of Exchange */}
             <div className="bg-gray-25 p-16 lg:w-[42%] rounded-xl lg:rounded-2xl flex-col center">
-                  <div className="flex gap-2 items-center">
-                    <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
-                      <img
-                        src={AllCurrencies[from-1]?.currencyImg}
-                        alt=""
-                        className="border border-gray-100 rounded-full"
-                      />
-                      <p className="text-md font-medium text-gray-500 ">
-                        1 {fromCurrency.code}
-                      </p>
-                    </div>
-                    <p className="text-md font-medium text-gray-500">equals</p>
-                  </div>
-                  <p className="text-d-sm lg:text-d-lg text-gray-600 font-clashGrotesk font-medium text-center">
-                    {rate} {toCurrency.code}
+              <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-full pr-2.5">
+                  <img
+                    src={AllCurrencies[from - 1]?.currencyImg}
+                    alt=""
+                    className="border border-gray-100 rounded-full"
+                  />
+                  <p className="text-md font-medium text-gray-500 ">
+                    1 {fromCurrency.code}
                   </p>
                 </div>
+                <p className="text-md font-medium text-gray-500">equals</p>
+              </div>
+              <p className="text-d-sm lg:text-d-lg text-gray-600 font-clashGrotesk font-medium text-center">
+                {rate} {toCurrency.code}
+              </p>
+            </div>
 
             {/* <div className="bg-gray-25 p-16 lg:w-[42%] rounded-xl lg:rounded-2xl">
               <div className="flex gap-2 items-center justify-center">

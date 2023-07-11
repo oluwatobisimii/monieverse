@@ -7,7 +7,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
-
 import ShieldCheck from "../../assets/icons/ShieldCheck.svg";
 import sendIcon from "../../assets/icons/PaperPlaneTiltSend.svg";
 import convertIcon from "../../assets/icons/ArrowsClockwiseConvert.svg";
@@ -19,8 +18,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AllCurrencies } from "../data/AllCurrencies";
 import { AvailableWallets } from "../Balance/AddNewBalance";
-
-
 
 const AvailableBalances = () => {
   const [selected, setSelected] = useState({});
@@ -44,7 +41,9 @@ const AvailableBalances = () => {
 
   useEffect(() => {
     if (fetchWalletStatus === "fulfilled" && Wallets.length > 0) {
-      let currentWallet = Wallets[currency_id - 1];
+      let currentWallet = Wallets.find((item) => {
+        return item.currency_id.toString() === currency_id;
+      });
       setCurrentWallet({ ...currentWallet });
     }
     // eslint-disable-next-line
@@ -220,8 +219,10 @@ const AvailableBalances = () => {
                   {/* Add Balance Dropdown */}
                   {balanceOptions && (
                     <div className="absolute top-full right-0 shadow-lg bg-gray-0 rounded-2xl  w-[348px]">
-                      
-                      <AvailableWallets selected={selected} setSelected={setSelected} />
+                      <AvailableWallets
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
                       <div className="border-t border-gray-100 p-3 flex gap-4">
                         <button
                           className="rounded-lg py-2 px-5 border border-gray-200 text-gray-600 text-md font-medium flex-1"

@@ -108,7 +108,6 @@ const Balances = () => {
     setKycOverlay(!kycOverlay);
   };
 
-
   const [remainingWidth, setRemainingWidth] = useState(0);
 
   useEffect(() => {
@@ -133,6 +132,7 @@ const Balances = () => {
       <>
         {Wallets.length > 0
           ? Wallets.map((wallet, index) => {
+              console.log(wallet);
               return (
                 <BalanceCard
                   key={index}

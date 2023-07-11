@@ -34,7 +34,7 @@ const BalanceCard = ({
       currencysymbol = "₦";
       currencyName = "Nigerian Naira";
       break;
-    case "Europe":
+    case "Euro":
       currencyImg = Europe;
       currencysymbol = "€";
       currencyName = "Euro";
@@ -54,7 +54,7 @@ const BalanceCard = ({
       currencysymbol = "¥";
       currencyName = "Chinese Yuan";
       break;
-    case "UK":
+    case "Pound Sterling":
       currencyImg = UK;
       currencysymbol = "£";
       currencyName = "Great Britain Pounds";

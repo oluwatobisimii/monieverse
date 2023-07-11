@@ -66,6 +66,20 @@ const Register = () => {
     }
   }, [errors]);
 
+  // Debounce Input to Phone number
+  React.useEffect(() => {
+    const getData = setTimeout(() => {
+      if (phone) {
+        if (!validateNigerianPhoneNumber(`+234${Number(phone)}`)) {
+          dispatch(updateError({ phone: "Invalid phone number" }));
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(getData);
+    // eslint-disable-next-line
+  }, [phone]);
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -173,13 +187,6 @@ const Register = () => {
                   onChange={(e) => {
                     dispatch(resetErrors("phone"));
                     setPhone(e.target.value.toString());
-                    if (
-                      !validateNigerianPhoneNumber(
-                        `+234${Number(e.target.value)}`
-                      )
-                    ) {
-                      dispatch(updateError({ phone: "Invalid phone number" }));
-                    }
                   }}
                   selectedCountry={selectedCountry}
                   setSelectedCountry={setSelectedCountry}

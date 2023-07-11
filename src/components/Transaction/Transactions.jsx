@@ -1,6 +1,7 @@
 import React from "react";
 import TransactionTable from "./TransactionTable";
 import { Link } from "react-router-dom";
+import { CaretRight } from "phosphor-react";
 
 const Transactions = () => {
   return (
@@ -12,10 +13,13 @@ const Transactions = () => {
               Transactions
             </p>
             <Link
-              to="/transactions"
-              className="text-sm font-medium text-primary-500"
+              to="/dashboard/transactions"
+              className="flex group items-center cursor-pointer text-sm font-medium text-primary-500"
             >
-              See all
+              <p className="text-sm text-primary-500 font-medium mr-[4.5px]">
+                See all
+              </p>
+              <CaretRight className="transition-all duration-300 group-hover:visible group-hover:left-0 group-hover:opacity-100 invisible relative left-[8px] opacity-0 text-primary-500 h-4" />
             </Link>
           </div>
           <div className="h-6 lg:h-10" />

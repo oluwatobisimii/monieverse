@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Overlay from "../UtilityComponents/Overlay";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Info } from "phosphor-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AllCurrencies as localCurrencyData } from "../data/AllCurrencies";
+import { CreateWalletbyID } from "./AddWalletApi";
+import { fetchWallets } from "../../features/walletSlice";
+import Spinner from "../Loaders/Spinner";
 
 const CurrencyOption = ({
   currency,
@@ -42,8 +45,7 @@ const CurrencyOption = ({
   );
 };
 
-export const AvailableWallets = ({selected, setSelected}) => {
-  
+export const AvailableWallets = ({ selected, setSelected }) => {
   const Wallets = useSelector((state) => state.wallets.wallets);
   const Currencies = useSelector((state) => state.allCurrencies.allCurrencies);
   const WalletCurrencies = Currencies.filter(
@@ -78,7 +80,9 @@ export const AvailableWallets = ({selected, setSelected}) => {
 };
 
 const AddNewBalance = ({ isOpen, onClose }) => {
-    const [selected, setSelected] = useState({});
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState({});
+  const [loading, setLoading] = useState(false);
   return (
     <Overlay isOpen={isOpen} onClose={onClose}>
       <div className="w-full md:max-w-[542px] bg-gray-0 rounded-3xl">
@@ -111,15 +115,33 @@ const AddNewBalance = ({ isOpen, onClose }) => {
             {" "}
             Cancel
           </button>
-          <button
-            className="rounded-lg py-2 px-5 bg-primary-400 hover:bg-primary-500 disabled:bg-primary-300 text-gray-0 text-md font-medium flex-1"
-            onClick={() => {
-              onClose();
-            }}
-          >
-            {" "}
-            Continue
-          </button>
+          {loading ? (
+            <div className="rounded-lg py-0.5 px-5 bg-primary-400 flex-1 center">
+              <div className="scale-[60%]">
+                <Spinner />
+              </div>
+            </div>
+          ) : (
+            <button
+              className="rounded-lg py-2 px-5 bg-primary-400 hover:bg-primary-500 disabled:bg-primary-300 text-gray-0 text-md font-medium flex-1"
+              onClick={async () => {
+                console.log(selected);
+                setLoading(true);
+                try {
+                  const response = CreateWalletbyID(selected.id);
+                  setLoading(false);
+                  if (response.status === "OK") {
+                    console.log(response);
+                    dispatch(fetchWallets());
+                    onClose();
+                  }
+                } catch (error) {}
+              }}
+            >
+              {" "}
+              Continue
+            </button>
+          )}
         </div>
       </div>
     </Overlay>

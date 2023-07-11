@@ -39,3 +39,18 @@ export const CreateWallets = async () => {
     }
 
 }
+
+export const CreateWalletbyID = async (id) => {
+
+    try {
+        const response = await baseApiCall('users/wallets/create', 'POST', {
+            "currency_id": id
+        })
+        console.log(response)
+        return response.data
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}

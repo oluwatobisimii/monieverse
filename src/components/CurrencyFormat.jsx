@@ -19,7 +19,7 @@ const CurrencyFormat = ({
       currencysymbol = "₦";
 
       break;
-    case "Europe":
+    case "Euro":
       currencysymbol = "€";
       break;
     case "India":
@@ -34,7 +34,7 @@ const CurrencyFormat = ({
       currencysymbol = "¥";
 
       break;
-    case "UK":
+    case "Pound Sterling":
       currencysymbol = "£";
 
       break;

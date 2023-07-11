@@ -14,7 +14,7 @@ import SignPost from "../../assets/icons/Signpost.svg";
 import { useNavigate } from "react-router-dom";
 import StepperDivider from "../UtilityComponents/StepperDivider";
 import { AllCurrencies } from "../data/AllCurrencies";
-import SwapFromCurrencies from "../Inputs/SwapFromCurrencies";
+
 import { swapMoney } from "./ConvertApi";
 import { baseApiCall } from "../../api/MakeApiCallswithHeader";
 import SwapToCurrencies from "../Inputs/SwapToCurrencies";
@@ -22,6 +22,7 @@ import StepperWrapper from "../Wrappers/StepperWrapper";
 import { useSelector } from "react-redux";
 import InputCurrency from "../Inputs/InputCurrency";
 import { ArrowDown } from "phosphor-react";
+import SwapFromWallet from "../Inputs/SwapFromWallet";
 
 const ConvertBody = () => {
   // eslint-disable-next-line
@@ -188,7 +189,7 @@ const ConvertBody = () => {
                       {/* <CurrencyInput num={num} setNum={setNum} /> */}
                       <InputCurrency value={num} setValue={setNum} />
                     </div>
-                    <SwapFromCurrencies
+                    <SwapFromWallet
                       fromCurrency={fromCurrency}
                       setFromCurrency={setFromCurrency}
                       setFrom={setFrom}
@@ -196,9 +197,14 @@ const ConvertBody = () => {
                   </div>
                   <div className="p-3">
                     <p className="text-center text-sm text-gray-400">
-                      <span> You have </span>
+                      {num > fromCurrency.balance?<span className="text-error-500">Insufficient balance!</span>:<span> You have</span>}
                       <span className="font-medium text-gray-500">
-                        500,000.09 NGN
+                        {" "}
+                        {
+                          AllCurrencies[fromCurrency.currency_id - 1]
+                            ?.currencyCode
+                        } {" "}
+                        {fromCurrency.balance}
                       </span>
                       <span> available in your balance </span>
                     </p>
@@ -304,7 +310,11 @@ const ConvertBody = () => {
                 </div>
                 <div className="h-10"></div>
                 <button
-                  className="w-full h-14 bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl mt-auto"
+                  className="w-full h-14
+                  disabled:bg-primary-300
+                  disabled:cursor-not-allowed
+                  bg-primary-400 text-center text-gray-0 text-md font-medium rounded-xl mt-auto"
+                  disabled={!(num < fromCurrency.balance && num)}
                   onClick={() => {
                     setStep(1);
                   }}

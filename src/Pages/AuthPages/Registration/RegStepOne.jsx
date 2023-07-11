@@ -49,6 +49,20 @@ export default function RegStepOne({
     business_name,
   ]);
 
+  // Debounce Input to Email
+  React.useEffect(() => {
+    const getData = setTimeout(() => {
+      if (email) {
+        if (!validateEmail(email)) {
+          dispatch(updateError({ email: "Invalid email" }));
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(getData);
+    // eslint-disable-next-line
+  }, [email]);
+
   return (
     <StepperWrapper>
       <div className="flex items-center gap-3">
@@ -250,9 +264,6 @@ export default function RegStepOne({
             onChange={(e) => {
               dispatch(resetErrors("email"));
               setEmail(e.target.value);
-              if (!validateEmail(e.target.value)) {
-                dispatch(updateError({ email: "Invalid email" }));
-              }
             }}
             errors={errors}
           />
@@ -297,7 +308,6 @@ export default function RegStepOne({
                 sessionStorage.setItem("userInput", JSON.stringify(userInput));
                 dispatch(registerUser(userInput)).then(({ payload }) => {
                   if (payload.status === 200) {
-                    
                     payload.data.status === "ok" && setStep(2);
                   }
                 }); // setStep(1)
