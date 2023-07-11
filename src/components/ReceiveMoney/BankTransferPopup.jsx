@@ -41,7 +41,7 @@ const BankTransferPopup = ({
     }
   }, [virtualAccounts]);
 
-  if (AllCurrencies[currentWallet.currency_id - 1]?.currencyCode === "USD") {
+  if (AllCurrencies[currentWallet.currency_id - 1]?.currencyCode === "USD" || AllCurrencies[currentWallet.currency_id - 1]?.currencyCode === "EUR") {
     return (
       <>
         <Overlay isOpen={isOpen} onClose={onClose}>
